@@ -38,4 +38,27 @@ expression 'Agent 365' = "https://microsoft.sharepoint-df.com/teams/CopilotROIan
 
 	annotation PBI_ResultType = Text
 
+/// Helper: build an empty table with the given column names. Graceful fallback for OPTIONAL
+/// sources so a missing Lakehouse table never breaks the dashboard refresh.
+expression EmptyTable = (columns as list) as table => #table(columns, {})
+	lineageTag: 1a2b3c4d-fab1-4004-8004-000000000004
 
+	annotation PBI_ResultType = Function
+
+/// Toggle (optional): load the Dataverse agent tables. False => they load empty.
+expression Enable_Dataverse = true meta [IsParameterQuery=true, Type="Logical", IsParameterQueryRequired=true]
+	lineageTag: 1a2b3c4d-fab1-4005-8005-000000000005
+
+	annotation PBI_ResultType = Logical
+
+/// Toggle (optional): load the Product Feedback (OCV) table user_feedback.
+expression Enable_ProductFeedback = true meta [IsParameterQuery=true, Type="Logical", IsParameterQueryRequired=true]
+	lineageTag: 1a2b3c4d-fab1-4006-8006-000000000006
+
+	annotation PBI_ResultType = Logical
+
+/// Toggle (optional): load the Agents 365 registry table.
+expression Enable_Agent365 = true meta [IsParameterQuery=true, Type="Logical", IsParameterQueryRequired=true]
+	lineageTag: 1a2b3c4d-fab1-4007-8007-000000000007
+
+	annotation PBI_ResultType = Logical

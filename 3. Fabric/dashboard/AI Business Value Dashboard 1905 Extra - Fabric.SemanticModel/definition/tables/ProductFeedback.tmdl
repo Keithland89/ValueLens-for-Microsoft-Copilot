@@ -574,7 +574,7 @@ table ProductFeedback
 		source =
 				let
 				    // Sourced from the Fabric Lakehouse Delta table user_feedback (parser output).
-				    Headers = FabricTable("user_feedback"),
+				    Headers = if Enable_ProductFeedback then (try FabricTable("user_feedback") otherwise EmptyTable({"Feedback Id", "Comment", "Translated Comment", "Comment Language", "Date Submitted UTC", "Feedback Type", "Microsoft Response Status", "App", "App Language", "Platform", "Source Type", "Logs, Attachments", "User Id", "User Email", "Browser", "Browser Version", "AI Context Prompt", "AI Context Response Message", "Survey Question", "Survey Response Option", "Additional Metadata", "Date Submitted Date", "Sentiment"})) else EmptyTable({"Feedback Id", "Comment", "Translated Comment", "Comment Language", "Date Submitted UTC", "Feedback Type", "Microsoft Response Status", "App", "App Language", "Platform", "Source Type", "Logs, Attachments", "User Id", "User Email", "Browser", "Browser Version", "AI Context Prompt", "AI Context Response Message", "Survey Question", "Survey Response Option", "Additional Metadata", "Date Submitted Date", "Sentiment"}),
 				    Renamed = Table.RenameColumns(Headers, {
 				        {"Feedback Id", "FeedbackId"},
 				        {"Translated Comment", "TranslatedComment"},
@@ -593,7 +593,7 @@ table ProductFeedback
 				        {"Survey Question", "SurveyQuestion"},
 				        {"Survey Response Option", "SurveyResponseOption"},
 				        {"Additional Metadata", "AdditionalMetadata"}
-				    }),
+				    }, MissingField.Ignore),
 				    Typed = Table.TransformColumnTypes(Renamed, {
 				        {"DateSubmittedUTC", type datetime}
 				    }, "en-US"),

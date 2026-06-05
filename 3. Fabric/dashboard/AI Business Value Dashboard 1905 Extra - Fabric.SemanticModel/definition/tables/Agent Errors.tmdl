@@ -62,7 +62,7 @@ table 'Agent Errors'
 		mode: import
 		source =
 				let
-				    Promoted = FabricTable("agent_errors"),
+				    Promoted = if Enable_Dataverse then (try FabricTable("agent_errors") otherwise EmptyTable({"conversation_id", "error_timestamp_utc", "error_code", "error_sub_code", "error_message", "is_user_error"})) else EmptyTable({"conversation_id", "error_timestamp_utc", "error_code", "error_sub_code", "error_message", "is_user_error"}),
 				    Typed = Table.TransformColumnTypes(Promoted, {
 				        {"conversation_id", type text},
 				        {"error_timestamp_utc", type datetime},

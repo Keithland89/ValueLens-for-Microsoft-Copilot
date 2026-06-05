@@ -85,7 +85,7 @@ table 'Agent Sub-Agent Calls'
 		mode: import
 		source =
 				let
-				    Promoted = FabricTable("agent_subagents"),
+				    Promoted = if Enable_Dataverse then (try FabricTable("agent_subagents") otherwise EmptyTable({"conversation_id", "invocation_timestamp_utc", "event_type", "parent_agent_schema", "connected_agent_schema", "dialog_schema", "user_id_hash", "plan_step_id"})) else EmptyTable({"conversation_id", "invocation_timestamp_utc", "event_type", "parent_agent_schema", "connected_agent_schema", "dialog_schema", "user_id_hash", "plan_step_id"}),
 				    Typed = Table.TransformColumnTypes(Promoted, {
 				        {"conversation_id", type text},
 				        {"invocation_timestamp_utc", type datetime},

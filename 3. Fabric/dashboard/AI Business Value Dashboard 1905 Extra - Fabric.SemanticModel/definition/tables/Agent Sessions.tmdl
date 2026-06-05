@@ -436,7 +436,7 @@ table 'Agent Sessions'
 		mode: import
 		source =
 				let
-				    Promoted = FabricTable("agent_sessions"),
+				    Promoted = if Enable_Dataverse then (try FabricTable("agent_sessions") otherwise EmptyTable({"conversation_id", "session_start_utc", "session_duration_ms", "user_id_hash", "primary_agent_schema", "connected_agent_schemas", "connected_agent_count", "msg_count", "user_msg_count", "bot_msg_count", "plan_step_count", "total_displayed_cost", "total_latency_ms", "knowledge_searched", "knowledge_answered", "knowledge_sources_count", "error_count", "first_error_code", "feedback_offered_count", "feedback_submitted", "feedback_verdict", "feedback_comment", "first_user_prompt"})) else EmptyTable({"conversation_id", "session_start_utc", "session_duration_ms", "user_id_hash", "primary_agent_schema", "connected_agent_schemas", "connected_agent_count", "msg_count", "user_msg_count", "bot_msg_count", "plan_step_count", "total_displayed_cost", "total_latency_ms", "knowledge_searched", "knowledge_answered", "knowledge_sources_count", "error_count", "first_error_code", "feedback_offered_count", "feedback_submitted", "feedback_verdict", "feedback_comment", "first_user_prompt"}),
 				    Typed = Table.TransformColumnTypes(Promoted, {
 				        {"conversation_id", type text},
 				        {"session_start_utc", type datetime},
