@@ -1,0 +1,109 @@
+/// Power Platform billing — credit consumption PER USER (per agent).
+/// Source: Lakehouse Delta table `credit_consumption_user`, landed from the
+/// EntitlementConsumptionTenantPerUserDetailsReport_MCSMessages export.
+/// Gated by Enable_Consumption — loads empty when no export is supplied.
+table 'Credit Consumption (User)'
+	lineageTag: cc0002us-0001-0001-0001-000000000001
+
+	/// Total credits used across all users (billing actuals).
+	measure 'Total Credits Used (Billing)' = SUM('Credit Consumption (User)'[Credits_used])
+		formatString: #,0
+		displayFolder: 💳 Billing (Actuals)
+		lineageTag: cc0002us-meas-0001-000000000001
+
+	/// Total billable credits used across all users.
+	measure 'Total Billable Credits Used' = SUM('Credit Consumption (User)'[Billable_credit_used])
+		formatString: #,0
+		displayFolder: 💳 Billing (Actuals)
+		lineageTag: cc0002us-meas-0001-000000000002
+
+	/// Distinct users who consumed at least one credit (billing actuals).
+	measure 'Billing Active Users' = DISTINCTCOUNT('Credit Consumption (User)'[User_Email])
+		formatString: #,0
+		displayFolder: 💳 Billing (Actuals)
+		lineageTag: cc0002us-meas-0001-000000000003
+
+	/// Mean credits used per credit-consuming user (billing actuals).
+	measure 'Avg Credits per User (Billing)' =
+			DIVIDE([Total Credits Used (Billing)], [Billing Active Users])
+		formatString: #,0.00
+		displayFolder: 💳 Billing (Actuals)
+		lineageTag: cc0002us-meas-0001-000000000004
+
+	column User_Id
+		dataType: string
+		lineageTag: cc0002us-col0-0001-000000000001
+		summarizeBy: none
+		sourceColumn: User_Id
+
+		annotation SummarizationSetBy = Automatic
+
+	column User_Email
+		dataType: string
+		lineageTag: cc0002us-col0-0001-000000000002
+		summarizeBy: none
+		sourceColumn: User_Email
+
+		annotation SummarizationSetBy = Automatic
+
+	column Agent_Id
+		dataType: string
+		lineageTag: cc0002us-col0-0001-000000000003
+		summarizeBy: none
+		sourceColumn: Agent_Id
+
+		annotation SummarizationSetBy = Automatic
+
+	column Agent_Name
+		dataType: string
+		lineageTag: cc0002us-col0-0001-000000000004
+		summarizeBy: none
+		sourceColumn: Agent_Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Billable_credit_used
+		dataType: int64
+		formatString: 0
+		lineageTag: cc0002us-col0-0001-000000000005
+		summarizeBy: sum
+		sourceColumn: Billable_credit_used
+
+		annotation SummarizationSetBy = Automatic
+
+	column Credits_used
+		dataType: int64
+		formatString: 0
+		lineageTag: cc0002us-col0-0001-000000000006
+		summarizeBy: sum
+		sourceColumn: Credits_used
+
+		annotation SummarizationSetBy = Automatic
+
+	column M365_Copilot_Licensed
+		dataType: string
+		lineageTag: cc0002us-col0-0001-000000000007
+		summarizeBy: none
+		sourceColumn: M365_Copilot_Licensed
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Credit Consumption (User)' = m
+		mode: import
+		source =
+				let
+				    Cols = {"User_Id", "User_Email", "Agent_Id", "Agent_Name", "Billable_credit_used", "Credits_used", "M365_Copilot_Licensed"},
+				    Promoted = if Enable_Consumption then (try FabricTable("credit_consumption_user") otherwise EmptyTable(Cols)) else EmptyTable(Cols),
+				    Typed = Table.TransformColumnTypes(Promoted, {
+				        {"User_Id", type text},
+				        {"User_Email", type text},
+				        {"Agent_Id", type text},
+				        {"Agent_Name", type text},
+				        {"Billable_credit_used", Int64.Type},
+				        {"Credits_used", Int64.Type},
+				        {"M365_Copilot_Licensed", type text}
+				    })
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table

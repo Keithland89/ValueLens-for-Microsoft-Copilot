@@ -42,6 +42,21 @@ table 'Agent Performance'
 		displayFolder: Agent KPIs
 		lineageTag: 64c70052-af52-498e-a35f-ddca55f4940a
 
+	/// % of conversations the orchestrator flagged as impliedSuccess=TRUE. The reliable
+	/// proxy-satisfaction signal when explicit thumbs are too sparse for a CSAT.
+	measure 'Implied Success %' =
+			DIVIDE(
+			    CALCULATE(
+			        COUNTROWS('Agent Performance'),
+			        'Agent Performance'[ImpliedSuccess] = "TRUE"
+			    ),
+			    COUNTROWS('Agent Performance'),
+			    0
+			)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Agent KPIs
+		lineageTag: e49bd491-1a0a-4114-9b19-22c4e5bb1900
+
 	measure 'Avg Bot Response Time' = AVERAGE('Agent Performance'[AverageLatencyMs])
 		formatString: #,0 "ms"
 		displayFolder: Agent Performance

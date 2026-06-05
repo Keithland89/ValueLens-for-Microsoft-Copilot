@@ -53,3 +53,12 @@ expression Enable_Agent365 = true meta [IsParameterQuery=true, Type="Logical", I
 	lineageTag: 1a2b3c4d-fab1-4007-8007-000000000007
 
 	annotation PBI_ResultType = Logical
+
+/// Toggle (optional): load the Power Platform credit-consumption (billing) tables —
+/// credit_consumption_agent / _user / _tenant, landed by Copilot_Credit_Consumption_Ingester.
+/// Leave FALSE for customers who don't supply the EntitlementConsumption exports; the
+/// billing tables then load empty and the transcript-native Total Cost Units keeps working.
+expression Enable_Consumption = true meta [IsParameterQuery=true, Type="Logical", IsParameterQueryRequired=true]
+	lineageTag: 1a2b3c4d-fab1-4008-8008-000000000008
+
+	annotation PBI_ResultType = Logical

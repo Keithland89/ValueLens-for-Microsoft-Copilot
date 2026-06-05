@@ -1,0 +1,184 @@
+{
+  "position": {
+    "x": 645,
+    "y": 574,
+    "z": 304,
+    "height": 138,
+    "width": 622,
+    "tabOrder": 304
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Agent Sessions"
+                    }
+                  },
+                  "Property": "session_start_utc"
+                }
+              },
+              "queryRef": "Agent Sessions.session_start_utc",
+              "nativeQueryRef": "When"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Agent Catalogue"
+                    }
+                  },
+                  "Property": "agent_display_name"
+                }
+              },
+              "queryRef": "Agent Catalogue.agent_display_name",
+              "nativeQueryRef": "Agent"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Agent Sessions"
+                    }
+                  },
+                  "Property": "feedback_verdict"
+                }
+              },
+              "queryRef": "Agent Sessions.feedback_verdict",
+              "nativeQueryRef": "Verdict"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Agent Sessions"
+                    }
+                  },
+                  "Property": "feedback_comment"
+                }
+              },
+              "queryRef": "Agent Sessions.feedback_comment",
+              "nativeQueryRef": "Comment"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Agent Sessions"
+                    }
+                  },
+                  "Property": "first_user_prompt"
+                }
+              },
+              "queryRef": "Agent Sessions.first_user_prompt",
+              "nativeQueryRef": "User Prompt"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'FEEDBACK VERBATIMS (WHEN GIVEN)'"
+                }
+              }
+            },
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "titleWrap": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "10D"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'''Segoe UI Semibold'', wf_segoe-ui_semibold, helvetica, arial, sans-serif'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "radius": {
+              "expr": {
+                "Literal": {
+                  "Value": "5D"
+                }
+              }
+            },
+            "width": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
+  "name": "tbl_verbatim016"
+}
