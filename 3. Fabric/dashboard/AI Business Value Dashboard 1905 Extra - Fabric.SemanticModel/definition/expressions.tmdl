@@ -29,15 +29,6 @@ expression FabricTable =
 
 	annotation PBI_ResultType = Function
 
-/// DEPRECATED in the Fabric model: Agent 365 now lands in the Lakehouse via the
-/// Copilot_Agent365_Lander notebook and is read via FabricTable("agents_365"). Left blank.
-expression 'Agent 365' = "" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=false]
-	lineageTag: a5e989dd-a8e3-4a4d-b930-599e61dcfeff
-
-	annotation PBI_NavigationStepName = Navigation
-
-	annotation PBI_ResultType = Text
-
 /// Helper: build an empty table with the given column names. Graceful fallback for OPTIONAL
 /// sources so a missing Lakehouse table never breaks the dashboard refresh.
 expression EmptyTable = (columns as list) as table => #table(columns, {})

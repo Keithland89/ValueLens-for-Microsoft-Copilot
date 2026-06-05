@@ -2837,45 +2837,69 @@ table 'Chat + Agent Interactions (Audit Logs)'
 		mode: import
 		source =
 				let
-				    #"Promoted Headers" = FabricTable("Copilot_Interactions_Parsed"),
+				    // Spark saveAsTable writes lowercase table names; the Lakehouse SQL endpoint
+				    // navigation key is case-sensitive, so this must be lowercase.
+				    #"Promoted Headers" = FabricTable("copilot_interactions_parsed"),
 				
-				    #"Add Message_isPrompt"        = Table.AddColumn(#"Promoted Headers",        "Message_isPrompt",                    each "TRUE", type text),
-				    #"Add ApplicationName"         = Table.AddColumn(#"Add Message_isPrompt",     "ApplicationName",                     each null, type text),
-				    #"Add Audit_UserKey"           = Table.AddColumn(#"Add ApplicationName",      "Audit_UserKey",                       each null, type text),
-				    #"Add SensitivityLabelId"      = Table.AddColumn(#"Add Audit_UserKey",        "SensitivityLabelId",                  each null, type text),
-				    #"Add AR_SensLabel"            = Table.AddColumn(#"Add SensitivityLabelId",   "AccessedResource_SensitivityLabelId", each null, type text),
-				
-				    #"Add AppIdentity_AppId"       = Table.AddColumn(#"Add AR_SensLabel",          "AppIdentity_AppId",       each null, type text),
-				    #"Add AppIdentity_DisplayName" = Table.AddColumn(#"Add AppIdentity_AppId",    "AppIdentity_DisplayName", each try Text.From([AppIdentity]) otherwise null, type text),
+				    // Idempotent "ensure column exists" adds — the older copilot_interactions_parsed
+				    // table may already contain these parsed columns, so only add when missing.
+				    #"Add Message_isPrompt"        = if Table.HasColumns(#"Promoted Headers", "Message_isPrompt")                    then #"Promoted Headers"        else Table.AddColumn(#"Promoted Headers",        "Message_isPrompt",                    each "TRUE", type text),
+				    #"Add ApplicationName"         = if Table.HasColumns(#"Add Message_isPrompt", "ApplicationName")                 then #"Add Message_isPrompt"     else Table.AddColumn(#"Add Message_isPrompt",     "ApplicationName",                     each null, type text),
+				    #"Add Audit_UserKey"           = if Table.HasColumns(#"Add ApplicationName", "Audit_UserKey")                    then #"Add ApplicationName"      else Table.AddColumn(#"Add ApplicationName",      "Audit_UserKey",                       each null, type text),
+				    #"Add SensitivityLabelId"      = if Table.HasColumns(#"Add Audit_UserKey", "SensitivityLabelId")                 then #"Add Audit_UserKey"        else Table.AddColumn(#"Add Audit_UserKey",        "SensitivityLabelId",                  each null, type text),
+				    #"Add AR_SensLabel"            = if Table.HasColumns(#"Add SensitivityLabelId", "AccessedResource_SensitivityLabelId") then #"Add SensitivityLabelId" else Table.AddColumn(#"Add SensitivityLabelId",   "AccessedResource_SensitivityLabelId", each null, type text),
+
+				    #"Add AppIdentity_AppId"       = if Table.HasColumns(#"Add AR_SensLabel", "AppIdentity_AppId")                   then #"Add AR_SensLabel"         else Table.AddColumn(#"Add AR_SensLabel",          "AppIdentity_AppId",       each null, type text),
+				    #"Add AppIdentity_DisplayName" = if Table.HasColumns(#"Add AppIdentity_AppId", "AppIdentity_DisplayName")        then #"Add AppIdentity_AppId"    else Table.AddColumn(#"Add AppIdentity_AppId",    "AppIdentity_DisplayName", each try Text.From([AppIdentity]) otherwise null, type text),
 				    #"Drop AppIdentity"            = Table.RemoveColumns(#"Add AppIdentity_DisplayName", {"AppIdentity"}, MissingField.Ignore),
 				
-				    #"Parse AR" = Table.AddColumn(#"Drop AppIdentity", "_resources", each
-				        let
-				            raw    = [AccessedResources],
-				            parsed = if raw = null or raw = "" then null else try Json.Document(raw) otherwise null,
-				            asList = if parsed is list then parsed
-				                     else if parsed is record then {parsed}
-				                     else {[Type = null, Action = null, SiteUrl = null]},
-				            safe   = if List.Count(asList) > 0 then asList else {[Type = null, Action = null, SiteUrl = null]}
-				        in safe),
-				    #"Drop AR Original" = Table.RemoveColumns(#"Parse AR", {"AccessedResources"}, MissingField.Ignore),
-				    #"Expand AR Rows"   = Table.ExpandListColumn(#"Drop AR Original", "_resources"),
-				    #"Expand AR Cols"   = Table.ExpandRecordColumn(#"Expand AR Rows", "_resources",
-				        {"Type", "Action", "SiteUrl"},
-				        {"AccessedResource_Type", "AccessedResource_Action", "AccessedResource_SiteUrl"}),
-				
-				    #"Parse Plugin" = Table.AddColumn(#"Expand AR Cols", "_plugin", each
-				        let
-				            raw    = [AISystemPlugin],
-				            parsed = if raw = null or raw = "" then null else try Json.Document(raw) otherwise null,
-				            single = if parsed is list and List.Count(parsed) > 0 then parsed{0}
-				                     else if parsed is record then parsed
-				                     else [Id = null, Name = null]
-				        in single),
-				    #"Drop Plugin Original" = Table.RemoveColumns(#"Parse Plugin", {"AISystemPlugin"}, MissingField.Ignore),
-				    #"Expand Plugin"        = Table.ExpandRecordColumn(#"Drop Plugin Original", "_plugin",
-				        {"Id", "Name"},
-				        {"AISystemPlugin_Id", "AISystemPlugin_Name"}),
+				    // --- Accessed Resources: parse raw JSON when present; else keep the
+				    //     columns the upgraded parser already flattened (no raw col to parse).
+				    #"Expand AR Cols" =
+				        if Table.HasColumns(#"Drop AppIdentity", "AccessedResources") then
+				            let
+				                ParseAR  = Table.AddColumn(#"Drop AppIdentity", "_resources", each
+				                    let
+				                        raw    = [AccessedResources],
+				                        parsed = if raw = null or raw = "" then null else try Json.Document(raw) otherwise null,
+				                        asList = if parsed is list then parsed
+				                                 else if parsed is record then {parsed}
+				                                 else {[Type = null, Action = null, SiteUrl = null]},
+				                        safe   = if List.Count(asList) > 0 then asList else {[Type = null, Action = null, SiteUrl = null]}
+				                    in safe),
+				                DropOrig = Table.RemoveColumns(ParseAR, {"AccessedResources"}, MissingField.Ignore),
+				                ExpRows  = Table.ExpandListColumn(DropOrig, "_resources"),
+				                DropPre  = Table.RemoveColumns(ExpRows, {"AccessedResource_Type", "AccessedResource_Action", "AccessedResource_SiteUrl"}, MissingField.Ignore),
+				                ExpCols  = Table.ExpandRecordColumn(DropPre, "_resources", {"Type", "Action", "SiteUrl"}, {"AccessedResource_Type", "AccessedResource_Action", "AccessedResource_SiteUrl"})
+				            in ExpCols
+				        else
+				            let
+				                t1 = if Table.HasColumns(#"Drop AppIdentity", "AccessedResource_Type")   then #"Drop AppIdentity" else Table.AddColumn(#"Drop AppIdentity", "AccessedResource_Type",   each null, type text),
+				                t2 = if Table.HasColumns(t1, "AccessedResource_Action")                  then t1                  else Table.AddColumn(t1,                  "AccessedResource_Action", each null, type text),
+				                t3 = if Table.HasColumns(t2, "AccessedResource_SiteUrl")                 then t2                  else Table.AddColumn(t2,                  "AccessedResource_SiteUrl", each null, type text)
+				            in t3,
+
+				    // --- AI System Plugin: parse raw JSON when present; else keep flattened cols.
+				    #"Expand Plugin" =
+				        if Table.HasColumns(#"Expand AR Cols", "AISystemPlugin") then
+				            let
+				                ParsePlugin = Table.AddColumn(#"Expand AR Cols", "_plugin", each
+				                    let
+				                        raw    = [AISystemPlugin],
+				                        parsed = if raw = null or raw = "" then null else try Json.Document(raw) otherwise null,
+				                        single = if parsed is list and List.Count(parsed) > 0 then parsed{0}
+				                                 else if parsed is record then parsed
+				                                 else [Id = null, Name = null]
+				                    in single),
+				                DropOrig = Table.RemoveColumns(ParsePlugin, {"AISystemPlugin"}, MissingField.Ignore),
+				                DropPre  = Table.RemoveColumns(DropOrig, {"AISystemPlugin_Id", "AISystemPlugin_Name"}, MissingField.Ignore),
+				                ExpCols  = Table.ExpandRecordColumn(DropPre, "_plugin", {"Id", "Name"}, {"AISystemPlugin_Id", "AISystemPlugin_Name"})
+				            in ExpCols
+				        else
+				            let
+				                p1 = if Table.HasColumns(#"Expand AR Cols", "AISystemPlugin_Id")   then #"Expand AR Cols" else Table.AddColumn(#"Expand AR Cols", "AISystemPlugin_Id",   each null, type text),
+				                p2 = if Table.HasColumns(p1, "AISystemPlugin_Name")               then p1               else Table.AddColumn(p1,               "AISystemPlugin_Name", each null, type text)
+				            in p2,
 				
 				    #"Typed CreationDate" = Table.TransformColumnTypes(#"Expand Plugin", {{"CreationDate", type datetime}}, "en-US"),
 				
@@ -2896,7 +2920,8 @@ table 'Chat + Agent Interactions (Audit Logs)'
 				        type text),
 				
 				    #"Merged Licenses" = Table.NestedJoin(#"Normalize UPN", {"_NormUPN"}, #"Copilot Licensed", {"UPN_Normalized"}, "LicenseInfo", JoinKind.LeftOuter),
-				    #"Expanded License" = Table.ExpandTableColumn(#"Merged Licenses", "LicenseInfo", {"Has license"}, {"Has license"}),
+				    #"Drop Pre-Existing License Col" = Table.RemoveColumns(#"Merged Licenses", {"Has license"}, MissingField.Ignore),
+				    #"Expanded License" = Table.ExpandTableColumn(#"Drop Pre-Existing License Col", "LicenseInfo", {"Has license"}, {"Has license"}),
 				
 				    #"Compute Agent_TitleID" = Table.AddColumn(#"Expanded License", "_Agent_TitleID_New", each
 				        let
