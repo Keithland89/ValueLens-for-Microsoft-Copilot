@@ -203,7 +203,7 @@ table 'Copilot Licensed'
 				    #"Promoted Headers" = FabricTable("copilot_licensed_users"),
 				
 				    // List accepted variants for User Principal Name
-				    userPrincipalNameVariants = {"User Principal Name", "userPrincipalName", "UserPrincipalName", "User principal name"},
+				    userPrincipalNameVariants = {"User Principal Name", "userPrincipalName", "UserPrincipalName", "User principal name", "User_Principal_Name"},
 				    actualUPNColumn = List.First(List.Intersect({userPrincipalNameVariants, Table.ColumnNames(#"Promoted Headers")}), null),
 				
 				    // List accepted variants for Has License
@@ -218,7 +218,8 @@ table 'Copilot Licensed'
 				        "HasCopilotLicense",
 				        "Has Copilot License Assigned",
 				        "Has Copilot license assigned",
-				        "isUser"
+				        "isUser",
+                "Has_license"
 				    },
 				    actualHasLicenseColumn = List.First(List.Intersect({hasLicenseVariants, Table.ColumnNames(#"Promoted Headers")}), null),
 				
