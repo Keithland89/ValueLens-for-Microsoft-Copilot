@@ -1,0 +1,651 @@
+table ProductFeedback
+	lineageTag: ae4ffe2b-b5f0-4f3f-a016-54252c132081
+
+	measure 'Total Feedback' = COUNTROWS('ProductFeedback')
+		formatString: #,0
+		displayFolder: 📊 Product Feedback
+		lineageTag: 90516dc6-9385-4933-8b70-473b4a05ac15
+
+	/// Compatibility alias for the prior page binding (= Satisfaction Rate / thumbs-up share).
+	measure 'Positive Feedback %' =
+			DIVIDE(
+			    CALCULATE(COUNTROWS('ProductFeedback'), 'ProductFeedback'[FeedbackType] = "Thumbs Up"),
+			    COUNTROWS('ProductFeedback')
+			)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 💬 Compat
+		lineageTag: ae4ffe2b-c0a1-0001-0001-000000000001
+
+	/// Compatibility alias for the prior page binding (thumbs-down share).
+	measure 'Negative Feedback %' =
+			DIVIDE(
+			    CALCULATE(COUNTROWS('ProductFeedback'), 'ProductFeedback'[FeedbackType] = "Thumbs Down"),
+			    COUNTROWS('ProductFeedback')
+			)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 💬 Compat
+		lineageTag: ae4ffe2b-c0a1-0001-0001-000000000002
+
+	/// CSAT = thumbs up / (thumbs up + thumbs down).
+	measure 'CSAT Score' =
+			DIVIDE(
+			    CALCULATE(COUNTROWS('ProductFeedback'), 'ProductFeedback'[FeedbackType] = "Thumbs Up"),
+			    CALCULATE(COUNTROWS('ProductFeedback'), 'ProductFeedback'[FeedbackType] IN {"Thumbs Up", "Thumbs Down"})
+			)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 💬 Compat
+		lineageTag: ae4ffe2b-c0a1-0001-0001-000000000003
+
+	/// Compatibility alias for the prior page binding (= Comment Rate).
+	measure 'Feedback with Comment %' =
+			DIVIDE(
+			    SUM('ProductFeedback'[HasComment]),
+			    COUNTROWS('ProductFeedback')
+			)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 💬 Compat
+		lineageTag: ae4ffe2b-c0a1-0001-0001-000000000004
+
+	/// Compatibility alias (= Thumbs Up Count).
+	measure 'Thumbs Up' = CALCULATE(COUNTROWS('ProductFeedback'), 'ProductFeedback'[FeedbackType] = "Thumbs Up")
+		formatString: #,0
+		displayFolder: 💬 Compat
+		lineageTag: ae4ffe2b-c0a1-0001-0001-000000000005
+
+	/// Compatibility alias (= Thumbs Down Count).
+	measure 'Thumbs Down' = CALCULATE(COUNTROWS('ProductFeedback'), 'ProductFeedback'[FeedbackType] = "Thumbs Down")
+		formatString: #,0
+		displayFolder: 💬 Compat
+		lineageTag: ae4ffe2b-c0a1-0001-0001-000000000006
+
+	/// Compatibility alias (= Distinct Agents with Feedback).
+	measure 'Agents with Feedback' =
+			CALCULATE(
+			    DISTINCTCOUNT('ProductFeedback'[AgentName]),
+			    'ProductFeedback'[IsAgentInteraction] = TRUE
+			)
+		formatString: #,0
+		displayFolder: 💬 Compat
+		lineageTag: ae4ffe2b-c0a1-0001-0001-000000000007
+
+	measure 'Thumbs Up Count' =
+			CALCULATE(
+			    COUNTROWS('ProductFeedback'),
+			    'ProductFeedback'[FeedbackType] = "Thumbs Up"
+			)
+		formatString: #,0
+		displayFolder: 📊 Product Feedback
+		lineageTag: aac9112a-bea8-40c7-ac11-1c464f2f92c4
+
+	measure 'Thumbs Down Count' =
+			CALCULATE(
+			    COUNTROWS('ProductFeedback'),
+			    'ProductFeedback'[FeedbackType] = "Thumbs Down"
+			)
+		formatString: #,0
+		displayFolder: 📊 Product Feedback
+		lineageTag: 0f887cc4-cb1c-4047-9690-2d75aabcaeef
+
+	measure 'Satisfaction Rate' =
+			DIVIDE(
+			    CALCULATE(
+			        COUNTROWS('ProductFeedback'),
+			        'ProductFeedback'[FeedbackType] = "Thumbs Up"
+			    ),
+			    COUNTROWS('ProductFeedback'),
+			    0
+			)
+		formatString: 0.0%
+		displayFolder: 📊 Product Feedback
+		lineageTag: a6f0e143-1042-4c78-a0c4-594a8a878ef9
+
+	measure 'Feedback Users' = DISTINCTCOUNT('ProductFeedback'[UserId])
+		formatString: #,0
+		displayFolder: 📊 Product Feedback
+		lineageTag: 1b57ae86-2b3e-4cf2-8286-7eaaa78b453f
+
+	measure 'Comment Rate' =
+			DIVIDE(
+			    SUM('ProductFeedback'[HasComment]),
+			    COUNTROWS('ProductFeedback'),
+			    0
+			)
+		formatString: 0.0%
+		displayFolder: 📊 Product Feedback
+		lineageTag: e9c5a705-38ff-4b92-9af5-26625fefa2ce
+
+	measure 'Agent Satisfaction Rate' =
+			DIVIDE(
+			    CALCULATE(
+			        COUNTROWS('ProductFeedback'),
+			        'ProductFeedback'[FeedbackType] = "Thumbs Up",
+			        'ProductFeedback'[IsAgentInteraction] = TRUE
+			    ),
+			    CALCULATE(
+			        COUNTROWS('ProductFeedback'),
+			        'ProductFeedback'[IsAgentInteraction] = TRUE
+			    ),
+			    0
+			)
+		formatString: 0.0%
+		displayFolder: 🤖 Agent Feedback
+		lineageTag: a1b2c3d4-0002-0001-0003-000000000001
+
+	measure 'Distinct Agents with Feedback' =
+			CALCULATE(
+			    DISTINCTCOUNT('ProductFeedback'[AgentName]),
+			    'ProductFeedback'[IsAgentInteraction] = TRUE
+			)
+		formatString: #,0
+		displayFolder: 🤖 Agent Feedback
+		lineageTag: a1b2c3d4-0002-0001-0005-000000000001
+
+	/// Top pain point: category with the lowest satisfaction — dynamic with filters
+	measure '⚠️ Top Pain Point' =
+			VAR CatTable =
+			    ADDCOLUMNS(
+			        VALUES('ProductFeedback'[FeedbackCategory]),
+			        "SatRate", DIVIDE(
+			            CALCULATE(COUNTROWS('ProductFeedback'), 'ProductFeedback'[FeedbackType] = "Thumbs Up"),
+			            COUNTROWS('ProductFeedback'), 0
+			        ),
+			        "Total", COUNTROWS('ProductFeedback')
+			    )
+			VAR FilteredCats = FILTER(CatTable, [Total] >= 2 && [FeedbackCategory] <> "🧪 Testing" && [FeedbackCategory] <> "❓ Uncategorized")
+			VAR WorstCat = TOPN(1, FilteredCats, [SatRate], ASC)
+			RETURN
+			IF(
+			    COUNTROWS(FilteredCats) > 0,
+			    MAXX(WorstCat, [FeedbackCategory]) & " — " & FORMAT(MAXX(WorstCat, [SatRate]), "0%") & " satisfaction (" & FORMAT(MAXX(WorstCat, [Total]), "#,0") & " feedback items)",
+			    "Not enough data to identify pain points"
+			)
+		displayFolder: 📂 Feedback Categories
+		lineageTag: a1b2c3d4-0003-0002-0004-000000000001
+
+	/// Best performing category — dynamic with filters
+	measure '✅ Top Strength' =
+			VAR CatTable =
+			    ADDCOLUMNS(
+			        VALUES('ProductFeedback'[FeedbackCategory]),
+			        "SatRate", DIVIDE(
+			            CALCULATE(COUNTROWS('ProductFeedback'), 'ProductFeedback'[FeedbackType] = "Thumbs Up"),
+			            COUNTROWS('ProductFeedback'), 0
+			        ),
+			        "Total", COUNTROWS('ProductFeedback')
+			    )
+			VAR FilteredCats = FILTER(CatTable, [Total] >= 2 && [FeedbackCategory] <> "🧪 Testing" && [FeedbackCategory] <> "❓ Uncategorized")
+			VAR BestCat = TOPN(1, FilteredCats, [SatRate], DESC)
+			RETURN
+			IF(
+			    COUNTROWS(FilteredCats) > 0,
+			    MAXX(BestCat, [FeedbackCategory]) & " — " & FORMAT(MAXX(BestCat, [SatRate]), "0%") & " satisfaction (" & FORMAT(MAXX(BestCat, [Total]), "#,0") & " feedback items)",
+			    "Not enough data to identify strengths"
+			)
+		displayFolder: 📂 Feedback Categories
+		lineageTag: a1b2c3d4-0003-0002-0005-000000000001
+
+	/// Dynamic narrative: summarises the top themes driving positive and negative feedback in current filter context
+	measure '📊 Feedback Theme Summary' =
+			VAR TotalFB = COUNTROWS('ProductFeedback')
+			VAR TotalDown = CALCULATE(COUNTROWS('ProductFeedback'), 'ProductFeedback'[FeedbackType] = "Thumbs Down")
+			VAR TotalUp = CALCULATE(COUNTROWS('ProductFeedback'), 'ProductFeedback'[FeedbackType] = "Thumbs Up")
+			VAR CatStats =
+			    ADDCOLUMNS(
+			        FILTER(VALUES('ProductFeedback'[FeedbackCategory]),
+			            [FeedbackCategory] <> "🧪 Testing" && [FeedbackCategory] <> "❓ Uncategorized"),
+			        "CatTotal", CALCULATE(COUNTROWS('ProductFeedback')),
+			        "CatUp", CALCULATE(COUNTROWS('ProductFeedback'), 'ProductFeedback'[FeedbackType] = "Thumbs Up"),
+			        "CatDown", CALCULATE(COUNTROWS('ProductFeedback'), 'ProductFeedback'[FeedbackType] = "Thumbs Down"),
+			        "CatSat", DIVIDE(
+			            CALCULATE(COUNTROWS('ProductFeedback'), 'ProductFeedback'[FeedbackType] = "Thumbs Up"),
+			            CALCULATE(COUNTROWS('ProductFeedback')), 0)
+			    )
+			VAR NegCats = FILTER(CatStats, [CatDown] > 0)
+			VAR WorstCat = TOPN(1, NegCats, [CatDown], DESC)
+			VAR WorstName = MAXX(WorstCat, [FeedbackCategory])
+			VAR WorstDown = MAXX(WorstCat, [CatDown])
+			VAR WorstSat = MAXX(WorstCat, [CatSat])
+			VAR SecondWorst = TOPN(1, FILTER(NegCats, [FeedbackCategory] <> WorstName), [CatDown], DESC)
+			VAR SecondName = MAXX(SecondWorst, [FeedbackCategory])
+			VAR SecondDown = MAXX(SecondWorst, [CatDown])
+			VAR PosCats = FILTER(CatStats, [CatUp] > 0)
+			VAR BestCat = TOPN(1, PosCats, [CatSat], DESC)
+			VAR BestName = MAXX(BestCat, [FeedbackCategory])
+			VAR BestSat = MAXX(BestCat, [CatSat])
+			VAR BestTotal = MAXX(BestCat, [CatTotal])
+			VAR NegLine =
+			    IF(COUNTROWS(NegCats) > 0,
+			        "Most negative feedback is in " & WorstName & " (" & FORMAT(WorstDown, "#,0") & " thumbs down, " & FORMAT(WorstSat, "0%") & " sat.)" &
+			        IF(COUNTROWS(SecondWorst) > 0,
+			            ", followed by " & SecondName & " (" & FORMAT(SecondDown, "#,0") & " thumbs down).", "."),
+			        "")
+			VAR PosLine =
+			    IF(COUNTROWS(PosCats) > 0,
+			        "Strongest theme is " & BestName & " at " & FORMAT(BestSat, "0%") & " satisfaction (" & FORMAT(BestTotal, "#,0") & " items).",
+			        "")
+			VAR OverallLine = FORMAT(TotalFB, "#,0") & " feedback items across " & FORMAT(COUNTROWS(CatStats), "#,0") & " topics: " & FORMAT(DIVIDE(TotalUp, TotalFB, 0), "0%") & " overall satisfaction."
+			RETURN
+			IF(TotalFB > 0,
+			    OverallLine & " " & PosLine & " " & NegLine,
+			    "No feedback data in current selection.")
+		displayFolder: 📂 Feedback Categories
+		lineageTag: a1b2c3d4-0003-0003-0001-000000000001
+
+	/// Emoji representation of FeedbackType for compact visuals
+	column FeedbackEmoji =
+			SWITCH(
+			    'ProductFeedback'[FeedbackType],
+			    "Thumbs Up", "👍",
+			    "Thumbs Down", "👎",
+			    "Smile", "😊",
+			    'ProductFeedback'[FeedbackType]
+			)
+		lineageTag: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Categorize feedback by topic based on the user prompt and comment content
+	column FeedbackCategory =
+			VAR PromptText = LOWER('ProductFeedback'[AIContextPrompt])
+			VAR CommentText = LOWER('ProductFeedback'[Comment])
+			VAR Combined = PromptText & " " & CommentText
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    CONTAINSSTRING(Combined, "leave") || CONTAINSSTRING(Combined, "time off") || CONTAINSSTRING(Combined, "vacation") || CONTAINSSTRING(Combined, "请假"),
+			        "🏖️ Leave & Time Off",
+			    CONTAINSSTRING(Combined, "wellness") || CONTAINSSTRING(Combined, "wellbeing") || CONTAINSSTRING(Combined, "benefits") || CONTAINSSTRING(Combined, "health"),
+			        "💚 Wellness & Benefits",
+			    CONTAINSSTRING(Combined, "troubleshoot") || CONTAINSSTRING(Combined, "diagnostic") || CONTAINSSTRING(Combined, "not working") || CONTAINSSTRING(Combined, "won't turn on") || CONTAINSSTRING(Combined, "cache") || CONTAINSSTRING(Combined, "setup") || CONTAINSSTRING(Combined, "freezing"),
+			        "🔧 Troubleshooting",
+			    CONTAINSSTRING(Combined, "ticket") || CONTAINSSTRING(Combined, "incident") || CONTAINSSTRING(Combined, "support") || CONTAINSSTRING(Combined, "contact"),
+			        "🎫 Support & Tickets",
+			    CONTAINSSTRING(Combined, "outlook") || CONTAINSSTRING(Combined, "out of office") || CONTAINSSTRING(Combined, "email"),
+			        "📧 Outlook & Email",
+			    CONTAINSSTRING(Combined, "teams") || CONTAINSSTRING(Combined, "remote") || CONTAINSSTRING(Combined, "hybrid"),
+			        "💬 Teams & Remote Work",
+			    CONTAINSSTRING(Combined, "device") || CONTAINSSTRING(Combined, "laptop") || CONTAINSSTRING(Combined, "tablet") || CONTAINSSTRING(Combined, "mobile") || CONTAINSSTRING(Combined, "pc") || CONTAINSSTRING(Combined, "camera") || CONTAINSSTRING(Combined, "windows") || CONTAINSSTRING(Combined, "provision"),
+			        "💻 Devices & Hardware",
+			    CONTAINSSTRING(Combined, "excel") || CONTAINSSTRING(Combined, "power platform") || CONTAINSSTRING(Combined, "copilot") || CONTAINSSTRING(Combined, "coda") || CONTAINSSTRING(Combined, "onedrive") || CONTAINSSTRING(Combined, "sharepoint"),
+			        "📱 Apps & Productivity",
+			    CONTAINSSTRING(Combined, "project") || CONTAINSSTRING(Combined, "updates") || CONTAINSSTRING(Combined, "workspace"),
+			        "📋 Projects & Search",
+			    CONTAINSSTRING(Combined, "prompt") || CONTAINSSTRING(Combined, "generate"),
+			        "✨ Prompt Crafting",
+			    CONTAINSSTRING(Combined, "security") || CONTAINSSTRING(Combined, "password") || CONTAINSSTRING(Combined, "mfa") || CONTAINSSTRING(Combined, "permission") || CONTAINSSTRING(Combined, "access denied") || CONTAINSSTRING(Combined, "authentication") || CONTAINSSTRING(Combined, "locked out"),
+			        "🔒 Security & Access",
+			    CONTAINSSTRING(Combined, "training") || CONTAINSSTRING(Combined, "onboarding") || CONTAINSSTRING(Combined, "how do i") || CONTAINSSTRING(Combined, "how to") || CONTAINSSTRING(Combined, "tutorial") || CONTAINSSTRING(Combined, "learn"),
+			        "📚 Training & Onboarding",
+			    CONTAINSSTRING(Combined, "hallucin") || CONTAINSSTRING(Combined, "incorrect") || CONTAINSSTRING(Combined, "inaccurate") || CONTAINSSTRING(Combined, "wrong answer") || CONTAINSSTRING(Combined, "made up") || CONTAINSSTRING(Combined, "fabricat") || CONTAINSSTRING(Combined, "misleading"),
+			        "🎯 AI Accuracy",
+			    CONTAINSSTRING(Combined, "slow") || CONTAINSSTRING(Combined, "loading") || CONTAINSSTRING(Combined, "timeout") || CONTAINSSTRING(Combined, "lag") || CONTAINSSTRING(Combined, "performance") || CONTAINSSTRING(Combined, "error") || CONTAINSSTRING(Combined, "crash"),
+			        "⚡ Performance & Errors",
+			    CONTAINSSTRING(Combined, "network") || CONTAINSSTRING(Combined, "vpn") || CONTAINSSTRING(Combined, "wifi") || CONTAINSSTRING(Combined, "internet") || CONTAINSSTRING(Combined, "connectivity") || CONTAINSSTRING(Combined, "bandwidth"),
+			        "🌐 Network & Connectivity",
+			    CONTAINSSTRING(Combined, "report") || CONTAINSSTRING(Combined, "dashboard") || CONTAINSSTRING(Combined, "analytics") || CONTAINSSTRING(Combined, "power bi") || CONTAINSSTRING(Combined, "chart") || CONTAINSSTRING(Combined, "data"),
+			        "📊 Data & Reporting",
+			    CONTAINSSTRING(Combined, "test") || CONTAINSSTRING(Combined, "like test") || CONTAINSSTRING(Combined, "dislike"),
+			        "🧪 Testing",
+			    ISBLANK(PromptText) && (ISBLANK(CommentText) || LEN(CommentText) <= 5),
+			        "❓ Uncategorized",
+			    LEN(Combined) <= 10,
+			        "❓ Uncategorized",
+			    "📝 General"
+			)
+		lineageTag: a1b2c3d4-0003-0001-0001-000000000001
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column FeedbackId
+		dataType: string
+		lineageTag: b0b6d294-5f01-402a-895b-a1ac09795bfd
+		summarizeBy: none
+		sourceColumn: FeedbackId
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Compatibility alias for the prior page binding: Positive/Negative from FeedbackType.
+	column Sentiment =
+			SWITCH(
+			    'ProductFeedback'[FeedbackType],
+			    "Thumbs Up", "Positive",
+			    "Thumbs Down", "Negative",
+			    'ProductFeedback'[FeedbackType]
+			)
+		lineageTag: ae4ffe2b-c0a1-0002-0001-000000000001
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Compatibility alias for the prior page binding (= FeedbackDate).
+	column 'Date Submitted Date' = 'ProductFeedback'[FeedbackDate]
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: ae4ffe2b-c0a1-0002-0001-000000000002
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Comment
+		dataType: string
+		lineageTag: aaa231cd-117a-43ad-8139-e0d8277b1067
+		summarizeBy: none
+		sourceColumn: Comment
+
+		annotation SummarizationSetBy = Automatic
+
+	column TranslatedComment
+		dataType: string
+		lineageTag: dfd89f33-d60b-47da-9e49-e0e459720af8
+		summarizeBy: none
+		sourceColumn: TranslatedComment
+
+		annotation SummarizationSetBy = Automatic
+
+	column CommentLanguage
+		dataType: string
+		lineageTag: 5b3ecc2f-7e4d-4096-957e-ed5685a8624f
+		summarizeBy: none
+		sourceColumn: CommentLanguage
+
+		annotation SummarizationSetBy = Automatic
+
+	column DateSubmittedUTC
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 5e1d219f-b823-4c87-8769-11aa2d878221
+		summarizeBy: none
+		sourceColumn: DateSubmittedUTC
+
+		annotation SummarizationSetBy = Automatic
+
+	column FeedbackType
+		dataType: string
+		lineageTag: 886cd5d0-495d-4335-a2a5-1d2dbde8ab52
+		summarizeBy: none
+		sourceColumn: FeedbackType
+
+		annotation SummarizationSetBy = Automatic
+
+	column ResponseStatus
+		dataType: string
+		lineageTag: 1e964113-a491-4b5e-ae15-ea2dffbd9d40
+		summarizeBy: none
+		sourceColumn: ResponseStatus
+
+		annotation SummarizationSetBy = Automatic
+
+	column App
+		dataType: string
+		lineageTag: 33a1c9ef-2af0-4f01-90b1-117b62515f38
+		summarizeBy: none
+		sourceColumn: App
+
+		annotation SummarizationSetBy = Automatic
+
+	column AppLanguage
+		dataType: string
+		lineageTag: d9059339-da96-4501-ae27-884da49eb6ad
+		summarizeBy: none
+		sourceColumn: AppLanguage
+
+		annotation SummarizationSetBy = Automatic
+
+	column Platform
+		dataType: string
+		lineageTag: 66158d18-33b5-46cc-9662-183ee4e4cb21
+		summarizeBy: none
+		sourceColumn: Platform
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceType
+		dataType: string
+		lineageTag: 03812d9a-b359-4513-89d4-a15f4985b071
+		summarizeBy: none
+		sourceColumn: SourceType
+
+		annotation SummarizationSetBy = Automatic
+
+	column HasLogsAttachments
+		dataType: string
+		lineageTag: 0ea258cc-270a-4f67-84b6-d079708c279c
+		summarizeBy: none
+		sourceColumn: HasLogsAttachments
+
+		annotation SummarizationSetBy = Automatic
+
+	column UserId
+		dataType: string
+		lineageTag: a1f48263-8b75-4ace-87a8-9f60a9c62ebc
+		summarizeBy: none
+		sourceColumn: UserId
+
+		annotation SummarizationSetBy = Automatic
+
+	column UserEmail
+		dataType: string
+		lineageTag: dd0ec034-9eb0-4242-9fa3-69e311fb74bf
+		summarizeBy: none
+		sourceColumn: UserEmail
+
+		annotation SummarizationSetBy = Automatic
+
+	column Browser
+		dataType: string
+		lineageTag: 1f93d7f7-9329-41ab-8d2f-0c5888e84d4d
+		summarizeBy: none
+		sourceColumn: Browser
+
+		annotation SummarizationSetBy = Automatic
+
+	column BrowserVersion
+		dataType: string
+		lineageTag: 08a9f923-fffa-40cc-8af3-2b0e8d281a45
+		summarizeBy: none
+		sourceColumn: BrowserVersion
+
+		annotation SummarizationSetBy = Automatic
+
+	column AIContextPrompt
+		dataType: string
+		lineageTag: 0d8935cf-e938-45eb-89e0-e2ca92cf1960
+		summarizeBy: none
+		sourceColumn: AIContextPrompt
+
+		annotation SummarizationSetBy = Automatic
+
+	column AIContextResponse
+		dataType: string
+		lineageTag: 3d41ab86-d8c2-4a87-9bca-d14ade8754d2
+		summarizeBy: none
+		sourceColumn: AIContextResponse
+
+		annotation SummarizationSetBy = Automatic
+
+	column SurveyQuestion
+		dataType: string
+		lineageTag: 142876b2-fe4b-4ac7-800a-39512f8af9b2
+		summarizeBy: none
+		sourceColumn: SurveyQuestion
+
+		annotation SummarizationSetBy = Automatic
+
+	column SurveyResponseOption
+		dataType: string
+		lineageTag: a90c6426-5665-486c-a911-b740b205db6f
+		summarizeBy: none
+		sourceColumn: SurveyResponseOption
+
+		annotation SummarizationSetBy = Automatic
+
+	column FeedbackDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: cd88f08e-7b9e-4cf1-90bf-41a2cc5f581e
+		summarizeBy: none
+		sourceColumn: FeedbackDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column HasComment
+		dataType: int64
+		formatString: 0
+		lineageTag: 7e78d71d-a0d7-49a5-864a-e9f9762ac029
+		summarizeBy: sum
+		sourceColumn: HasComment
+
+		annotation SummarizationSetBy = Automatic
+
+	column PromptLength
+		dataType: int64
+		formatString: 0
+		lineageTag: 4fb56720-c243-45fe-b502-8f692203b972
+		summarizeBy: sum
+		sourceColumn: PromptLength
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsAgentInteraction
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: bc8a64a7-bcc0-4391-897a-2f55785a2e40
+		summarizeBy: none
+		sourceColumn: IsAgentInteraction
+
+		annotation SummarizationSetBy = Automatic
+
+	column AgentName
+		dataType: string
+		lineageTag: 59d5350d-6843-42e6-9c69-dae31a829fa4
+		summarizeBy: none
+		sourceColumn: AgentName
+
+		annotation SummarizationSetBy = Automatic
+
+	column UiHost
+		dataType: string
+		lineageTag: 4fcd936e-a0c0-4daa-8393-1609801cea7b
+		summarizeBy: none
+		sourceColumn: UiHost
+
+		annotation SummarizationSetBy = Automatic
+
+	column CopilotType
+		dataType: string
+		lineageTag: 5ce91680-3b80-49f0-a0c5-5a0cb3f463a3
+		summarizeBy: none
+		sourceColumn: CopilotType
+
+		annotation SummarizationSetBy = Automatic
+
+	column AiAgentType
+		dataType: string
+		lineageTag: 5ccf4a4b-9718-4415-8e07-06a1598c5985
+		summarizeBy: none
+		sourceColumn: AiAgentType
+
+		annotation SummarizationSetBy = Automatic
+
+	/// First day of the feedback's month — for a clean month-grained trend x-axis.
+	column MonthStart =
+			IF(
+			    ISBLANK('ProductFeedback'[FeedbackDate]),
+			    BLANK(),
+			    DATE(YEAR('ProductFeedback'[FeedbackDate]), MONTH('ProductFeedback'[FeedbackDate]), 1)
+			)
+		dataType: dateTime
+		formatString: mmm yyyy
+		lineageTag: ae4ffe2b-c0a1-0002-0001-000000000003
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition ProductFeedback-Partition = m
+		mode: import
+		source =
+				let
+				    // Sourced from the Fabric Lakehouse Delta table user_feedback (parser output).
+				    Headers = if Enable_ProductFeedback then (try FabricTable("user_feedback") otherwise EmptyTable({"Feedback Id", "Comment", "Translated Comment", "Comment Language", "Date Submitted UTC", "Feedback Type", "Microsoft Response Status", "App", "App Language", "Platform", "Source Type", "Logs, Attachments", "User Id", "User Email", "Browser", "Browser Version", "AI Context Prompt", "AI Context Response Message", "Survey Question", "Survey Response Option", "Additional Metadata", "Date Submitted Date", "Sentiment"})) else EmptyTable({"Feedback Id", "Comment", "Translated Comment", "Comment Language", "Date Submitted UTC", "Feedback Type", "Microsoft Response Status", "App", "App Language", "Platform", "Source Type", "Logs, Attachments", "User Id", "User Email", "Browser", "Browser Version", "AI Context Prompt", "AI Context Response Message", "Survey Question", "Survey Response Option", "Additional Metadata", "Date Submitted Date", "Sentiment"}),
+				    Renamed = Table.RenameColumns(Headers, {
+				        {"Feedback Id", "FeedbackId"},
+				        {"Translated Comment", "TranslatedComment"},
+				        {"Comment Language", "CommentLanguage"},
+				        {"Date Submitted UTC", "DateSubmittedUTC"},
+				        {"Feedback Type", "FeedbackType"},
+				        {"Microsoft Response Status", "ResponseStatus"},
+				        {"App Language", "AppLanguage"},
+				        {"Source Type", "SourceType"},
+				        {"Logs, Attachments", "HasLogsAttachments"},
+				        {"User Id", "UserId"},
+				        {"User Email", "UserEmail"},
+				        {"Browser Version", "BrowserVersion"},
+				        {"AI Context Prompt", "AIContextPrompt"},
+				        {"AI Context Response Message", "AIContextResponse"},
+				        {"Survey Question", "SurveyQuestion"},
+				        {"Survey Response Option", "SurveyResponseOption"},
+				        {"Additional Metadata", "AdditionalMetadata"}
+				    }, MissingField.Ignore),
+				    Typed = Table.TransformColumnTypes(Renamed, {
+				        {"DateSubmittedUTC", type datetime}
+				    }, "en-US"),
+				    AddDate = Table.AddColumn(Typed, "FeedbackDate", each try DateTime.Date([DateSubmittedUTC]) otherwise null, type date),
+				    AddHasComment = Table.AddColumn(AddDate, "HasComment", each if [Comment] <> null and [Comment] <> "" then 1 else 0, Int64.Type),
+				    AddPromptLen = Table.AddColumn(AddHasComment, "PromptLength", each if [AIContextPrompt] <> null then Text.Length([AIContextPrompt]) else 0, Int64.Type),
+				    // --- Helper function: extract a JSON string value by key ---
+				    // Searches for "key":"value" and returns value, or null if not found
+				    fnExtract = (jsonText as nullable text, key as text) as nullable text =>
+				        let
+				            searchFor = """" & key & """:""",
+				            keyLen = Text.Length(searchFor),
+				            pos = if jsonText <> null and jsonText <> "" then Text.PositionOf(jsonText, searchFor) else -1,
+				            result = if pos >= 0 then
+				                let
+				                    afterKey = Text.Middle(jsonText, pos + keyLen),
+				                    endQuote = Text.PositionOf(afterKey, """")
+				                in if endQuote > 0 then Text.Start(afterKey, endQuote) else null
+				            else null
+				        in result,
+				    // --- Clean metadata: unescape double-encoded JSON rows ---
+				    AddCleanMeta = Table.AddColumn(AddPromptLen, "CleanMeta", each
+				        try
+				            let
+				                raw = Text.Trim([AdditionalMetadata]),
+				                cleaned = if raw = null or raw = "" then null
+				                    else if Text.StartsWith(raw, """") then
+				                        Text.Replace(Text.Replace(Text.TrimEnd(Text.TrimStart(raw, """"), """"), "\""", """"), "\\", "\")
+				                    else raw
+				            in cleaned
+				        otherwise null, type text),
+				    // --- Extract agent fields using the helper function ---
+				    AddEssAgentId = Table.AddColumn(AddCleanMeta, "EssAgentId", each try fnExtract([CleanMeta], "essAgentId") otherwise null, type text),
+				    AddAiAgentName = Table.AddColumn(AddEssAgentId, "AiAgentName", each
+				        try (if [CleanMeta] <> null and Text.Contains([CleanMeta], "aiAgents") then fnExtract([CleanMeta], "Name") else null) otherwise null, type text),
+				    AddAiAgentType = Table.AddColumn(AddAiAgentName, "AiAgentType", each
+				        try (if [CleanMeta] <> null and Text.Contains([CleanMeta], "aiAgents") then fnExtract([CleanMeta], "Type") else null) otherwise null, type text),
+				    AddCopilotType = Table.AddColumn(AddAiAgentType, "CopilotType", each try fnExtract([CleanMeta], "copilotType") otherwise null, type text),
+				    AddUiHost = Table.AddColumn(AddCopilotType, "UiHost", each try fnExtract([CleanMeta], "UiHost") otherwise null, type text),
+				    // --- Derive: IsAgentInteraction (boolean) and AgentName (text) ---
+				    AddIsAgent = Table.AddColumn(AddUiHost, "IsAgentInteraction", each
+				        try (([EssAgentId] <> null) or ([AiAgentName] <> null) or ([CopilotType] <> null and [CopilotType] = "custom")) otherwise false, type logical),
+				    AddAgentName = Table.AddColumn(AddIsAgent, "AgentName", each
+				        try (if [AiAgentName] <> null then [AiAgentName]
+				        else if [EssAgentId] <> null then [EssAgentId]
+				        else if [CopilotType] = "custom" then "Custom Agent"
+				        else null) otherwise null, type text),
+				    Selected = Table.SelectColumns(AddAgentName, {"FeedbackId", "Comment", "TranslatedComment", "CommentLanguage", "DateSubmittedUTC", "FeedbackType", "ResponseStatus", "App", "AppLanguage", "Platform", "SourceType", "HasLogsAttachments", "UserId", "UserEmail", "Browser", "BrowserVersion", "AIContextPrompt", "AIContextResponse", "SurveyQuestion", "SurveyResponseOption", "FeedbackDate", "HasComment", "PromptLength", "IsAgentInteraction", "AgentName", "UiHost", "CopilotType", "AiAgentType"})
+				in
+				    Selected
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

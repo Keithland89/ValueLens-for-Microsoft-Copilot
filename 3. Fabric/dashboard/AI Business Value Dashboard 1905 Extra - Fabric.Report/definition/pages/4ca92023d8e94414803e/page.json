@@ -1,0 +1,235 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "4ca92023d8e94414803e",
+  "displayName": "📡 Adoption & Reach",
+  "displayOption": "FitToPage",
+  "height": 720,
+  "width": 1280,
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "2eff90d82ffa28f82aa4",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Agents 365"
+              }
+            },
+            "Property": "Is Primary Agent"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "User"
+      },
+      {
+        "name": "8b5bd6283f59ce2a9076",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Chat + Agent Interactions (Audit Logs)"
+              }
+            },
+            "Property": "Environment"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "c",
+              "Entity": "Chat + Agent Interactions (Audit Logs)",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "In": {
+                  "Expressions": [
+                    {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Source": "c"
+                          }
+                        },
+                        "Property": "Environment"
+                      }
+                    }
+                  ],
+                  "Values": [
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Licensed'"
+                        }
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      },
+      {
+        "name": "313c2a3030050ce8ea8c",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Chat + Agent Interactions (Audit Logs)"
+              }
+            },
+            "Property": "AgentName"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "User",
+        "isHiddenInViewMode": true,
+        "objects": {
+          "general": [
+            {
+              "properties": {
+                "isInvertedSelectionMode": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "true"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "fb56bbddc0674b2a24de",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Chat + Agent Interactions (Audit Logs)"
+              }
+            },
+            "Property": "Agent Publish Status"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "c",
+              "Entity": "Chat + Agent Interactions (Audit Logs)",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "In": {
+                  "Expressions": [
+                    {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Source": "c"
+                          }
+                        },
+                        "Property": "Agent Publish Status"
+                      }
+                    }
+                  ],
+                  "Values": [
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Not an Agent Row'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Published'"
+                        }
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      }
+    ]
+  },
+  "visualInteractions": [
+    {
+      "source": "ab9d03209edd4df2c3f8",
+      "target": "d6387867e7801e76c030",
+      "type": "DataFilter"
+    },
+    {
+      "source": "37db83cbbae9546660ac",
+      "target": "67aebfb6b0d1b6a23a31",
+      "type": "DataFilter"
+    },
+    {
+      "source": "37db83cbbae9546660ac",
+      "target": "7d24d3728963c51bbc53",
+      "type": "DataFilter"
+    },
+    {
+      "source": "7e2196a43e8e1c18d2b1",
+      "target": "3ce094ecd5252859dcda",
+      "type": "DataFilter"
+    },
+    {
+      "source": "d6387867e7801e76c030",
+      "target": "ab9d03209edd4df2c3f8",
+      "type": "DataFilter"
+    },
+    {
+      "source": "ab9d03209edd4df2c3f8",
+      "target": "55be7237d6008287d275",
+      "type": "DataFilter"
+    },
+    {
+      "source": "ab9d03209edd4df2c3f8",
+      "target": "8d6b090a043aac3870a0",
+      "type": "DataFilter"
+    },
+    {
+      "source": "67aebfb6b0d1b6a23a31",
+      "target": "565eebbde8b2205a053e",
+      "type": "DataFilter"
+    },
+    {
+      "source": "7e2196a43e8e1c18d2b1",
+      "target": "a942364a4000c306d130",
+      "type": "DataFilter"
+    },
+    {
+      "source": "a942364a4000c306d130",
+      "target": "7e2196a43e8e1c18d2b1",
+      "type": "DataFilter"
+    },
+    {
+      "source": "565eebbde8b2205a053e",
+      "target": "67aebfb6b0d1b6a23a31",
+      "type": "DataFilter"
+    },
+    {
+      "source": "55be7237d6008287d275",
+      "target": "ab9d03209edd4df2c3f8",
+      "type": "DataFilter"
+    }
+  ]
+}

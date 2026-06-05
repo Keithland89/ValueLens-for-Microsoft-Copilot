@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "AI Business Value Dashboard 1905 Extra - Fabric"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "5a1b4887-255e-49fc-8566-3f7bc49eb0d9"
+  }
+}

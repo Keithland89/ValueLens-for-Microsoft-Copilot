@@ -1,0 +1,103 @@
+/// One row per ConnectedAgentInitialize / ConnectedAgentCompleted event.
+/// Captures sub-agent invocations made by a primary Copilot Studio agent
+/// (e.g. HR or IT helpdesk hand-off).
+/// Joined to Agent Sessions by conversation_id and to Agent Catalogue by
+/// connected_agent_schema. Built by parse_copilot_transcripts.py.
+table 'Agent Sub-Agent Calls'
+	lineageTag: ag0004sa-0001-0001-0001-000000000001
+
+	measure 'Subagent Invocations' = COUNTROWS('Agent Sub-Agent Calls')
+		formatString: #,0
+		displayFolder: 🔗 Connected Agents
+		lineageTag: ag0004sa-meas-0001-000000000001
+
+	measure 'Distinct Subagents Used' = DISTINCTCOUNT('Agent Sub-Agent Calls'[connected_agent_schema])
+		formatString: #,0
+		displayFolder: 🔗 Connected Agents
+		lineageTag: ag0004sa-meas-0001-000000000002
+
+	column conversation_id
+		dataType: string
+		lineageTag: ag0004sa-col0-0001-000000000001
+		summarizeBy: none
+		sourceColumn: conversation_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column invocation_timestamp_utc
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: ag0004sa-col0-0001-000000000002
+		summarizeBy: none
+		sourceColumn: invocation_timestamp_utc
+
+		annotation SummarizationSetBy = Automatic
+
+	column event_type
+		dataType: string
+		lineageTag: ag0004sa-col0-0001-000000000003
+		summarizeBy: none
+		sourceColumn: event_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column parent_agent_schema
+		dataType: string
+		lineageTag: ag0004sa-col0-0001-000000000004
+		summarizeBy: none
+		sourceColumn: parent_agent_schema
+
+		annotation SummarizationSetBy = Automatic
+
+	column connected_agent_schema
+		dataType: string
+		lineageTag: ag0004sa-col0-0001-000000000005
+		summarizeBy: none
+		sourceColumn: connected_agent_schema
+
+		annotation SummarizationSetBy = Automatic
+
+	column dialog_schema
+		dataType: string
+		lineageTag: ag0004sa-col0-0001-000000000006
+		summarizeBy: none
+		sourceColumn: dialog_schema
+
+		annotation SummarizationSetBy = Automatic
+
+	column user_id_hash
+		dataType: string
+		lineageTag: ag0004sa-col0-0001-000000000007
+		summarizeBy: none
+		sourceColumn: user_id_hash
+
+		annotation SummarizationSetBy = Automatic
+
+	column plan_step_id
+		dataType: string
+		lineageTag: ag0004sa-col0-0001-000000000008
+		summarizeBy: none
+		sourceColumn: plan_step_id
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Agent Sub-Agent Calls' = m
+		mode: import
+		source =
+				let
+				    Promoted = if Enable_Dataverse then (try FabricTable("agent_subagents") otherwise EmptyTable({"conversation_id", "invocation_timestamp_utc", "event_type", "parent_agent_schema", "connected_agent_schema", "dialog_schema", "user_id_hash", "plan_step_id"})) else EmptyTable({"conversation_id", "invocation_timestamp_utc", "event_type", "parent_agent_schema", "connected_agent_schema", "dialog_schema", "user_id_hash", "plan_step_id"}),
+				    Typed = Table.TransformColumnTypes(Promoted, {
+				        {"conversation_id", type text},
+				        {"invocation_timestamp_utc", type datetime},
+				        {"event_type", type text},
+				        {"parent_agent_schema", type text},
+				        {"connected_agent_schema", type text},
+				        {"dialog_schema", type text},
+				        {"user_id_hash", type text},
+				        {"plan_step_id", type text}
+				    })
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

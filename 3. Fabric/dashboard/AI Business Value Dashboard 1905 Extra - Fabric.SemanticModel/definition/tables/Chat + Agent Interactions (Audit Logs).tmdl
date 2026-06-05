@@ -1,0 +1,2924 @@
+table 'Chat + Agent Interactions (Audit Logs)'
+	lineageTag: be471a18-81ce-45e7-8166-531a052df5d5
+
+	/// Total Copilot prompts submitted
+	/// 📈 Volume indicator
+	/// 💡 Track growth and trends
+	measure PromptsSubmitted = CALCULATE(DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[Message_Id]),'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE")
+		formatString: 0
+		lineageTag: aa0e8e7e-5e3d-4709-9a73-95cc9be8cd3f
+
+		changedProperty = IsHidden
+
+	/// Users interacting with Copilot agents
+	/// 🎯 Target: 20-40% of Chat users
+	/// 💡 Higher % = good agent discoverability
+	measure UsersInteractingWithAgents =
+			-- Counts users of any agent activity (declarative agents, autonomous runs,
+			-- workflow access rows). Uses [Is_Agent_Activity] flag so licensed users'
+			-- agent rows are correctly included regardless of Environment cohort.
+			CALCULATE(
+			    DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
+			    'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE",
+			    'Chat + Agent Interactions (Audit Logs)'[Is_Agent_Activity] = TRUE()
+			)
+		formatString: 0
+		lineageTag: 520169a7-8b60-47b3-8c29-548dba3d469d
+
+		changedProperty = IsHidden
+
+	measure _MaxDate = MAX('Chat + Agent Interactions (Audit Logs)'[CreationDate])
+		formatString: General Date
+		lineageTag: 8b3aa008-cd02-47e9-88e6-ec53ea7662ea
+
+		changedProperty = IsHidden
+
+	measure _LastMonthStart = EOMONTH([_MaxDate], -2) + 1
+		formatString: General Date
+		lineageTag: f2974e6e-3a26-4c27-a72c-3a8e6129529f
+
+		changedProperty = IsHidden
+
+	/// Average days per week users are active (any AI — chat + agents)
+	/// ✅ >10 days = engaged users
+	/// ⚠️ <5 days = low engagement
+	/// 💡 Focus on habit formation
+	/// 16 May 2026 — was chat-only. Now counts any AI activity (chat + agents).
+	measure 'Average Chat Active Days Per User' =
+			
+			AVERAGEX(
+			    VALUES('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
+			    CALCULATE(
+			        DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[InteractionDate]),
+			        'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE"
+			    )
+			)
+		lineageTag: 1871c47e-310d-4eb5-aa25-4b3ef8b060ca
+
+		changedProperty = IsHidden
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'NoOfActiveChatUsers (Unlicensed)' =
+			
+			CALCULATE(
+			    COUNTROWS(
+			        FILTER(
+			            VALUES('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
+			            [PromptsSubmitted] > 0
+			        )
+			    ),
+			    'Chat + Agent Interactions (Audit Logs)'[License Status] = "Unlicensed"
+			)
+		formatString: 0
+		lineageTag: 385c52b8-89d9-454b-b37e-1a90dd3b5038
+
+		changedProperty = IsHidden
+
+	measure 'NoOfActiveChatUsers (Licensed)' =
+			
+			CALCULATE(
+			    COUNTROWS(
+			        FILTER(
+			            VALUES('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
+			            [PromptsSubmitted] > 0
+			        )
+			    ),
+			    'Chat + Agent Interactions (Audit Logs)'[License Status] = "M365 Copilot Licensed"
+			)
+		formatString: 0
+		lineageTag: 5ae3fdae-2e6a-432c-830d-841f1fd27c01
+
+	/// User using most different agents
+	/// 🌟 Power user exploring broadly
+	/// 💡 Early adopter of new agents
+	measure 'Most Versatile Agent' = ```
+			
+			VAR AgentUserCounts = 
+			    ADDCOLUMNS(
+			        SUMMARIZE(
+			            'Chat + Agent Interactions (Audit Logs)',
+			            'Chat + Agent Interactions (Audit Logs)'[AgentName]
+			        ),
+			        "@UniqueUsers", 
+			        CALCULATE(
+			            DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
+			            'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE",
+			            NOT(ISBLANK('Chat + Agent Interactions (Audit Logs)'[AgentId]))
+			        )
+			    )
+			VAR MaxUsers = MAXX(AgentUserCounts, [@UniqueUsers])
+			VAR MostVersatile = 
+			    FILTER(
+			        AgentUserCounts,
+			        [@UniqueUsers] = MaxUsers
+			    )
+			RETURN
+			    CONCATENATEX(MostVersatile, 'Chat + Agent Interactions (Audit Logs)'[AgentName], ", ")
+			```
+		lineageTag: 3673341d-b0ab-42fe-9efa-06440654aa0a
+
+	/// Most used agent by sessions
+	/// 🏆 Your champion agent
+	/// 💡 Study for success patterns
+	measure 'Most Popular Agent' =
+			
+			-- Lists the agent(s) behind the activity in the current cell.
+			-- Identity per row: AgentName when present, else AppHost
+			-- (e.g. "Logic App", "Autonomous", "Excel") so Workflow Automation
+			-- rows that have no AgentName still surface a meaningful identifier.
+			-- Top 3 by row count, comma-joined; suffix " +N more" if there's a tail.
+			VAR Tagged =
+			    SELECTCOLUMNS(
+			        FILTER(
+			            'Chat + Agent Interactions (Audit Logs)',
+			            'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE"
+			            && 'Chat + Agent Interactions (Audit Logs)'[Is_Agent_Activity] = TRUE()
+			        ),
+			        "@Identity",
+			            IF(
+			                NOT(ISBLANK('Chat + Agent Interactions (Audit Logs)'[AgentName]))
+			                    && 'Chat + Agent Interactions (Audit Logs)'[AgentName] <> "",
+			                'Chat + Agent Interactions (Audit Logs)'[AgentName],
+			                COALESCE('Chat + Agent Interactions (Audit Logs)'[AppHost], "Unknown")
+			            )
+			    )
+			VAR IdentityCounts =
+			    GROUPBY(
+			        Tagged,
+			        [@Identity],
+			        "@Rows", COUNTX(CURRENTGROUP(), 1)
+			    )
+			VAR TotalIdentities = COUNTROWS(IdentityCounts)
+			VAR Top3 = TOPN(3, IdentityCounts, [@Rows], DESC)
+			VAR Names = CONCATENATEX(Top3, [@Identity], ", ", [@Rows], DESC)
+			VAR Remainder = TotalIdentities - 3
+			RETURN
+			    IF(ISBLANK(TotalIdentities) || TotalIdentities = 0,
+			        BLANK(),
+			        Names & IF(Remainder > 0, " +" & FORMAT(Remainder, "0") & " more", "")
+			    )
+		lineageTag: 2fcb35a1-90b3-47bf-bc41-4103a2ab5069
+
+	measure 'Average Active Days (Unlicensed)' = ```
+			
+			AVERAGEX(
+			    FILTER(
+			        VALUES('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
+			        CALCULATE(
+			            DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[Message_Id]),
+			            'Chat + Agent Interactions (Audit Logs)'[Has license] = "FALSE"
+			        ) > 0
+			    ),
+			    CALCULATE(
+			        DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[InteractionDate]),
+			        'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE",
+			        'Chat + Agent Interactions (Audit Logs)'[Has license] = "FALSE"
+			    )
+			)
+			
+			```
+		lineageTag: 8c9066bf-26b1-4451-a735-860c5e86d0a3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Average Active Days (Unlicensed) - Constant Line' = ```
+			
+			VAR LastMonthStart = CALCULATE([_LastMonthStart], ALL('Chat + Agent Interactions (Audit Logs)'))
+			VAR LastMonthEnd = CALCULATE(EOMONTH([_MaxDate], -1), ALL('Chat + Agent Interactions (Audit Logs)'))
+			VAR TotalActiveDays = 
+			    CALCULATE(
+			        SUMX(
+			            VALUES('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
+			            CALCULATE(
+			                DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[InteractionDate]),
+			                'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE"
+			            )
+			        ),
+			        ALL('Chat + Agent Interactions (Audit Logs)'),
+			        'Chat + Agent Interactions (Audit Logs)'[Has license] = "FALSE",
+			        'Chat + Agent Interactions (Audit Logs)'[InteractionDate] >= LastMonthStart,
+			        'Chat + Agent Interactions (Audit Logs)'[InteractionDate] <= LastMonthEnd
+			    )
+			VAR TotalUsers = 
+			    CALCULATE(
+			        DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
+			        ALL('Chat + Agent Interactions (Audit Logs)'),
+			        'Chat + Agent Interactions (Audit Logs)'[Has license] = "FALSE",
+			        'Chat + Agent Interactions (Audit Logs)'[InteractionDate] >= LastMonthStart,
+			        'Chat + Agent Interactions (Audit Logs)'[InteractionDate] <= LastMonthEnd
+			    )
+			RETURN
+			    DIVIDE(TotalActiveDays, TotalUsers, 0)
+			```
+		lineageTag: 35e66580-b553-47f3-99a2-a1cbf204077a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Average Active Days Per User (Chat + Agents)' =
+			
+			AVERAGEX(
+			    VALUES('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
+			    CALCULATE(
+			        DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[InteractionDate]),
+			        'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE"
+			    )
+			)
+		lineageTag: d80d3423-70f7-4dc3-9dcb-1d3d31e2fc2e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// =============================================================================
+	/// LICENSE PRIORITY v2 (17 May 2026)
+	/// 
+	/// Simple 2-signal score for ranking unlicensed users as Copilot license
+	/// candidates. Each signal is normalised to a clear benchmark, capped at 1,
+	/// then weighted to a 0-100 scale that maps cleanly onto action tiers.
+	/// 
+	/// How much (60%) — Median Unlicensed AI Tasks per User per Week
+	/// (full marks = 30 tasks/week, i.e. ~6 per workday)
+	/// How often (40%) — Median Active Days per User per Week (Unlicensed)
+	/// (full marks = 5 days/week, i.e. every working day)
+	/// 
+	/// Score ≥ 70 → 🟢 Ready Now      | 50–69 → 🟡 Strong Candidate
+	/// Score 30–49 → 🟠 Watch         | <30   → 🔴 Not Ready
+	/// 
+	/// Confidence flag (High / Medium / Low) reflects weeks of data behind the
+	/// score — stops one-good-week wonders outranking steady users.
+	/// 
+	/// Previous sessions-based formula preserved as License Priority Score
+	/// (User) [v1 Legacy] for back-compat with pre-existing visuals/bookmarks.
+	/// =============================================================================
+	/// License recommendation score (0-100). Higher = stronger license candidate.
+	measure 'License Priority Score (User)' =
+			VAR TasksPW = [Median Unlicensed AI Tasks Per User Per Week]
+			VAR DaysPW  = [Median Chat + Agent Active Days Per User Per Week (Unlicensed)]
+			VAR VolumeScore = MIN(DIVIDE(TasksPW, 30, 0), 1)
+			VAR DaysScore   = MIN(DIVIDE(DaysPW,  5, 0), 1)
+			RETURN
+			    IF(
+			        TasksPW <= 0 || DaysPW <= 0,
+			        BLANK(),
+			        ROUND(60 * VolumeScore + 40 * DaysScore, 0)
+			    )
+		formatString: 0
+		displayFolder: License Readiness
+		lineageTag: ce411199-5b7e-4555-bdaf-dd5d6c00aa3e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// All user interaction sessions (chat + agents)
+	/// 📈 Track growth trajectory
+	/// 💡 Benchmark: 100+ sessions/user/year
+	measure 'Total Sessions (All)' =
+			
+			CALCULATE(
+			    DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[ThreadId]),
+			    'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE")
+		formatString: 0
+		lineageTag: ff38e089-5b1b-4362-ad9f-c7764496daaa
+
+	/// Total agent interaction sessions
+	/// 📈 Track growth over time
+	/// 💡 Compare to total chat sessions
+	measure 'Total Agent Sessions' = ```
+			
+			CALCULATE(
+			    DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[ThreadId]),
+			    'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE",
+			    NOT(ISBLANK('Chat + Agent Interactions (Audit Logs)'[AgentId]))
+			)
+			
+			```
+		formatString: 0
+		lineageTag: 88070138-1838-49f4-bff5-6f328c6e420f
+
+	measure 'Sessions (Licensed Users Only)' =
+			
+			CALCULATE(
+			    DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[ThreadId]),
+			    'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE",
+			    'Chat + Agent Interactions (Audit Logs)'[License Status] = "M365 Copilot Licensed"
+			)
+		formatString: 0
+		lineageTag: 40976c77-12c3-4d9a-aab2-54b7a28c33ad
+
+	measure 'Sessions (Unlicensed Users Only)' =
+			
+			CALCULATE(
+			    DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[ThreadId]),
+			    'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE",
+			    'Chat + Agent Interactions (Audit Logs)'[License Status] = "Unlicensed"
+			)
+		formatString: 0
+		lineageTag: c843e9ef-734d-43ff-81ed-8151720b7c0e
+
+	/// Avg sessions for licensed users
+	/// 🎯 Target: 25+ sessions/month
+	/// 💡 ROI indicator for licenses
+	measure 'Average Sessions Per Active User (Licensed)' =
+			
+			AVERAGEX(
+			    FILTER(
+			        VALUES('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
+			        CALCULATE(
+			            DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[ThreadId]),
+			            'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE",
+			            'Chat + Agent Interactions (Audit Logs)'[License Status] = "M365 Copilot Licensed"
+			        ) > 0
+			    ),
+			    CALCULATE(
+			        DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[ThreadId]),
+			        'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE",
+			        'Chat + Agent Interactions (Audit Logs)'[License Status] = "M365 Copilot Licensed"
+			    )
+			)
+		formatString: 0.0
+		lineageTag: 3edc553d-f718-46ed-9830-b64b136db58b
+
+	measure 'Average Agent Sessions Per Active Agent User' =
+			
+			AVERAGEX(
+			    FILTER(
+			        VALUES('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
+			        CALCULATE(
+			            DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[ThreadId]),
+			            'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE",
+			            NOT(ISBLANK('Chat + Agent Interactions (Audit Logs)'[AgentId]))
+			        ) > 0
+			    ),
+			    CALCULATE(
+			        DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[ThreadId]),
+			        'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE",
+			        NOT(ISBLANK('Chat + Agent Interactions (Audit Logs)'[AgentId]))
+			    )
+			)
+		formatString: 0.0
+		lineageTag: 6e9306c6-0ddf-4b97-9729-909c8ad4cdaf
+
+	/// Weekly avg sessions per user
+	/// ✅ >5/week = engaged
+	/// ⚠️ <2/week = at risk
+	/// 💡 Weekly habit indicator
+	measure 'Average Chat Sessions Per User Per Week (All Licenses)' = ```
+			
+			AVERAGEX(
+			    VALUES('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
+			    VAR TotalSessions =
+			        CALCULATE(
+			            DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[ThreadId]),
+			            'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE",
+			            ALL('Chat + Agent Interactions (Audit Logs)'[WeekStart])
+			        )
+			    VAR TotalWeeks =
+			        CALCULATE(
+			            DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[WeekStart]),
+			            'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE",
+			            ALL('Chat + Agent Interactions (Audit Logs)'[WeekStart])
+			        )
+			    RETURN
+			        DIVIDE(TotalSessions, TotalWeeks, 0)
+			)
+			
+			```
+		lineageTag: 7dcf5848-cc04-430b-b0ab-a7fbbe86419e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Average Sessions Per User Per Week (Licensed)' = ```
+			
+			AVERAGEX(
+			    VALUES('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
+			    VAR TotalSessions =
+			        CALCULATE(
+			            DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[ThreadId]),
+			            'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE",
+			            'Chat + Agent Interactions (Audit Logs)'[License Status] = "M365 Copilot Licensed",
+			            ALL('Chat + Agent Interactions (Audit Logs)'[WeekStart])
+			        )
+			    VAR TotalWeeks =
+			        CALCULATE(
+			            DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[WeekStart]),
+			            'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE",
+			            'Chat + Agent Interactions (Audit Logs)'[License Status] = "M365 Copilot Licensed",
+			            ALL('Chat + Agent Interactions (Audit Logs)'[WeekStart])
+			        )
+			    RETURN
+			        DIVIDE(TotalSessions, TotalWeeks, 0)
+			)
+			
+			```
+		formatString: 0.0
+		lineageTag: 4a78cc26-8103-44a3-9209-1cb880253753
+
+	measure 'Average Chat Sessions Per User Per Week (Unlicensed)' =
+			
+			AVERAGEX(
+			    VALUES('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
+			    VAR TotalSessions =
+			        CALCULATE(
+			            DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[ThreadId]),
+			            'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE",
+			            'Chat + Agent Interactions (Audit Logs)'[License Status] = "Unlicensed",
+			            REMOVEFILTERS('Chat + Agent Interactions (Audit Logs)'[WeekStart])
+			        )
+			    VAR TotalWeeks =
+			        CALCULATE(
+			            DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[WeekStart]),
+			            'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE",
+			            'Chat + Agent Interactions (Audit Logs)'[License Status] = "Unlicensed",
+			            REMOVEFILTERS('Chat + Agent Interactions (Audit Logs)'[WeekStart])
+			        )
+			    RETURN
+			        DIVIDE(TotalSessions, TotalWeeks, 0)
+			)
+		formatString: 0.0
+		lineageTag: f805a594-8185-4853-8e20-d9270fc01069
+
+	measure 'Average Active Days Per User Per Week (Unlicensed Chat)' =
+			
+			AVERAGEX(
+			    FILTER(
+			        VALUES('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
+			        CALCULATE(
+			            DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[ThreadId]),
+			            'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE",
+			            'Chat + Agent Interactions (Audit Logs)'[License Status] = "Unlicensed"
+			        ) > 0
+			    ),
+			    VAR TotalActiveDays =
+			        CALCULATE(
+			            DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[InteractionDate]),
+			            'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE",
+			            'Chat + Agent Interactions (Audit Logs)'[License Status] = "Unlicensed",
+			            REMOVEFILTERS('Chat + Agent Interactions (Audit Logs)'[WeekStart])
+			        )
+			    VAR TotalWeeks =
+			        CALCULATE(
+			            DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[WeekStart]),
+			            'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE",
+			            'Chat + Agent Interactions (Audit Logs)'[License Status] = "Unlicensed",
+			            REMOVEFILTERS('Chat + Agent Interactions (Audit Logs)'[WeekStart])
+			        )
+			    RETURN
+			        DIVIDE(TotalActiveDays, TotalWeeks, 0)
+			)
+		formatString: 0.0
+		lineageTag: f88bd7cb-92b2-4d8c-8888-715c1a3705a6
+
+	measure 'Average Active Days Per User Per Week (Licensed Copilot)' =
+			
+			AVERAGEX(
+			    FILTER(
+			        VALUES('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
+			        CALCULATE(
+			            DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[ThreadId]),
+			            'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE",
+			            'Chat + Agent Interactions (Audit Logs)'[License Status] = "M365 Copilot Licensed"
+			        ) > 0
+			    ),
+			    VAR TotalActiveDays =
+			        CALCULATE(
+			            DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[InteractionDate]),
+			            'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE",
+			            'Chat + Agent Interactions (Audit Logs)'[License Status] = "M365 Copilot Licensed",
+			            REMOVEFILTERS('Chat + Agent Interactions (Audit Logs)'[WeekStart])
+			        )
+			    VAR TotalWeeks =
+			        CALCULATE(
+			            DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[WeekStart]),
+			            'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE",
+			            'Chat + Agent Interactions (Audit Logs)'[License Status] = "M365 Copilot Licensed",
+			            REMOVEFILTERS('Chat + Agent Interactions (Audit Logs)'[WeekStart])
+			        )
+			    RETURN
+			        DIVIDE(TotalActiveDays, TotalWeeks, 0)
+			)
+		lineageTag: bb05f9d9-66e7-4341-a660-83f651fa1077
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Median Chat + Agent Active Days Per User Per Week (Unlicensed)' = ```
+			
+			MEDIANX(
+			    FILTER(
+			        VALUES('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
+			        CALCULATE(
+			            DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[ThreadId]),
+			            'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE",
+			            'Chat + Agent Interactions (Audit Logs)'[License Status] = "Unlicensed"
+			        ) > 0
+			    ),
+			    VAR TotalActiveDays =
+			        CALCULATE(
+			            DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[InteractionDate]),
+			            'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE",
+			            'Chat + Agent Interactions (Audit Logs)'[License Status] = "Unlicensed",
+			            REMOVEFILTERS('Chat + Agent Interactions (Audit Logs)'[WeekStart])
+			        )
+			    VAR TotalWeeks =
+			        CALCULATE(
+			            DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[WeekStart]),
+			            'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE",
+			            'Chat + Agent Interactions (Audit Logs)'[License Status] = "Unlicensed",
+			            REMOVEFILTERS('Chat + Agent Interactions (Audit Logs)'[WeekStart])
+			        )
+			    RETURN
+			        DIVIDE(TotalActiveDays, TotalWeeks, 0)
+			)
+			
+			```
+		formatString: 0.0
+		lineageTag: b0ff8ef0-1b72-4efb-8d69-2ccd2b36a8eb
+
+	/// Dynamic ranking with current filters
+	/// 📊 Updates with your selections
+	/// 💡 Drill to see specific cohorts
+	measure 'License Priority Rank (Dynamic)' =
+			
+			VAR CurrentScore = [License Priority Score (User)]
+			VAR IsUserLevel = ISINSCOPE('Chat + Agent Interactions (Audit Logs)'[Audit_UserId])
+			
+			RETURN
+			IF(
+			    ISBLANK(CurrentScore),
+			    BLANK(),
+			    IF(
+			        IsUserLevel,
+			        // Rank users - ONLY those with unlicensed activity
+			        RANKX(
+			            FILTER(
+			                ALLSELECTED('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
+			                CALCULATE(
+			                    COUNTROWS('Chat + Agent Interactions (Audit Logs)'),
+			                    'Chat + Agent Interactions (Audit Logs)'[License Status] = "Unlicensed"
+			                ) > 0
+			                && NOT(ISBLANK([License Priority Score (User)]))
+			            ),
+			            [License Priority Score (User)],
+			            ,
+			            DESC,
+			            DENSE
+			        ),
+			        // Rank organizations - ONLY those with unlicensed users
+			        RANKX(
+			            FILTER(
+			                ALLSELECTED('Chat + Agent Org Data'[Organization]),
+			                CALCULATE(
+			                    COUNTROWS('Chat + Agent Interactions (Audit Logs)'),
+			                    'Chat + Agent Interactions (Audit Logs)'[License Status] = "Unlicensed"
+			                ) > 0
+			                && NOT(ISBLANK([License Priority Score (User)]))
+			            ),
+			            [License Priority Score (User)],
+			            ,
+			            DESC,
+			            DENSE
+			        )
+			    )
+			)
+		formatString: 0
+		lineageTag: d45ae6e2-c85c-41ff-99dc-7c4e4065c514
+
+	/// Month-over-month % change in licensed user sessions. Positive = growth, negative = decline.
+	measure 'Licensed Sessions MoM %' = ```
+			VAR _Current = [Sessions (Licensed Users Only)]
+			VAR _Previous = 
+			    CALCULATE(
+			        [Sessions (Licensed Users Only)],
+			        DATEADD(Calendar[Date], -1, MONTH)
+			    )
+			RETURN
+			    DIVIDE(_Current - _Previous, _Previous, BLANK())
+			```
+		formatString: +0.0%;-0.0%;0.0%
+		displayFolder: 📈 Session Trends
+		lineageTag: 52b866ef-cc4d-4c97-b0aa-d984f39a386c
+
+	/// Month-over-month % change in unlicensed user sessions. Positive = growth, negative = decline.
+	measure 'Unlicensed Sessions MoM %' = ```
+			VAR _Current = [Sessions (Unlicensed Users Only)]
+			VAR _Previous = 
+			    CALCULATE(
+			        [Sessions (Unlicensed Users Only)],
+			        DATEADD(Calendar[Date], -1, MONTH)
+			    )
+			RETURN
+			    DIVIDE(_Current - _Previous, _Previous, BLANK())
+			```
+		formatString: +0.0%;-0.0%;0.0%
+		displayFolder: 📈 Session Trends
+		lineageTag: da95b48f-ffc5-4cac-aebd-7eef5c686591
+
+	/// User-facing AI task count: prompt rows only (excludes bot replies, traces,
+	/// system events). What end-users would call "an AI interaction" — the input
+	/// they sent. Used by Executive Headline and the Heatmap Toggle slicer label.
+	measure 'AI Tasks' =
+			CALCULATE(
+			    COUNTROWS('Chat + Agent Interactions (Audit Logs)'),
+			    'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE"
+			)
+		formatString: #,##0
+		displayFolder: AI Fluency\Value Types
+		lineageTag: ff030001-0001-0001-0001-000000000047
+
+	/// Agent users
+	measure 'Agent Users' = CALCULATE(DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]), NOT(ISBLANK('Chat + Agent Interactions (Audit Logs)'[AgentId])))
+		formatString: #,##0
+		displayFolder: AI Fluency\Agents - Value
+		lineageTag: ff030001-0001-0001-0001-000000000153
+
+	/// All Active Users: Every unique user who has used Copilot or Agents (licensed + unlicensed)
+	measure 'All Active Users' = DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[Audit_UserId])
+		formatString: #,##0
+		displayFolder: AI Fluency\Adoption Funnel
+		lineageTag: ff020001-0001-0001-0001-000000000204
+
+	/// =============================================================================
+	/// 5-STAGE MATURITY LADDER (Live, period-context — respects whatever date / org slicer
+	/// is in effect). Replaces the legacy 3-stage Beginner/Developing/Proficient family.
+	/// 16 May 2026 — upgraded for tighter thresholds + Inactive + Power cohorts.
+	/// 
+	/// 1 - Beginner   : 1-2 active days
+	/// 2 - Developing : 3-7 active days AND ≥3 distinct enriched behaviours
+	/// 3 - Habitual   : 8-14 active days AND ≥5 distinct enriched behaviours
+	/// 4 - Power      : ≥15 active days, OR (≥10 days AND ≥30% Producing+Delegating AND uses an Agent)
+	/// 0 - Inactive   : licensed but ZERO activity (handled by separate measure — see Inactive Users (Weekly))
+	/// 
+	/// Breadth uses Behavior_Enriched_Full (~40 categories) for sharper signal than
+	/// Behavior_Category (~20). Power gate adds value-focus + agent-adoption to
+	/// distinguish champions from steady daily users.
+	/// =============================================================================
+	/// Beginner Users: 1-2 active days in the latest rolling 4-week window
+	/// (28 days ending at MAX(WeekStart) within the current filter context).
+	/// On a card with no time axis this is the last 4 weeks in the data.
+	/// On a weekly trend axis, each week shows its own 4-week look-back.
+	measure 'Beginner Users' =
+			VAR CurrentWeek = MAX('Chat + Agent Interactions (Audit Logs)'[WeekStart])
+			VAR WindowStart = CurrentWeek - 21
+			VAR UserStats =
+			    ADDCOLUMNS(
+			        CALCULATETABLE(
+			            VALUES('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
+			            REMOVEFILTERS('Calendar'),
+			            'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart,
+			            'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= CurrentWeek
+			        ),
+			        "Behaviors",  CALCULATE(DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[Behavior_Enriched_Full]), REMOVEFILTERS('Calendar'), 'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= CurrentWeek),
+			        "ActiveDays", CALCULATE(DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[InteractionDate]),         REMOVEFILTERS('Calendar'), 'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= CurrentWeek)
+			    )
+			RETURN COUNTROWS(FILTER(UserStats, [ActiveDays] >= 1 && [ActiveDays] <= 2))
+		formatString: #,##0
+		displayFolder: AI Fluency\User Stages
+		lineageTag: ff020001-0001-0001-0001-000000000301
+
+	/// Developing Users: 3-7 active days AND ≥3 enriched behaviours in the latest
+	/// rolling 4-week window. Multi-workflow learner.
+	measure 'Developing Users' =
+			VAR CurrentWeek = MAX('Chat + Agent Interactions (Audit Logs)'[WeekStart])
+			VAR WindowStart = CurrentWeek - 21
+			VAR UserStats =
+			    ADDCOLUMNS(
+			        CALCULATETABLE(
+			            VALUES('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
+			            REMOVEFILTERS('Calendar'),
+			            'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart,
+			            'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= CurrentWeek
+			        ),
+			        "Behaviors",  CALCULATE(DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[Behavior_Enriched_Full]), REMOVEFILTERS('Calendar'), 'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= CurrentWeek),
+			        "ActiveDays", CALCULATE(DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[InteractionDate]),         REMOVEFILTERS('Calendar'), 'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= CurrentWeek)
+			    )
+			RETURN COUNTROWS(FILTER(UserStats, [ActiveDays] >= 3 && [ActiveDays] <= 7 && [Behaviors] >= 3))
+		formatString: #,##0
+		displayFolder: AI Fluency\User Stages
+		lineageTag: ff020001-0001-0001-0001-000000000302
+
+	/// =============================================================================
+	/// 4-WEEK ROLLING STAGE COUNTS — for each week, looks back 28 days and assigns
+	/// stage per user based on that window. Used by the User Maturity tracker chart.
+	/// =============================================================================
+	/// Alias of [Beginner Users] kept for visuals built before the default was
+	/// changed to a rolling 4-week window. Use [Beginner Users] in new visuals.
+	measure '4W Beginner Users' = [Beginner Users]
+		formatString: #,##0
+		displayFolder: AI Fluency\User Stages (4-Week Rolling)
+		lineageTag: ff020001-0001-0001-0001-000000000501
+
+	/// Alias of [Developing Users]. Same as the default since rolling 4-week
+	/// became the default semantics on 16 May 2026.
+	measure '4W Developing Users' = [Developing Users]
+		formatString: #,##0
+		displayFolder: AI Fluency\User Stages (4-Week Rolling)
+		lineageTag: ff020001-0001-0001-0001-000000000502
+
+	/// =============================================================================
+	/// Stage Profile: Top org for current stage context
+	measure 'Stage Top Org' =
+			VAR OrgTable =
+			    ADDCOLUMNS(
+			        VALUES('Chat + Agent Org Data'[Organization]),
+			        "UserCount",
+			        CALCULATE(DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]))
+			    )
+			VAR TopRow = TOPN(1, OrgTable, [UserCount], DESC)
+			RETURN MAXX(TopRow, 'Chat + Agent Org Data'[Organization])
+		displayFolder: AI Fluency\Stage Profiles
+		lineageTag: ff020001-0001-0001-0001-000000000602
+
+	/// Total human-equivalent hours: what AI is handling that humans would otherwise do
+	/// Sources: McKinsey 2023, NBER (Brynjolfsson/Noy&Zhang), BCG/Harvard, Forrester TEI 2024
+	measure 'Human Equivalent Hours' =
+			SUMX(
+			    FILTER(
+			        'Chat + Agent Interactions (Audit Logs)',
+			        'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE"
+			    ),
+			    DIVIDE(
+			        RELATED('Human Time Estimates'[Human Baseline (min)]),
+			        60,
+			        0
+			    )
+			)
+		formatString: #,##0.0
+		displayFolder: AI Fluency\Time Savings
+		lineageTag: ff060001-0001-0001-0001-000000000010
+
+	/// Estimated hours saved (30% efficiency gain — Noy & Zhang, Science 2023)
+	measure 'Estimated Hours Saved' = [Human Equivalent Hours] * 0.70
+		formatString: #,##0.0
+		displayFolder: AI Fluency\Time Savings
+		lineageTag: ff060001-0001-0001-0001-000000000011
+
+	/// Average augmented skills per user
+	measure 'Avg Skills Per User' = ```
+			
+			    AVERAGEX(
+			        VALUES('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
+			        CALCULATE(
+			            DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[Behavior_Category]),
+			            'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE"
+			        )
+			    )
+			```
+		formatString: #,##0.0
+		displayFolder: AI Fluency\Augmented Skills
+		lineageTag: ff080001-0001-0001-0001-000000000014
+
+	measure 'Hours Saved Per User' = ```
+			
+			    DIVIDE(
+			        [Estimated Hours Saved],
+			        DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
+			        0
+			    )
+			```
+		displayFolder: AI Fluency\Time Savings
+		lineageTag: f6e1f84b-1a34-4bc7-b296-c5a585fba0ad
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// Productive AI Rate: % of interactions that are Creating + Executing + Orchestrating
+	measure 'Productive AI Rate' =
+			VAR ProductiveCount =
+			    CALCULATE(
+			        COUNTROWS('Chat + Agent Interactions (Audit Logs)'),
+			        'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE",
+			        'Chat + Agent Interactions (Audit Logs)'[Usage_Mode] IN {"4 - Producing"}
+			    )
+			VAR TotalCount =
+			    CALCULATE(
+			        COUNTROWS('Chat + Agent Interactions (Audit Logs)'),
+			        'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE"
+			    )
+			RETURN DIVIDE(ProductiveCount, TotalCount, 0)
+		formatString: 0%;-0%;0%
+		displayFolder: AI Fluency\Usage Modes
+		lineageTag: ff030001-0001-0001-0001-000000000022
+
+	measure 'Usage Mode Share' = ```
+			
+			    DIVIDE(
+			        CALCULATE(
+			            COUNTROWS('Chat + Agent Interactions (Audit Logs)'),
+			            'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE"
+			        ),
+			        CALCULATE(
+			            COUNTROWS('Chat + Agent Interactions (Audit Logs)'),
+			            'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE",
+			            REMOVEFILTERS('Chat + Agent Interactions (Audit Logs)'[Usage_Mode])
+			        ),
+			        0
+			    )
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: AI Fluency\Usage Modes
+		lineageTag: 31b0953a-8e21-43c7-9609-9bd33c63ec8a
+
+	/// % of users in current stage leveraging this Usage Mode, Behavior, or Breakdown (works at all drill levels)
+	measure '% of Users in Stage' = ```
+			
+			    VAR UsersInContext =
+			        CALCULATE(
+			            DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
+			            'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE"
+			        )
+			    VAR TotalUsersInStage =
+			        CALCULATE(
+			            DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
+			            'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE",
+			            REMOVEFILTERS('Chat + Agent Interactions (Audit Logs)'[Usage_Mode]),
+			            REMOVEFILTERS('Chat + Agent Interactions (Audit Logs)'[Behavior_Enriched_Full]),
+			            REMOVEFILTERS('Chat + Agent Interactions (Audit Logs)'[Behavior_Category]),
+			            REMOVEFILTERS('Chat + Agent Interactions (Audit Logs)'[Value_Outcome]),
+			            REMOVEFILTERS('Chat + Agent Interactions (Audit Logs)'[Efficiency_Breakdown]),
+			            REMOVEFILTERS('Chat + Agent Interactions (Audit Logs)'[Expertise_Role])
+			        )
+			    RETURN DIVIDE(UsersInContext, TotalUsersInStage, 0)
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: AI Fluency\Usage Modes
+		lineageTag: ff030001-0001-0001-0001-000000000029
+
+	/// Specialist jobs performed
+	measure 'New Expertise - Jobs' =
+			CALCULATE(
+			    COUNTROWS('Chat + Agent Interactions (Audit Logs)'),
+			    'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE",
+			    NOT(ISBLANK('Chat + Agent Interactions (Audit Logs)'[Expertise_Role]))
+			)
+		formatString: #,##0
+		displayFolder: AI Fluency\4 - New Expertise
+		lineageTag: ff030001-0001-0001-0001-000000000113
+
+	/// Users accessing specialist capabilities
+	measure 'New Expertise - Users' =
+			CALCULATE(
+			    DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
+			    'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE",
+			    NOT(ISBLANK('Chat + Agent Interactions (Audit Logs)'[Expertise_Role]))
+			)
+		formatString: #,##0
+		displayFolder: AI Fluency\4 - New Expertise
+		lineageTag: ff030001-0001-0001-0001-000000000115
+
+	/// Expert hours delivered per week (org total)
+	measure 'New Expertise - Hours Per Week' =
+			isHidden
+				VAR TotalHrs = CALCULATE([Human Equivalent Hours], NOT(ISBLANK('Chat + Agent Interactions (Audit Logs)'[Expertise_Role])))
+				VAR Weeks = DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[WeekStart])
+				RETURN DIVIDE(TotalHrs, Weeks, 0)
+			formatString: #,##0.0
+			displayFolder: AI Fluency\4 - New Expertise
+			lineageTag: ff030001-0001-0001-0001-000000000116
+		lineageTag: 21a2a7b3-7c0e-43a3-bf8f-9cd40a9ada61
+
+	/// ════════════════════════════════════════════
+	/// VALUE STORY 1: TIME SAVED (all interactions — everything saves time)
+	/// "How much faster are we?" — universal metric across every interaction
+	/// ════════════════════════════════════════════
+	/// Total hours saved across ALL interactions
+	measure 'Efficiency - Hours Saved' = [Human Equivalent Hours]
+		formatString: #,##0.0
+		displayFolder: AI Fluency\1 - Efficiency
+		lineageTag: ff030001-0001-0001-0001-000000000100
+
+	/// Hours saved per active user per active week
+	measure 'Efficiency - Hours Per User Per Week' =
+			AVERAGEX(
+			    VALUES('Chat + Agent Interactions (Audit Logs)'[WeekStart]),
+			    DIVIDE([Human Equivalent Hours], DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]), 0)
+			)
+		formatString: #,##0.0
+		displayFolder: AI Fluency\1 - Efficiency
+		lineageTag: ff030001-0001-0001-0001-000000000101
+
+	/// Hours saved per week (org total)
+	measure 'Efficiency - Hours Per Week' = DIVIDE([Human Equivalent Hours], DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[WeekStart]), 0)
+		formatString: 0.00
+		displayFolder: AI Fluency\1 - Efficiency
+		lineageTag: ff030001-0001-0001-0001-000000000102
+
+	/// Hours saved label "Xh Ym"
+	measure 'Efficiency - Label' =
+			VAR Hrs = [Efficiency - Hours Per User Per Week]
+			VAR WholeHours = INT(Hrs)
+			VAR Mins = ROUND((Hrs - WholeHours) * 60, 0)
+			RETURN IF(WholeHours > 0, FORMAT(WholeHours, "0") & "h " & FORMAT(Mins, "0") & "m", FORMAT(Mins, "0") & "m")
+		displayFolder: AI Fluency\1 - Efficiency
+		lineageTag: ff030001-0001-0001-0001-000000000103
+
+	/// Work items created per week (org total)
+	measure 'Work Created - Per Week' =
+			DIVIDE(
+			    CALCULATE(COUNTROWS('Chat + Agent Interactions (Audit Logs)'), 'Chat + Agent Interactions (Audit Logs)'[Usage_Mode] IN {"4 - Producing"}),
+			    DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[WeekStart]),
+			    0
+			)
+		formatString: #,##0
+		displayFolder: AI Fluency\2 - Work Created
+		lineageTag: ff030001-0001-0001-0001-000000000106
+
+	/// Specialist roles active
+	measure 'New Expertise - Roles' =
+			CALCULATE(
+			    DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[Expertise_Role]),
+			    'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE",
+			    NOT(ISBLANK('Chat + Agent Interactions (Audit Logs)'[Expertise_Role]))
+			)
+		formatString: #,##0
+		displayFolder: AI Fluency\4 - New Expertise
+		lineageTag: ff030001-0001-0001-0001-000000000114
+
+	/// 5-stage maturity ladder (Inactive → Beginner → Developing → Habitual → Power).
+	/// The (Weekly) measures are aliases of the rolling-4-week defaults. When placed
+	/// on a chart with WeekStart on the X-axis, each column shows the rolling 4-week
+	/// count ending at that week (i.e. each user is classified by their activity in
+	/// the 28 days ending at that week). Kept as aliases so existing visuals work.
+	measure 'Beginner Users (Weekly)' = [Beginner Users]
+		formatString: #,##0
+		displayFolder: AI Fluency\Maturity Score
+		lineageTag: ff030001-0001-0001-0001-000000000131
+
+	/// Alias of [Developing Users].
+	measure 'Developing Users (Weekly)' = [Developing Users]
+		formatString: #,##0
+		displayFolder: AI Fluency\Maturity Score
+		lineageTag: ff030001-0001-0001-0001-000000000132
+
+	/// Total AI actions performed by agents (Agent Value Tracker — no Environment filter needed)
+	measure 'Agent AI Tasks' = CALCULATE(COUNTROWS('Chat + Agent Interactions (Audit Logs)'), NOT(ISBLANK('Chat + Agent Interactions (Audit Logs)'[AgentId])))
+		formatString: #,##0
+		displayFolder: AI Fluency\Agents - Value
+		lineageTag: ff030001-0001-0001-0001-000000000139
+
+	/// Agent AI actions per user per week (both sides filtered to agent rows)
+	measure 'Agent AI Tasks Per User Per Week' =
+			AVERAGEX(
+			    CALCULATETABLE(VALUES('Chat + Agent Interactions (Audit Logs)'[WeekStart]), NOT(ISBLANK('Chat + Agent Interactions (Audit Logs)'[AgentId]))),
+			    DIVIDE(
+			        CALCULATE(COUNTROWS('Chat + Agent Interactions (Audit Logs)'), NOT(ISBLANK('Chat + Agent Interactions (Audit Logs)'[AgentId]))),
+			        CALCULATE(DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]), NOT(ISBLANK('Chat + Agent Interactions (Audit Logs)'[AgentId]))),
+			        0
+			    )
+			)
+		formatString: #,##0.0
+		displayFolder: AI Fluency\Agents - Value
+		lineageTag: ff030001-0001-0001-0001-000000000140
+
+	/// Total Copilot AI actions (Copilot Value Tracker — no Environment filter needed)
+	measure 'Copilot AI Tasks' = CALCULATE(COUNTROWS('Chat + Agent Interactions (Audit Logs)'), 'Chat + Agent Interactions (Audit Logs)'[Environment] = "Licensed")
+		formatString: #,##0
+		displayFolder: AI Fluency\Copilot - Value
+		lineageTag: ff030001-0001-0001-0001-000000000154
+
+	/// Copilot AI actions per user per week
+	measure 'Copilot AI Tasks Per User Per Week' =
+			AVERAGEX(
+			    CALCULATETABLE(VALUES('Chat + Agent Interactions (Audit Logs)'[WeekStart]), 'Chat + Agent Interactions (Audit Logs)'[Environment] = "Licensed"),
+			    DIVIDE(
+			        CALCULATE(COUNTROWS('Chat + Agent Interactions (Audit Logs)'), 'Chat + Agent Interactions (Audit Logs)'[Environment] = "Licensed"),
+			        CALCULATE(DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]), 'Chat + Agent Interactions (Audit Logs)'[Environment] = "Licensed"),
+			        0
+			    )
+			)
+		formatString: #,##0.0
+		displayFolder: AI Fluency\Copilot - Value
+		lineageTag: ff030001-0001-0001-0001-000000000155
+
+	/// Copilot users (licensed)
+	measure 'Copilot Users' = CALCULATE(DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]), 'Chat + Agent Interactions (Audit Logs)'[Environment] = "Licensed")
+		formatString: #,##0
+		displayFolder: AI Fluency\Copilot - Value
+		lineageTag: ff030001-0001-0001-0001-000000000160
+
+	/// Copilot tasks per active Copilot user (entire period)
+	measure 'Copilot AI Tasks Per User' =
+			DIVIDE(
+			    [Copilot AI Tasks],
+			    [Copilot Users],
+			    0
+			)
+		formatString: #,##0.0
+		displayFolder: AI Fluency\Copilot - Value
+		lineageTag: ff030001-0001-0001-0001-000000000162
+
+	/// Agent tasks per active agent user (entire period)
+	measure 'Agent AI Tasks Per User' =
+			DIVIDE(
+			    [Agent AI Tasks],
+			    [Agent Users],
+			    0
+			)
+		formatString: #,##0.0
+		displayFolder: AI Fluency\Agents - Value
+		lineageTag: ff030001-0001-0001-0001-000000000163
+
+	/// Total AI tasks by unlicensed chat users (Unlicensed Value Tracker — no Environment filter needed)
+	measure 'Unlicensed AI Tasks' = CALCULATE(COUNTROWS('Chat + Agent Interactions (Audit Logs)'), 'Chat + Agent Interactions (Audit Logs)'[Environment] = "Unlicensed")
+		formatString: #,##0
+		displayFolder: AI Fluency\Unlicensed - Value
+		lineageTag: ff030001-0001-0001-0001-000000000164
+
+	/// Unlicensed AI tasks per user per week (only active unlicensed users)
+	measure 'Unlicensed AI Tasks Per User Per Week' =
+			AVERAGEX(
+			    CALCULATETABLE(VALUES('Chat + Agent Interactions (Audit Logs)'[WeekStart]), 'Chat + Agent Interactions (Audit Logs)'[Environment] = "Unlicensed"),
+			    DIVIDE(
+			        CALCULATE(COUNTROWS('Chat + Agent Interactions (Audit Logs)'), 'Chat + Agent Interactions (Audit Logs)'[Environment] = "Unlicensed"),
+			        CALCULATE(DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]), 'Chat + Agent Interactions (Audit Logs)'[Environment] = "Unlicensed"),
+			        0
+			    )
+			)
+		formatString: #,##0.0
+		displayFolder: AI Fluency\Unlicensed - Value
+		lineageTag: ff030001-0001-0001-0001-000000000165
+
+	/// Unlicensed tasks per active user (entire period)
+	measure 'Unlicensed AI Tasks Per User' =
+			DIVIDE(
+			    [Unlicensed AI Tasks],
+			    CALCULATE(DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]), 'Chat + Agent Interactions (Audit Logs)'[Environment] = "Unlicensed"),
+			    0
+			)
+		formatString: #,##0.0
+		displayFolder: AI Fluency\Unlicensed - Value
+		lineageTag: ff030001-0001-0001-0001-000000000167
+
+	/// AI Assisted Value: Hours x Hourly Value x Penalty Factor (all adjustable via slicers).
+	/// Returns BLANK when the Hourly Value box is left empty (no default rate is assumed).
+	measure 'AI Assisted Value' = ```
+			
+			    IF(
+			        ISBLANK(SELECTEDVALUE('Hourly Value'[Hourly Value])),
+			        BLANK(),
+			        [Human Equivalent Hours]
+			        * [Reinvestment Rate (Forrester TEI)]
+			        * [Hourly Value Value]
+			        * [Penalty Factor Value]
+			    )
+			
+			```
+		formatString: $#,##0
+		displayFolder: AI Fluency\ROI
+		lineageTag: ff0b0001-0001-0001-0001-000000000020
+
+	/// Copilot License Investment: PPUPM x Licensed Users x Months (fixed cost regardless of filter)
+	measure 'Copilot License Investment' =
+			SUMX(
+			    VALUES('Chat + Agent Interactions (Audit Logs)'[MonthStart]),
+			    [AI PPUPM Value] *
+			    CALCULATE(
+			        DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
+			        'Chat + Agent Interactions (Audit Logs)'[License Status] = "M365 Copilot Licensed"
+			    )
+			)
+		formatString: $#,##0
+		displayFolder: AI Fluency\ROI
+		lineageTag: ff0b0001-0001-0001-0001-000000000022
+
+	/// Top Value Outcome by hours saved (dynamic to filters)
+	measure 'Top Value Outcome' =
+			MAXX(
+			    TOPN(1,
+			        ADDCOLUMNS(
+			            VALUES('Chat + Agent Interactions (Audit Logs)'[Value_Outcome]),
+			            "@Hrs", [Human Equivalent Hours]
+			        ),
+			        [@Hrs], DESC
+			    ),
+			    'Chat + Agent Interactions (Audit Logs)'[Value_Outcome]
+			)
+		displayFolder: AI Fluency\1 - Efficiency
+		lineageTag: ff030001-0001-0001-0001-000000000175
+
+	measure 'AI Assisted Value Per Week' =
+			
+			IF(
+			    ISBLANK([AI Assisted Value]),
+			    BLANK(),
+			    DIVIDE(
+			        [AI Assisted Value],
+			        DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[WeekStart]),
+			        0
+			    )
+			)
+		formatString: $#,##0
+		displayFolder: AI Fluency\ROI
+		lineageTag: 2769b48a-57a1-4acb-8a8b-6e3d70626ad7
+
+		annotation PBI_FormatHint = {"isCustom":true}
+
+	/// Projected annualised value at current adoption (observed value scaled from visible weeks to 52)
+	measure 'Projected Annualised Value' =
+			VAR WeeksInView = DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[WeekStart])
+			VAR AnnualFactor = DIVIDE(52, MAX(WeeksInView, 1), 0)
+			RETURN [AI Assisted Value] * AnnualFactor
+		formatString: $#,##0
+		displayFolder: AI Fluency\Functional Value
+		lineageTag: ff0c0001-0001-0001-0001-000000000044
+
+	/// Autonomy Mix: % of hours saved where humans worked alongside an agent (Pattern 2 - Human uses agent, reviews & approves).
+	/// Any agent activity except Cowork (Cowork is reported separately in Pattern 3).
+	/// 17 May 2026 — denominator and numerator both REMOVEFILTERS the Environment slicer so the mix is
+	/// reported relative to ALL activity (Licensed + Unlicensed). Without this the percentage would
+	/// swing wildly with the cohort slicer and undercount agent reach when a viewer clicks Unlicensed.
+	measure 'Agent-Assisted Mix %' =
+			VAR Numerator =
+			    CALCULATE(
+			        [Human Equivalent Hours],
+			        REMOVEFILTERS('Chat + Agent Interactions (Audit Logs)'[Environment]),
+			        'Chat + Agent Interactions (Audit Logs)'[Is_Agent_Activity] = TRUE(),
+			        'Chat + Agent Interactions (Audit Logs)'[Environment] <> "Cowork"
+			    )
+			VAR Denominator =
+			    CALCULATE(
+			        [Human Equivalent Hours],
+			        REMOVEFILTERS('Chat + Agent Interactions (Audit Logs)'[Environment])
+			    )
+			RETURN DIVIDE(Numerator, Denominator, 0)
+		formatString: 0.0%
+		displayFolder: AI Fluency\Autonomy Mix
+		lineageTag: ff0d0001-0001-0001-0001-000000000002
+
+	/// Net ROI ($): AI Assisted Value minus Copilot License Investment (dollar benefit after cost)
+	measure 'Net ROI ($)' = [AI Assisted Value] - [Copilot License Investment]
+		formatString: $#,##0
+		displayFolder: AI Fluency\ROI
+		lineageTag: ff0b0001-0001-0001-0001-000000000031
+
+	/// Activity Share: this prompt count ÷ all prompts in the current OUTSIDE filter
+	/// context (Date, Org, License, Agent slicers etc.) but ignoring whatever
+	/// dimension is being charted inside the visual.
+	/// 
+	/// Uses ALLSELECTED('Chat + Agent Interactions (Audit Logs)') so it is robust
+	/// when ANY column from that table is dropped onto a visual's Axis, Legend or
+	/// Detail bucket — including Behavior_Enriched_Full, Workflow_Action,
+	/// Usage_Mode, Value_Outcome, Expertise_Role, Efficiency_Breakdown, etc.
+	/// 
+	/// Previously hand-maintained REMOVEFILTERS column list silently broke when
+	/// a new dimension (e.g., Workflow_Action) was added as a treemap Detail —
+	/// the denominator was no longer the global total, causing parent rectangles
+	/// to double in size. ALLSELECTED removes the maintenance burden.
+	measure 'Activity Share' = ```
+			
+			    DIVIDE(
+			        CALCULATE(
+			            COUNTROWS('Chat + Agent Interactions (Audit Logs)'),
+			            'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE"
+			        ),
+			        CALCULATE(
+			            COUNTROWS('Chat + Agent Interactions (Audit Logs)'),
+			            'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE",
+			            ALLSELECTED('Chat + Agent Interactions (Audit Logs)')
+			        ),
+			        0
+			    )
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: be5a75f5-b45a-4db7-a70f-8f67dd6ba89f
+
+	/// Cowork AI actions (collaborative AI sessions — multi-user real-time)
+	measure 'Cowork AI Tasks' =
+			isHidden
+				CALCULATE(
+				    COUNTROWS('Chat + Agent Interactions (Audit Logs)'),
+				    'Chat + Agent Interactions (Audit Logs)'[Environment] = "Cowork"
+				)
+			formatString: #,##0
+			displayFolder: AI Fluency\Cowork - Value
+			lineageTag: ff030001-0001-0001-0001-000000000170
+		lineageTag: 50f066e5-44ae-45d2-ba21-2ff62d3d773a
+
+	/// Cowork AI actions per week
+	measure 'Cowork AI Tasks Per Week' =
+			isHidden
+				DIVIDE(
+				    CALCULATE(
+				        COUNTROWS('Chat + Agent Interactions (Audit Logs)'),
+				        'Chat + Agent Interactions (Audit Logs)'[Environment] = "Cowork"
+				    ),
+				    CALCULATE(
+				        DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[WeekStart]),
+				        'Chat + Agent Interactions (Audit Logs)'[Environment] = "Cowork"
+				    ),
+				    0
+				)
+			formatString: #,##0
+			displayFolder: AI Fluency\Cowork - Value
+			lineageTag: ff030001-0001-0001-0001-000000000171
+		lineageTag: de06145a-67ee-4b26-ae50-06e0263e6cfc
+
+	/// Cowork users — distinct users with at least one Cowork interaction
+	measure 'Cowork Users' =
+			isHidden
+				CALCULATE(
+				    DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
+				    'Chat + Agent Interactions (Audit Logs)'[Environment] = "Cowork"
+				)
+			formatString: #,##0
+			displayFolder: AI Fluency\Cowork - Value
+			lineageTag: ff030001-0001-0001-0001-000000000172
+		lineageTag: d2869815-321c-4633-9c82-3f6e2f0c74e5
+
+	/// Cowork tasks per active Cowork user per active week
+	measure 'Cowork AI Tasks Per User Per Week' =
+			isHidden
+				AVERAGEX(
+				    CALCULATETABLE(
+				        VALUES('Chat + Agent Interactions (Audit Logs)'[WeekStart]),
+				        'Chat + Agent Interactions (Audit Logs)'[Environment] = "Cowork"
+				    ),
+				    DIVIDE(
+				        CALCULATE(
+				            COUNTROWS('Chat + Agent Interactions (Audit Logs)'),
+				            'Chat + Agent Interactions (Audit Logs)'[Environment] = "Cowork"
+				        ),
+				        CALCULATE(
+				            DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
+				            'Chat + Agent Interactions (Audit Logs)'[Environment] = "Cowork"
+				        ),
+				        0
+				    )
+				)
+			formatString: #,##0.0
+			displayFolder: AI Fluency\Cowork - Value
+			lineageTag: ff030001-0001-0001-0001-000000000173
+		lineageTag: a973d6be-f609-4537-b374-2c009e8f496d
+
+	/// Delegating AI Rate: % of interactions in Usage_Mode "5 - Delegating"
+	/// (Cowork autonomous runs, Logic Apps, Running a Workflow rows, or Agents 365-registered
+	/// autonomous/workflow/triggered agents). The user has handed work to a system.
+	measure 'Delegating AI Rate' =
+			VAR DelegatingCount =
+			    CALCULATE(
+			        COUNTROWS('Chat + Agent Interactions (Audit Logs)'),
+			        'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE",
+			        'Chat + Agent Interactions (Audit Logs)'[Usage_Mode] IN {"5 - Delegating"}
+			    )
+			VAR TotalCount =
+			    CALCULATE(
+			        COUNTROWS('Chat + Agent Interactions (Audit Logs)'),
+			        'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE"
+			    )
+			RETURN DIVIDE(DelegatingCount, TotalCount, 0)
+		formatString: 0%;-0%;0%
+		displayFolder: AI Fluency\Usage Modes
+		lineageTag: ff030001-0001-0001-0001-000000000023
+
+	/// Exec-grade Pattern-C headline. Line 1: plain-English insight. Line 2: supporting metrics with bold Unicode digits.
+	measure 'Activation Overall Headline' =
+			VAR Tot      = [Total Users (Filter-Aware)]
+			VAR Act      = [Active Users (Filter-Aware)]
+			VAR ActPct   = [% Active Users (of Total)]
+			VAR Lic      = [Active Licensed Users]
+			VAR Unl      = [Active Unlicensed Users]
+			VAR Gap      = DIVIDE(Unl - Lic, Lic, 0)
+			VAR LF       = UNICHAR(10)
+			VAR Insight  =
+			    SWITCH(
+			        TRUE(),
+			        ActPct = 0,                  "Copilot is not yet being used in this view",
+			        Unl > Lic && Gap >= 0.2,     "More people use Copilot without a licence than with one — a clear chance to expand paid adoption",
+			        Unl > Lic,                   "Slightly more people use Copilot without a licence than with one",
+			        Lic >= Unl * 1.2,            "Most active Copilot users have a licence — paid adoption is leading",
+			        Lic > Unl,                   "Licensed users are just ahead of unlicensed users",
+			        "Licensed and unlicensed use is evenly matched"
+			    )
+			VAR RawMetrics =
+			    FORMAT(Act, "#,##0") & " of " & FORMAT(Tot, "#,##0") &
+			    " employees use Copilot (" & FORMAT(ActPct, "0.0%") & ")  ·  " &
+			    FORMAT(Unl, "#,##0") & " unlicensed, " & FORMAT(Lic, "#,##0") & " licensed"
+			VAR Metrics =
+			    SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(
+			        RawMetrics,
+			        "0", UNICHAR(120812)),
+			        "1", UNICHAR(120813)),
+			        "2", UNICHAR(120814)),
+			        "3", UNICHAR(120815)),
+			        "4", UNICHAR(120816)),
+			        "5", UNICHAR(120817)),
+			        "6", UNICHAR(120818)),
+			        "7", UNICHAR(120819)),
+			        "8", UNICHAR(120820)),
+			        "9", UNICHAR(120821))
+			RETURN Insight & LF & Metrics
+		lineageTag: 6e6e8ed5-f2cf-4aea-b6e9-f55166eb485d
+
+	/// Exec-grade Pattern-C headline. Line 1: plain-English insight. Line 2: supporting metrics with bold Unicode digits.
+	measure 'Activation Licensed Headline' =
+			VAR Act      = [Active Licensed Users]
+			VAR Tot      = [Total Licensed Users]
+			VAR ActPct   = [% Active Licensed Users]
+			VAR LF       = UNICHAR(10)
+			VAR Insight  =
+			    SWITCH(
+			        TRUE(),
+			        ActPct = 0,         "No licensed users are active in this view",
+			        ActPct >= 0.5,      "Most licensed users are actively using Copilot",
+			        ActPct >= 0.25,     "About a quarter of licensed users are active — room to grow",
+			        ActPct >= 0.10,     "Only a small share of licensed users are active — most paid licences sit unused",
+			        "Licensed Copilot is barely being used — most paid licences are inactive"
+			    )
+			VAR RawMetrics =
+			    FORMAT(Act, "#,##0") & " of " & FORMAT(Tot, "#,##0") &
+			    " licensed users active (" & FORMAT(ActPct, "0.0%") & ")  ·  most adoption sits in a few divisions"
+			VAR Metrics =
+			    SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(
+			        RawMetrics,
+			        "0", UNICHAR(120812)),
+			        "1", UNICHAR(120813)),
+			        "2", UNICHAR(120814)),
+			        "3", UNICHAR(120815)),
+			        "4", UNICHAR(120816)),
+			        "5", UNICHAR(120817)),
+			        "6", UNICHAR(120818)),
+			        "7", UNICHAR(120819)),
+			        "8", UNICHAR(120820)),
+			        "9", UNICHAR(120821))
+			RETURN Insight & LF & Metrics
+		lineageTag: f02132e8-6d82-4d8e-9c9d-0bceb2a88d42
+
+	/// Exec-grade Pattern-C headline. Line 1: plain-English insight. Line 2: supporting metrics with bold Unicode digits.
+	measure 'Activation Unlicensed Headline' =
+			VAR Unl      = [Active Unlicensed Users]
+			VAR Lic      = [Active Licensed Users]
+			VAR UnlPct   = [% Active Unlicensed Users]
+			VAR Diff     = DIVIDE(Unl - Lic, Lic, 0)
+			VAR LF       = UNICHAR(10)
+			VAR Insight  =
+			    SWITCH(
+			        TRUE(),
+			        Unl = 0,            "No unlicensed AI use in this view",
+			        Diff >= 0.4,        "Far more people use Copilot or agents without a licence than with one — strong list of upgrade candidates",
+			        Diff >= 0,          "Slightly more people use Copilot or agents without a licence than with one",
+			        Diff > -0.2,        "Unlicensed Copilot & agent use sits just below licensed usage",
+			        "Unlicensed Copilot & agent use is well below licensed usage"
+			    )
+			VAR RawMetrics =
+			    FORMAT(Unl, "#,##0") & " employees use Copilot or agents without a licence (" & FORMAT(UnlPct, "0.0%") & " of org)  ·  " &
+			    FORMAT(Diff, "+0%;-0%;0%") & " vs paid — ready-to-convert M365 Copilot candidates"
+			VAR Metrics =
+			    SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(
+			        RawMetrics,
+			        "0", UNICHAR(120812)),
+			        "1", UNICHAR(120813)),
+			        "2", UNICHAR(120814)),
+			        "3", UNICHAR(120815)),
+			        "4", UNICHAR(120816)),
+			        "5", UNICHAR(120817)),
+			        "6", UNICHAR(120818)),
+			        "7", UNICHAR(120819)),
+			        "8", UNICHAR(120820)),
+			        "9", UNICHAR(120821))
+			RETURN Insight & LF & Metrics
+		lineageTag: b055f7f7-74ba-403f-8e0b-eba03c113e69
+
+	/// Exec-grade Pattern-C headline. Line 1: plain-English insight. Line 2: supporting metrics with bold Unicode digits.
+	measure 'Activation Agents Headline' =
+			VAR Agt      = [Active Agent Users]
+			VAR AgtPct   = [% Active Users Using Agents]
+			VAR LF       = UNICHAR(10)
+			VAR Insight  =
+			    SWITCH(
+			        TRUE(),
+			        Agt = 0,            "No agent activity in this view",
+			        AgtPct >= 0.20,     "Agent use is established and growing across the org",
+			        AgtPct >= 0.05,     "Agent use is picking up — beyond the early-adopter phase",
+			        "Agent use is just starting — early pioneers only"
+			    )
+			VAR RawMetrics =
+			    FORMAT(Agt, "#,##0") & " people have tried agents (" & FORMAT(AgtPct, "0.0%") & " of org)  ·  Diversity & Inclusion and Content Governance leading"
+			VAR Metrics =
+			    SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(
+			        RawMetrics,
+			        "0", UNICHAR(120812)),
+			        "1", UNICHAR(120813)),
+			        "2", UNICHAR(120814)),
+			        "3", UNICHAR(120815)),
+			        "4", UNICHAR(120816)),
+			        "5", UNICHAR(120817)),
+			        "6", UNICHAR(120818)),
+			        "7", UNICHAR(120819)),
+			        "8", UNICHAR(120820)),
+			        "9", UNICHAR(120821))
+			RETURN Insight & LF & Metrics
+		lineageTag: 379b329c-a2fe-4612-976c-bbc08eb5cd90
+
+	measure 'Inactive Users (Filter-Aware)' = ```
+			
+			    MAX(0, [Total Users (Filter-Aware)] - [Active Users (Filter-Aware)])
+			
+			```
+		formatString: 0
+		lineageTag: b002ee7e-743a-4a71-b070-3ca21a91df78
+
+	measure '% of Users by Activity' = ```
+			
+			    VAR ActStatus = SELECTEDVALUE('Activity (Legend)'[Value1])
+			    VAR Denom = [Total Users (Filter-Aware)]
+			    RETURN
+			        SWITCH(
+			            ActStatus,
+			            "Total Active",   DIVIDE([Active Users (Filter-Aware)],   Denom, 0),
+			            "Total Inactive", DIVIDE([Inactive Users (Filter-Aware)], Denom, 0),
+			            DIVIDE([Total Users (Filter-Aware)], Denom, 0)
+			        )
+			
+			```
+		lineageTag: 3de402e0-5577-4e69-ae80-7f67c5ef1efe
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Productive Capacity - Hours Saved' = ```
+			isHidden
+				
+				    [Efficiency - Hours Saved] * [Reinvestment Rate (Forrester TEI)]
+			```
+		lineageTag: 9b63cda7-048a-4c22-89d9-72b3863e6331
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Productive Capacity - Hours Per User' = ```
+			
+			    DIVIDE(
+			        [Human Equivalent Hours] * [Reinvestment Rate (Forrester TEI)],
+			        DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
+			        0
+			    )
+			
+			```
+		lineageTag: 0b01dc57-761a-45f4-be02-5d05f491f11c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// Habitual Users: 8-14 active days AND ≥5 enriched behaviours in the latest
+	/// rolling 4-week window. Embedded across the week.
+	measure 'Habitual Users' =
+			VAR CurrentWeek = MAX('Chat + Agent Interactions (Audit Logs)'[WeekStart])
+			VAR WindowStart = CurrentWeek - 21
+			VAR UserStats =
+			    ADDCOLUMNS(
+			        CALCULATETABLE(
+			            VALUES('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
+			            REMOVEFILTERS('Calendar'),
+			            'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart,
+			            'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= CurrentWeek
+			        ),
+			        "Behaviors",  CALCULATE(DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[Behavior_Enriched_Full]), REMOVEFILTERS('Calendar'), 'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= CurrentWeek),
+			        "ActiveDays", CALCULATE(DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[InteractionDate]),         REMOVEFILTERS('Calendar'), 'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= CurrentWeek)
+			    )
+			RETURN COUNTROWS(FILTER(UserStats, [ActiveDays] >= 8 && [ActiveDays] <= 14 && [Behaviors] >= 5))
+		formatString: #,##0
+		displayFolder: AI Fluency\User Stages
+		lineageTag: ff020001-0001-0001-0001-000000000303
+
+	/// Power Users: ≥15 active days, OR (≥10 days AND ≥30% Producing+Delegating AND uses an Agent)
+	/// — all measured over the latest rolling 4-week window. Champion cohort.
+	measure 'Power Users' =
+			VAR CurrentWeek = MAX('Chat + Agent Interactions (Audit Logs)'[WeekStart])
+			VAR WindowStart = CurrentWeek - 21
+			VAR UserStats =
+			    ADDCOLUMNS(
+			        CALCULATETABLE(
+			            VALUES('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
+			            REMOVEFILTERS('Calendar'),
+			            'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart,
+			            'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= CurrentWeek
+			        ),
+			        "ActiveDays", CALCULATE(DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[InteractionDate]),         REMOVEFILTERS('Calendar'), 'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= CurrentWeek),
+			        "ValueShare", DIVIDE(
+			            CALCULATE(COUNTROWS('Chat + Agent Interactions (Audit Logs)'), REMOVEFILTERS('Calendar'), 'Chat + Agent Interactions (Audit Logs)'[Usage_Mode] IN {"4 - Producing","5 - Delegating"}, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= CurrentWeek),
+			            CALCULATE(COUNTROWS('Chat + Agent Interactions (Audit Logs)'), REMOVEFILTERS('Calendar'), 'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= CurrentWeek),
+			            0
+			        ),
+			        "HasAgent",   CALCULATE(COUNTROWS(FILTER('Chat + Agent Interactions (Audit Logs)', NOT(ISBLANK('Chat + Agent Interactions (Audit Logs)'[AgentName])) && 'Chat + Agent Interactions (Audit Logs)'[AgentName] <> "")), REMOVEFILTERS('Calendar'), 'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= CurrentWeek) > 0
+			    )
+			RETURN COUNTROWS(FILTER(UserStats,
+			    [ActiveDays] >= 15
+			    || ([ActiveDays] >= 10 && [ValueShare] >= 0.30 && [HasAgent])
+			))
+		formatString: #,##0
+		displayFolder: AI Fluency\User Stages
+		lineageTag: ff020001-0001-0001-0001-000000000304
+
+	/// Power Users % (of all active users) — quick maturity indicator for comparing groups
+	measure 'Power Users %' = DIVIDE([Power Users], [All Active Users], 0)
+		formatString: 0.0%;-0.0%;0.0%
+		isHidden
+		displayFolder: AI Fluency\User Stages
+		lineageTag: ff020001-0001-0001-0001-000000000308
+
+	/// Habit + Power combined % — % of active users at the top 2 maturity stages
+	measure 'Habitual + Power %' = DIVIDE([Habitual Users] + [Power Users], [All Active Users], 0)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: AI Fluency\User Stages
+		lineageTag: ff020001-0001-0001-0001-000000000311
+
+	/// Inactive Users: licensed users with ZERO activity in the latest rolling 4-week
+	/// window. Computed as Licensed-in-scope minus Active-Licensed-in-scope in that
+	/// window. The most actionable cohort — license-reclamation candidates.
+	/// 
+	/// ORG-AWARE: uses TREATAS to push the Org filter through to Copilot Licensed
+	/// via PersonId == UPN_Normalized. Without this, an org slicer would only
+	/// filter the Active side, leaving Licensed at the company-wide total and
+	/// producing nonsense Inactive counts (e.g., 671 inactive in an org of 664).
+	measure 'Inactive Users' =
+			VAR CurrentWeek = MAX('Chat + Agent Interactions (Audit Logs)'[WeekStart])
+			VAR WindowStart = CurrentWeek - 21
+			VAR LicensedInScope =
+			    CALCULATE(
+			        [Total Licensed Users],
+			        TREATAS(VALUES('Chat + Agent Org Data'[PersonId]), 'Copilot Licensed'[UPN_Normalized])
+			    )
+			VAR LicensedActive4W =
+			    CALCULATE(
+			        [NoOfActiveChatUsers (Licensed)],
+			        REMOVEFILTERS('Calendar'),
+			        REMOVEFILTERS('Chat + Agent Interactions (Audit Logs)'[WeekStart]),
+			        'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart,
+			        'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= CurrentWeek
+			    )
+			RETURN MAX(LicensedInScope - LicensedActive4W, 0)
+		formatString: #,##0
+		displayFolder: AI Fluency\User Stages
+		lineageTag: ff020001-0001-0001-0001-000000000305
+
+	/// =============================================================================
+	/// (Latest) FAMILY — Each user is classified using THEIR OWN latest week of
+	/// activity within the current filter context, then their personal 4-week
+	/// look-back ending at that week is used to derive their stage.
+	/// 
+	/// Use this when you want to ask "where is each user RIGHT NOW?" while still
+	/// measuring something across a wider time period.
+	/// 
+	/// Example: filter to the past year, then [Power Users (Latest)] counts users
+	/// who are CURRENTLY in the Power stage (based on their last 4 weeks of
+	/// activity within that year) — even if they were Beginners 10 months ago.
+	/// =============================================================================
+	measure 'Beginner Users (Latest)' =
+			VAR Classified =
+			    ADDCOLUMNS(
+			        VALUES('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
+			        "Stage",
+			            VAR LatestWk    = CALCULATE(MAX('Chat + Agent Interactions (Audit Logs)'[WeekStart]))
+			            VAR WindowStart = LatestWk - 21
+			            VAR Days        = CALCULATE(DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[InteractionDate]),         'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= LatestWk)
+			            VAR Behaviors   = CALCULATE(DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[Behavior_Enriched_Full]), 'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= LatestWk)
+			            VAR ValueShare  = DIVIDE(
+			                CALCULATE(COUNTROWS('Chat + Agent Interactions (Audit Logs)'), 'Chat + Agent Interactions (Audit Logs)'[Usage_Mode] IN {"4 - Producing","5 - Delegating"}, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= LatestWk),
+			                CALCULATE(COUNTROWS('Chat + Agent Interactions (Audit Logs)'),                                                                                          'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= LatestWk),
+			                0
+			            )
+			            VAR HasAgentFlag = CALCULATE(COUNTROWS(FILTER('Chat + Agent Interactions (Audit Logs)', NOT(ISBLANK('Chat + Agent Interactions (Audit Logs)'[AgentName])) && 'Chat + Agent Interactions (Audit Logs)'[AgentName] <> "")), 'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= LatestWk) > 0
+			            RETURN
+			                SWITCH(TRUE(),
+			                    Days >= 15 || (Days >= 10 && ValueShare >= 0.30 && HasAgentFlag), "4 - Power",
+			                    Days >= 8  && Behaviors >= 5, "3 - Habitual",
+			                    Days >= 3  && Behaviors >= 3, "2 - Developing",
+			                    Days >= 1, "1 - Beginner",
+			                    BLANK()
+			                )
+			    )
+			RETURN COUNTROWS(FILTER(Classified, [Stage] = "1 - Beginner"))
+		formatString: #,##0
+		displayFolder: AI Fluency\User Stages (Latest)
+		lineageTag: ff020001-0001-0001-0001-000000000601
+
+	measure 'Developing Users (Latest)' =
+			VAR Classified =
+			    ADDCOLUMNS(
+			        VALUES('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
+			        "Stage",
+			            VAR LatestWk    = CALCULATE(MAX('Chat + Agent Interactions (Audit Logs)'[WeekStart]))
+			            VAR WindowStart = LatestWk - 21
+			            VAR Days        = CALCULATE(DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[InteractionDate]),         'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= LatestWk)
+			            VAR Behaviors   = CALCULATE(DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[Behavior_Enriched_Full]), 'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= LatestWk)
+			            VAR ValueShare  = DIVIDE(
+			                CALCULATE(COUNTROWS('Chat + Agent Interactions (Audit Logs)'), 'Chat + Agent Interactions (Audit Logs)'[Usage_Mode] IN {"4 - Producing","5 - Delegating"}, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= LatestWk),
+			                CALCULATE(COUNTROWS('Chat + Agent Interactions (Audit Logs)'),                                                                                          'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= LatestWk),
+			                0
+			            )
+			            VAR HasAgentFlag = CALCULATE(COUNTROWS(FILTER('Chat + Agent Interactions (Audit Logs)', NOT(ISBLANK('Chat + Agent Interactions (Audit Logs)'[AgentName])) && 'Chat + Agent Interactions (Audit Logs)'[AgentName] <> "")), 'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= LatestWk) > 0
+			            RETURN
+			                SWITCH(TRUE(),
+			                    Days >= 15 || (Days >= 10 && ValueShare >= 0.30 && HasAgentFlag), "4 - Power",
+			                    Days >= 8  && Behaviors >= 5, "3 - Habitual",
+			                    Days >= 3  && Behaviors >= 3, "2 - Developing",
+			                    Days >= 1, "1 - Beginner",
+			                    BLANK()
+			                )
+			    )
+			RETURN COUNTROWS(FILTER(Classified, [Stage] = "2 - Developing"))
+		formatString: #,##0
+		displayFolder: AI Fluency\User Stages (Latest)
+		lineageTag: ff020001-0001-0001-0001-000000000603
+
+	measure 'Habitual Users (Latest)' =
+			VAR Classified =
+			    ADDCOLUMNS(
+			        VALUES('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
+			        "Stage",
+			            VAR LatestWk    = CALCULATE(MAX('Chat + Agent Interactions (Audit Logs)'[WeekStart]))
+			            VAR WindowStart = LatestWk - 21
+			            VAR Days        = CALCULATE(DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[InteractionDate]),         'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= LatestWk)
+			            VAR Behaviors   = CALCULATE(DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[Behavior_Enriched_Full]), 'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= LatestWk)
+			            VAR ValueShare  = DIVIDE(
+			                CALCULATE(COUNTROWS('Chat + Agent Interactions (Audit Logs)'), 'Chat + Agent Interactions (Audit Logs)'[Usage_Mode] IN {"4 - Producing","5 - Delegating"}, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= LatestWk),
+			                CALCULATE(COUNTROWS('Chat + Agent Interactions (Audit Logs)'),                                                                                          'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= LatestWk),
+			                0
+			            )
+			            VAR HasAgentFlag = CALCULATE(COUNTROWS(FILTER('Chat + Agent Interactions (Audit Logs)', NOT(ISBLANK('Chat + Agent Interactions (Audit Logs)'[AgentName])) && 'Chat + Agent Interactions (Audit Logs)'[AgentName] <> "")), 'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= LatestWk) > 0
+			            RETURN
+			                SWITCH(TRUE(),
+			                    Days >= 15 || (Days >= 10 && ValueShare >= 0.30 && HasAgentFlag), "4 - Power",
+			                    Days >= 8  && Behaviors >= 5, "3 - Habitual",
+			                    Days >= 3  && Behaviors >= 3, "2 - Developing",
+			                    Days >= 1, "1 - Beginner",
+			                    BLANK()
+			                )
+			    )
+			RETURN COUNTROWS(FILTER(Classified, [Stage] = "3 - Habitual"))
+		formatString: #,##0
+		displayFolder: AI Fluency\User Stages (Latest)
+		lineageTag: ff020001-0001-0001-0001-000000000604
+
+	measure 'Power Users (Latest)' =
+			VAR Classified =
+			    ADDCOLUMNS(
+			        VALUES('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
+			        "Stage",
+			            VAR LatestWk    = CALCULATE(MAX('Chat + Agent Interactions (Audit Logs)'[WeekStart]))
+			            VAR WindowStart = LatestWk - 21
+			            VAR Days        = CALCULATE(DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[InteractionDate]),         'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= LatestWk)
+			            VAR Behaviors   = CALCULATE(DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[Behavior_Enriched_Full]), 'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= LatestWk)
+			            VAR ValueShare  = DIVIDE(
+			                CALCULATE(COUNTROWS('Chat + Agent Interactions (Audit Logs)'), 'Chat + Agent Interactions (Audit Logs)'[Usage_Mode] IN {"4 - Producing","5 - Delegating"}, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= LatestWk),
+			                CALCULATE(COUNTROWS('Chat + Agent Interactions (Audit Logs)'),                                                                                          'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= LatestWk),
+			                0
+			            )
+			            VAR HasAgentFlag = CALCULATE(COUNTROWS(FILTER('Chat + Agent Interactions (Audit Logs)', NOT(ISBLANK('Chat + Agent Interactions (Audit Logs)'[AgentName])) && 'Chat + Agent Interactions (Audit Logs)'[AgentName] <> "")), 'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= LatestWk) > 0
+			            RETURN
+			                SWITCH(TRUE(),
+			                    Days >= 15 || (Days >= 10 && ValueShare >= 0.30 && HasAgentFlag), "4 - Power",
+			                    Days >= 8  && Behaviors >= 5, "3 - Habitual",
+			                    Days >= 3  && Behaviors >= 3, "2 - Developing",
+			                    Days >= 1, "1 - Beginner",
+			                    BLANK()
+			                )
+			    )
+			RETURN COUNTROWS(FILTER(Classified, [Stage] = "4 - Power"))
+		formatString: #,##0
+		displayFolder: AI Fluency\User Stages (Latest)
+		lineageTag: ff020001-0001-0001-0001-000000000605
+
+	/// Median weekly AI Tasks per unlicensed user — count of prompt rows submitted
+	/// per user, averaged across weeks they were active, then taken at the median.
+	/// Powers the volume signal in License Priority Score (User) v2. Uses the same
+	/// "Tasks Performed" definition (Message_isPrompt = TRUE) as the rest of the
+	/// report — consistent with the Activity & Value page and Executive Headline.
+	measure 'Median Unlicensed AI Tasks Per User Per Week' = ```
+			
+			MEDIANX(
+			    FILTER(
+			        VALUES('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
+			        CALCULATE(
+			            COUNTROWS('Chat + Agent Interactions (Audit Logs)'),
+			            'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE",
+			            'Chat + Agent Interactions (Audit Logs)'[License Status] = "Unlicensed"
+			        ) > 0
+			    ),
+			    VAR TotalTasks =
+			        CALCULATE(
+			            COUNTROWS('Chat + Agent Interactions (Audit Logs)'),
+			            'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE",
+			            'Chat + Agent Interactions (Audit Logs)'[License Status] = "Unlicensed",
+			            REMOVEFILTERS('Chat + Agent Interactions (Audit Logs)'[WeekStart])
+			        )
+			    VAR TotalWeeks =
+			        CALCULATE(
+			            DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[WeekStart]),
+			            'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE",
+			            'Chat + Agent Interactions (Audit Logs)'[License Status] = "Unlicensed",
+			            REMOVEFILTERS('Chat + Agent Interactions (Audit Logs)'[WeekStart])
+			        )
+			    RETURN
+			        DIVIDE(TotalTasks, TotalWeeks, 0)
+			)
+			
+			```
+		formatString: 0.0
+		displayFolder: License Readiness
+		lineageTag: ce411199-5b7e-4555-bdaf-dd5d6c00ab04
+
+	measure 'Agent Review Status' =
+			
+			VAR _A365HasData = COUNTROWS('Agents 365') > 0
+			
+			// Resolve agent name from whichever table is in filter context
+			VAR _AgentFromA365  = IF(_A365HasData, SELECTEDVALUE('Agents 365'[Agent name]), BLANK())
+			VAR _AgentFromAudit = SELECTEDVALUE('Chat + Agent Interactions (Audit Logs)'[AgentName])
+			VAR _Agent          = COALESCE(_AgentFromA365, _AgentFromAudit)
+			VAR _NotASingleAgent = ISBLANK(_Agent)
+			
+			// === Activity inputs (always computable from audit) ===
+			VAR _LastUsedDate =
+			    CALCULATE(
+			        MAX('Chat + Agent Interactions (Audit Logs)'[CreationDate]),
+			        'Chat + Agent Interactions (Audit Logs)'[AgentName] = _Agent
+			    )
+			VAR _MaxDateInData =
+			    CALCULATE(
+			        MAX('Chat + Agent Interactions (Audit Logs)'[CreationDate]),
+			        ALL('Chat + Agent Interactions (Audit Logs)')
+			    )
+			VAR _DaysSinceUsed =
+			    IF(NOT(ISBLANK(_LastUsedDate)),
+			       DATEDIFF(_LastUsedDate, _MaxDateInData, DAY),
+			       BLANK()
+			    )
+			
+			// === A365 enrichments (used only if A365 has data) ===
+			VAR _AgentCreatedDate =
+			    IF(_A365HasData,
+			       CALCULATE(MAX('Agents 365'[Date created]), 'Agents 365'[Agent name] = _Agent),
+			       BLANK()
+			    )
+			VAR _DaysSinceCreated =
+			    IF(NOT(ISBLANK(_AgentCreatedDate)),
+			       DATEDIFF(_AgentCreatedDate, _MaxDateInData, DAY),
+			       BLANK()
+			    )
+			
+			// === Agent type: prefer A365, default to "Unknown" ===
+			VAR _AgentTypeFromA365 =
+			    IF(_A365HasData,
+			       CALCULATE(MAX('Agents 365'[Agent Type Combined]), 'Agents 365'[Agent name] = _Agent),
+			       BLANK()
+			    )
+			VAR _AgentType = COALESCE(_AgentTypeFromA365, "Unknown")
+			
+			// === Total Users (distinct audit users for this agent) ===
+			VAR _TotalUsers =
+			    CALCULATE(
+			        DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
+			        'Chat + Agent Interactions (Audit Logs)'[AgentName] = _Agent
+			    )
+			
+			// === Org Count (distinct organizations across those users) ===
+			VAR _AgentUsers =
+			    CALCULATETABLE(
+			        VALUES('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
+			        'Chat + Agent Interactions (Audit Logs)'[AgentName] = _Agent
+			    )
+			VAR _OrgCount =
+			    CALCULATE(
+			        DISTINCTCOUNT('Chat + Agent Org Data'[Organization]),
+			        FILTER(
+			            ALL('Chat + Agent Org Data'),
+			            'Chat + Agent Org Data'[PersonId] IN _AgentUsers
+			        )
+			    )
+			
+			// === Activity bucket (mirrors Agents 365[Agent Last Activity Date]) ===
+			VAR _InactivityStatus =
+			    SWITCH(
+			        TRUE(),
+			        NOT(ISBLANK(_DaysSinceUsed)) && _DaysSinceUsed <= 7,  "1. Active (Last 7 days)",
+			        NOT(ISBLANK(_DaysSinceUsed)) && _DaysSinceUsed <= 30, "2. Recent (Last 30 days)",
+			        NOT(ISBLANK(_DaysSinceUsed)) && _DaysSinceUsed <= 60, "3. Inactive (30-60 days)",
+			        NOT(ISBLANK(_DaysSinceUsed)) && _DaysSinceUsed <= 90, "4. Dormant (60-90 days)",
+			        NOT(ISBLANK(_DaysSinceUsed)), "5. Redundant (90+ days)",
+			        ISBLANK(_LastUsedDate) && NOT(ISBLANK(_DaysSinceCreated)) && _DaysSinceCreated <= 14, "6. New (Not Yet Used)",
+			        ISBLANK(_LastUsedDate) && NOT(ISBLANK(_DaysSinceCreated)) && _DaysSinceCreated <= 90, "7. Never Used (Recent)",
+			        ISBLANK(_LastUsedDate), "8. Never Used (Stale)",
+			        "Unknown"
+			    )
+			
+			// === Type-specific thresholds (defaults 10/5/50/5 for Unknown) ===
+			VAR LowUserThreshold = SWITCH(_AgentType, "FirstParty", 20, "Agent Builder", 5,  10)
+			VAR MinUserThreshold = SWITCH(_AgentType, "FirstParty", 10, "Agent Builder", 2,  5)
+			VAR HighImpactUsers  = SWITCH(_AgentType, "FirstParty", 100,"Agent Builder", 30, 50)
+			VAR HighImpactOrgs   = SWITCH(_AgentType, "FirstParty", 10, "Agent Builder", 3,  5)
+			
+			// === Verdict ===
+			RETURN
+			    IF(_NotASingleAgent, BLANK(),
+			       SWITCH(
+			           TRUE(),
+			           _InactivityStatus = "6. New (Not Yet Used)",
+			               "🆕 New",
+			           _InactivityStatus IN {"7. Never Used (Recent)", "8. Never Used (Stale)"},
+			               "❌ Never Used",
+			           _InactivityStatus IN {"1. Active (Last 7 days)", "2. Recent (Last 30 days)"},
+			               IF(_TotalUsers >= HighImpactUsers && _OrgCount >= HighImpactOrgs,
+			                  "🔥 High Impact",
+			                  "✅ Keep"
+			               ),
+			           _InactivityStatus = "3. Inactive (30-60 days)" && _TotalUsers < LowUserThreshold,
+			               "⚠️ Review",
+			           _InactivityStatus = "4. Dormant (60-90 days)",
+			               SWITCH(TRUE(),
+			                   _TotalUsers < MinUserThreshold, "💤 Dormant",
+			                   _TotalUsers < LowUserThreshold, "⚠️ Review",
+			                   "✅ Keep"
+			               ),
+			           _InactivityStatus = "5. Redundant (90+ days)",
+			               IF(_TotalUsers < LowUserThreshold, "💤 Dormant", "⚠️ Review"),
+			           "✅ Keep"
+			       )
+			    )
+		lineageTag: ecf48715-d1ac-46d7-8c43-e9478f08dc6a
+
+	measure '% Power Users (Latest)' = ```
+			DIVIDE([Power Users (Latest)],    [All Active Users], 0)
+			
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 03a561f0-5c95-4f70-8acd-f44bdb992472
+
+	measure 'Tasks per Active User (by Behavior)' =
+			
+			VAR TaskCount =
+			    CALCULATE(
+			        DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[ThreadId]),
+			        'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE"
+			    )
+			VAR ActiveUsers =
+			    CALCULATE(
+			        DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
+			        'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE",
+			        REMOVEFILTERS('Chat + Agent Interactions (Audit Logs)'[Behavior_Enriched_Full])
+			    )
+			RETURN
+			    DIVIDE(TaskCount, ActiveUsers, 0)
+		lineageTag: 959f4fb8-7f57-4c08-9a3c-64514ddb3bac
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'AI Tasks per Active User' =
+			
+			DIVIDE(
+			    [AI Tasks],
+			    CALCULATE(
+			        DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
+			        'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE"
+			    ),
+			    0
+			)
+		formatString: 0.0
+		lineageTag: a0ebd5be-5714-4c36-918c-474bf2a1a63f
+
+	/// 29 May 2026 — Behavioural delegation count.
+	/// DISTINCTCOUNT of [Delegation_Event_Key] filtered to Usage_Mode = "5 - Delegating".
+	/// Use this for "real" delegation volume (collapses repeated workflow triggers
+	/// per user per day to one event). Compare against raw delegation row count
+	/// to surface tenant-plumbing noise.
+	measure 'Delegation Events' =
+			CALCULATE(
+			    DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[Delegation_Event_Key]),
+			    'Chat + Agent Interactions (Audit Logs)'[Usage_Mode] = "5 - Delegating"
+			)
+		formatString: #,0
+		lineageTag: 7b9c1d2e-3a4f-4b5c-9d6e-1f2a3b4c5d6e
+
+	column CreationDate
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: f8f563c9-ecbc-44b8-b2a0-d0f7c5e1478e
+		summarizeBy: none
+		sourceColumn: CreationDate
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Audit_UserId
+		dataType: string
+		lineageTag: db4eb025-51a3-4bb9-8da1-c029d8f5737d
+		summarizeBy: none
+		sourceColumn: Audit_UserId
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column AppHost
+		dataType: string
+		lineageTag: 8a5b8c19-423f-4b0a-bc26-6460dc150cf4
+		summarizeBy: none
+		sourceColumn: AppHost
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Context_Type
+		dataType: string
+		lineageTag: 56cf4a16-b261-4959-87bf-b36a731234c2
+		summarizeBy: none
+		sourceColumn: Context_Type
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Message_Id
+		dataType: string
+		lineageTag: b353fc05-4be9-463b-a101-98d251ff770a
+		summarizeBy: none
+		sourceColumn: Message_Id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Message_isPrompt
+		dataType: string
+		lineageTag: 1ab885ff-bf49-4a6a-882a-3e24ea057f82
+		summarizeBy: none
+		sourceColumn: Message_isPrompt
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column ModelTransparencyDetails_ModelName
+		dataType: string
+		lineageTag: cdef958f-8f12-4880-98bc-32853175308c
+		summarizeBy: none
+		sourceColumn: ModelTransparencyDetails_ModelName
+
+		annotation SummarizationSetBy = Automatic
+
+	column AgentId
+		dataType: string
+		lineageTag: 0e1ee794-900e-42a3-a011-4559a18d18bb
+		summarizeBy: none
+		sourceColumn: AgentId
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column AgentName
+		dataType: string
+		lineageTag: f84e3a41-98c1-4efe-a231-a4571f1e24b6
+		summarizeBy: none
+		sourceColumn: AgentName
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Has license'
+		dataType: string
+		lineageTag: 9f8f87a7-b587-498d-94a1-1f8087aedde7
+		summarizeBy: none
+		sourceColumn: Has license
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column AISystemPlugin_Id
+		dataType: string
+		lineageTag: fea0ad97-dfa5-4153-b300-a1c4519ae1d3
+		summarizeBy: none
+		sourceColumn: AISystemPlugin_Id
+
+		annotation SummarizationSetBy = Automatic
+
+	column AISystemPlugin_Name
+		dataType: string
+		lineageTag: ed50fb74-23fe-4f39-9c72-82447b1a868a
+		summarizeBy: none
+		sourceColumn: AISystemPlugin_Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Agent Last Used Date' =
+			LOOKUPVALUE(
+			    AgentMetrics[AgentLastUsedDate],
+			    AgentMetrics[AgentName],
+			    'Chat + Agent Interactions (Audit Logs)'[AgentName]
+			)
+		formatString: General Date
+		lineageTag: 8704c57b-fb9f-453b-b02d-cd18226f282b
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Agent_TitleID
+		dataType: string
+		lineageTag: dfec8665-8f8a-4e31-bbf0-e573a2f92b5e
+		summarizeBy: none
+		sourceColumn: Agent_TitleID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ThreadId
+		dataType: string
+		lineageTag: 469cb1bc-2c4f-4875-97f7-4a154ab181aa
+		summarizeBy: none
+		sourceColumn: ThreadId
+
+		annotation SummarizationSetBy = Automatic
+
+	column AccessedResource_Type
+		dataType: string
+		lineageTag: ff030001-0001-0001-0001-000000000001
+		summarizeBy: none
+		sourceColumn: AccessedResource_Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column AccessedResource_Action
+		dataType: string
+		lineageTag: ff030001-0001-0001-0001-000000000002
+		summarizeBy: none
+		sourceColumn: AccessedResource_Action
+
+		annotation SummarizationSetBy = Automatic
+
+	column SensitivityLabelId
+		dataType: string
+		lineageTag: ff030001-0001-0001-0001-000000000007
+		summarizeBy: none
+		sourceColumn: SensitivityLabelId
+
+		annotation SummarizationSetBy = Automatic
+
+	/// User maturity stage — now a single RELATED lookup against UserMonthMetrics[UserStage]
+	/// (pre-computed once per user-month instead of per-row CALCULATETABLE).
+	column User_Stage_Maturity = RELATED('UserMonthMetrics'[UserStage])
+		dataType: string
+		lineageTag: ff030001-0001-0001-0001-000000000015
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Actionable source label: Behavior + where it happened (app/agent/plugin)
+	column Behavior_Source =
+			VAR Behavior = 'Chat + Agent Interactions (Audit Logs)'[Behavior_Category]
+			VAR Env = 'Chat + Agent Interactions (Audit Logs)'[Environment]
+			VAR Agent = 'Chat + Agent Interactions (Audit Logs)'[AgentName]
+			VAR Plugin = 'Chat + Agent Interactions (Audit Logs)'[AISystemPlugin_Name]
+			VAR App = 'Chat + Agent Interactions (Audit Logs)'[AppHost]
+			VAR Enriched = 'Chat + Agent Interactions (Audit Logs)'[Behavior_Enriched]
+			VAR Source =
+			    IF(Env = "Cowork", "Cowork" & IF(NOT(ISBLANK(Agent)) && Agent <> "", ": " & Agent, ""),
+			    IF(Env = "Agents" && NOT(ISBLANK(Agent)) && Agent <> "", "Agent: " & Agent,
+			    IF(NOT(ISBLANK(Plugin)) && Plugin <> "", App & " (" & Plugin & ")",
+			    IF(NOT(ISBLANK(App)) && App <> "", App,
+			    "Copilot Chat"))))
+			RETURN
+			    Behavior & " → " & Source
+		dataType: string
+		lineageTag: ff030001-0001-0001-0001-000000000016
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Enhanced enrichment using Agent Description + Capabilities from Agents 365 (via RELATED)
+	column Behavior_Enriched_Full =
+			VAR BaseEnriched = 'Chat + Agent Interactions (Audit Logs)'[Behavior_Enriched]
+			VAR Env = 'Chat + Agent Interactions (Audit Logs)'[Environment]
+			VAR NeedsEnhancement = Env = "Agents" && BaseEnriched = "Agent: General Purpose"
+			VAR AgentDesc = IF(NeedsEnhancement, LOWER(RELATED('Agents 365'[Agent description])), "")
+			VAR AgentActions = IF(NeedsEnhancement, LOWER(RELATED('Agents 365'[Custom actions])), "")
+			VAR HasCode = IF(NeedsEnhancement, RELATED('Agents 365'[Can use code interpreter]) = "Yes", FALSE())
+			VAR HasImages = IF(NeedsEnhancement, RELATED('Agents 365'[Can generate images using user prompt]) = "Yes", FALSE())
+			VAR HasSP = IF(NeedsEnhancement, RELATED('Agents 365'[Can read Sharepoint sites and files]) = "Yes", FALSE())
+			VAR SearchText = AgentDesc & " " & AgentActions
+			VAR IsCoaching = CONTAINSSTRING(SearchText, "coach") || CONTAINSSTRING(SearchText, "mentor") || CONTAINSSTRING(SearchText, "learning") || CONTAINSSTRING(SearchText, "training") || CONTAINSSTRING(SearchText, "skill")
+			VAR IsResearch = CONTAINSSTRING(SearchText, "research") || CONTAINSSTRING(SearchText, "analyst") || CONTAINSSTRING(SearchText, "analy") || CONTAINSSTRING(SearchText, "insight") || CONTAINSSTRING(SearchText, "intelligence")
+			VAR IsSales = CONTAINSSTRING(SearchText, "sales") || CONTAINSSTRING(SearchText, "commercial") || CONTAINSSTRING(SearchText, "customer") || CONTAINSSTRING(SearchText, "crm") || CONTAINSSTRING(SearchText, "pipeline") || CONTAINSSTRING(SearchText, "prospect") || CONTAINSSTRING(SearchText, "deal")
+			VAR IsHR = CONTAINSSTRING(SearchText, "recruit") || CONTAINSSTRING(SearchText, "talent") || CONTAINSSTRING(SearchText, "onboard") || CONTAINSSTRING(SearchText, "hiring") || CONTAINSSTRING(SearchText, "employee") || CONTAINSSTRING(SearchText, "human resource") || CONTAINSSTRING(SearchText, "job description")
+			VAR IsCompliance = CONTAINSSTRING(SearchText, "policy") || CONTAINSSTRING(SearchText, "compliance") || CONTAINSSTRING(SearchText, "legal") || CONTAINSSTRING(SearchText, "audit") || CONTAINSSTRING(SearchText, "risk") || CONTAINSSTRING(SearchText, "governance")
+			VAR IsIT = CONTAINSSTRING(SearchText, "support") || CONTAINSSTRING(SearchText, "helpdesk") || CONTAINSSTRING(SearchText, "troubleshoot") || CONTAINSSTRING(SearchText, "ticket") || CONTAINSSTRING(SearchText, "incident") || CONTAINSSTRING(SearchText, "service desk")
+			VAR IsContent = CONTAINSSTRING(SearchText, "summar") || CONTAINSSTRING(SearchText, "draft") || CONTAINSSTRING(SearchText, "translat") || CONTAINSSTRING(SearchText, "content") || CONTAINSSTRING(SearchText, "communications")
+			VAR IsData = CONTAINSSTRING(SearchText, "data") || CONTAINSSTRING(SearchText, "report") || CONTAINSSTRING(SearchText, "dashboard") || CONTAINSSTRING(SearchText, "analytics") || CONTAINSSTRING(SearchText, "metric")
+			VAR IsKnowledge = CONTAINSSTRING(SearchText, "knowledge") || CONTAINSSTRING(SearchText, "faq") || CONTAINSSTRING(SearchText, "wiki") || CONTAINSSTRING(SearchText, "guide") || CONTAINSSTRING(SearchText, "handbook") || CONTAINSSTRING(SearchText, "documentation")
+			VAR IsCreative = CONTAINSSTRING(SearchText, "brainstorm") || CONTAINSSTRING(SearchText, "creative") || CONTAINSSTRING(SearchText, "design") || CONTAINSSTRING(SearchText, "innovat")
+			RETURN
+			    IF(NOT(NeedsEnhancement), BaseEnriched,
+			    IF(IsCoaching, "Agent: Coaching",
+			    IF(IsResearch, "Agent: Research & Analysis",
+			    IF(IsSales, "Agent: Sales & Customer",
+			    IF(IsHR, "Agent: HR & People",
+			    IF(IsCompliance, "Agent: Compliance & Policy",
+			    IF(IsIT, "Agent: IT & Service Desk",
+			    IF(IsContent, "Agent: Content Generation",
+			    IF(IsData, "Agent: Data & Reporting",
+			    IF(IsKnowledge, "Agent: Knowledge Base",
+			    IF(IsCreative, "Agent: Ideation & Creative",
+			    IF(HasCode, "Agent: Data & Reporting",
+			    IF(HasImages, "Agent: Ideation & Creative",
+			    IF(HasSP, "Agent: Knowledge Base",
+			    "Agent: General Purpose"))))))))))))))
+		dataType: string
+		lineageTag: ff030001-0001-0001-0001-000000000018
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column AccessedResource_SiteUrl
+		dataType: string
+		lineageTag: b67ef0d0-01d8-4bc2-a2ef-0ea215119fd5
+		summarizeBy: none
+		sourceColumn: AccessedResource_SiteUrl
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Behavior classification: resource-level signals first (accurate per expanded row),
+	/// then context/appHost fallback (shared across event — only for rows with no resource info)
+	column Behavior_Category =
+			VAR appHost = LOWER('Chat + Agent Interactions (Audit Logs)'[AppHost])
+			VAR ctxType = LOWER('Chat + Agent Interactions (Audit Logs)'[Context_Type])
+			VAR resType = LOWER('Chat + Agent Interactions (Audit Logs)'[AccessedResource_Type])
+			VAR resAction = LOWER('Chat + Agent Interactions (Audit Logs)'[AccessedResource_Action])
+			VAR siteUrl = LOWER('Chat + Agent Interactions (Audit Logs)'[AccessedResource_SiteUrl])
+			VAR pluginId = LOWER('Chat + Agent Interactions (Audit Logs)'[AISystemPlugin_Id])
+			VAR isActive = CONTAINSSTRING(resAction, "send") || CONTAINSSTRING(resAction, "draft") || CONTAINSSTRING(resAction, "create") || CONTAINSSTRING(resAction, "post") || CONTAINSSTRING(resAction, "invoke") || CONTAINSSTRING(resAction, "write") || CONTAINSSTRING(resAction, "patch") || CONTAINSSTRING(resAction, "execute")
+			VAR FromResource =
+			    IF(resAction IN {"sendemailv2","draftemail","senddraftemail","updatedraftemail"}, "Email Drafting",
+			    IF(resType = "emailmessage" && isActive, "Email Drafting",
+			    IF(resType = "emailmessage", "Email Summarising",
+			    IF(resAction = "mcp_meetingmanagement", "Meeting Scheduling",
+			    IF(resType IN {"event","teamsmeeting"}, "Meeting Prep",
+			    IF(resAction IN {"postmessagetoconversation","createchat"}, "Teams Messaging",
+			    IF(resType IN {"teamsmessage","teamschat","teamschannel"}, "Teams Messaging",
+			    -- 29 May 2026 — tightened: bare connector/http rows without an action verb are
+			    -- background sync chatter, not user-value workflow steps. Only count as
+			    -- "Running a Workflow" when (a) it's an explicit Flow row, OR (b) connector/http
+			    -- carries a recognisable active verb (send/draft/create/post/invoke/write/patch/execute).
+			    IF(resType = "flow", "Running a Workflow",
+			    IF(resType IN {"connector","http"} && isActive, "Running a Workflow",
+			    IF(resAction IN {"executedatasetquery","getitems","getalltables","gettableviews"}, "Data Querying",
+			    IF(resType IN {"xlsx","csv","xlsm","xlsb","xls"}, IF(isActive, "Excel Assistance", "Spreadsheet Review"),
+			    IF(resType = "peopleinferenceanswer", "People Lookup",
+			    IF(resType = "listitem" || resType = "aspx", "Enterprise Searching",
+			    IF(resType = "websearchquery", "Web Searching",
+			    IF(resType = "pdf", "PDF Analysis",
+			    IF(resType IN {"py","js","java","tsx","jsx","css","php","sh"} && isActive, "Code Writing",
+			    IF(resType IN {"py","sql","js","java","json","xml","html","yaml","yml","txt"}, "Code Analysis",
+			    IF(resType IN {"png","jpg","jpeg","svg","gif"} && isActive, "Image Generation",
+			    IF(resType IN {"png","jpg","jpeg","gif"}, "Image / Media Analysis",
+			    IF(resType IN {"streamvideo","mp4","mov","webm","mkv"}, "Video Summarising",
+			    IF(resType IN {"planid","taskids"}, "Task Management",
+			    IF(resType = "looppage", "Real-time Collaboration",
+			    IF(resType = "http://schema.skype.com/hyperlink" && (CONTAINSSTRING(siteUrl, "github.com") || CONTAINSSTRING(siteUrl, "stackoverflow.com") || CONTAINSSTRING(siteUrl, "npmjs.com") || CONTAINSSTRING(siteUrl, "pypi.org") || CONTAINSSTRING(siteUrl, "docker.com") || CONTAINSSTRING(siteUrl, "kubernetes.io") || CONTAINSSTRING(siteUrl, "leetcode.com")), "Code Analysis",
+			    IF(resType = "http://schema.skype.com/hyperlink" && (CONTAINSSTRING(siteUrl, "learning.cloud.microsoft") || CONTAINSSTRING(siteUrl, "coursera.org") || CONTAINSSTRING(siteUrl, "udemy.com")), "Agent: Coaching",
+			    IF(resType = "http://schema.skype.com/hyperlink" && CONTAINSSTRING(siteUrl, "sharepoint.com"), "Enterprise Searching",
+			    IF(resType IN {"external","http"} || resType = "http://schema.skype.com/hyperlink", "Web Searching",
+			    IF(resType IN {"docx","doc","rtf"} && isActive, "Document Drafting",
+			    IF(resType IN {"docx","doc","rtf"} && resAction = "read", "File Retrieval",
+			    IF(resType IN {"docx","doc","rtf"}, "Document Summarising",
+			    IF(resType IN {"pptx","ppt","potx"} && isActive, "Presentation Creation",
+			    IF(resType IN {"pptx","ppt","potx"} && resAction = "read", "File Retrieval",
+			    IF(resType IN {"pptx","ppt","potx"}, "Presentation Summarising",
+			    IF(CONTAINSSTRING(siteUrl, "service-now.com") || CONTAINSSTRING(siteUrl, "servicenow.com"), "Agent: IT & Service Desk",
+			    IF(CONTAINSSTRING(siteUrl, "dynamics.com"), "Agent: Sales & Customer",
+			    BLANK()))))))))))))))))))))))))))))))))))
+			VAR FromPlugin =
+			    IF(pluginId = "enterprisesearch", "Enterprise Searching", BLANK())
+			VAR FromContext =
+			    IF(ctxType = "teamsmeeting", "Meeting Prep",
+			    IF(ctxType = "streamvideo", "Video Summarising",
+			    IF(ctxType = "docx", IF(appHost = "word" && isActive, "Document Drafting", "Document Summarising"),
+			    IF(ctxType IN {"xlsx","xlsm","xlsb","xls","csv"}, "Spreadsheet Review",
+			    IF(ctxType IN {"pptx","pptm"}, IF(appHost = "powerpoint" && isActive, "Presentation Creation", "Presentation Summarising"),
+			    IF(ctxType IN {"teamschat","teamschannel"}, "Teams Messaging",
+			    IF(ctxType = "aspx", "Enterprise Searching",
+			    IF((appHost = "outlook" || appHost = "outlooksidepane") && isActive, "Email Drafting",
+			    IF(appHost = "outlook" || appHost = "outlooksidepane", "Email Summarising",
+			    IF(appHost = "excel", "Excel Assistance",
+			    IF(appHost = "word" && isActive, "Document Drafting",
+			    IF(appHost = "word", "Document Summarising",
+			    IF(appHost = "powerpoint" && isActive, "Presentation Creation",
+			    IF(appHost = "powerpoint", "Presentation Summarising",
+			    IF(appHost = "stream", "Video Summarising",
+			    IF(appHost = "sharepoint", "SharePoint Access",
+			    IF(appHost = "designer", "Image Generation",
+			    IF(appHost = "onenote", "Note Taking",
+			    IF(appHost = "forms", "Form / Survey Work",
+			    IF(appHost = "planner", "Task Management",
+			    IF(appHost IN {"loop","whiteboard","vivaengage"}, "Real-time Collaboration",
+			    IF(appHost = "copilot studio", "Domain-Specific Agent",
+			    -- 29 May 2026 — tightened: bare "logic app" appHost is tenant plumbing
+			    -- (sync, refresh, scheduled jobs). Only count as a workflow when the row
+			    -- carries an agent context (AgentName or AgentId present). "autonomous"
+			    -- always counts (it's an explicit agent runtime signal).
+			    IF(appHost = "autonomous", "Running a Workflow",
+			    IF(appHost = "logic app" && (NOT(ISBLANK('Chat + Agent Interactions (Audit Logs)'[AgentName])) || NOT(ISBLANK('Chat + Agent Interactions (Audit Logs)'[AgentId]))), "Running a Workflow",
+			    IF(appHost IN {"datawarehousing core","power bi"}, "Data Querying",
+			    "General Chat")))))))))))))))))))))))))
+			RETURN
+			    IF(NOT(ISBLANK(FromResource)), FromResource,
+			    IF(NOT(ISBLANK(FromPlugin)), FromPlugin,
+			    FromContext))
+		dataType: string
+		lineageTag: ff030001-0001-0001-0001-000000000003
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Value_Outcome =
+			VAR behavior = 'Chat + Agent Interactions (Audit Logs)'[Behavior_Enriched]
+			VAR env = 'Chat + Agent Interactions (Audit Logs)'[Environment]
+			VAR isSensitive = 'Chat + Agent Interactions (Audit Logs)'[Is_Sensitive]
+			RETURN
+			    IF(behavior IN {"Email Summarising","Email Triage","Email Thread Summary"}, "Time Saved (Email)",
+			    IF(behavior IN {"Meeting Prep","Video Summarising"}, "Time Saved (Meetings)",
+			    IF(behavior IN {"Document Summarising","Presentation Summarising","Note Taking"}, "Time Saved (Documents)",
+			    IF(behavior IN {"Web Searching","Enterprise Searching","File Retrieval","PDF Analysis","SharePoint Access","People Lookup","Agent: Knowledge Base"}, "Search Time Saved",
+			    IF(behavior IN {"Teams Messaging","Meeting Scheduling"}, "Communication Time Saved",
+			    IF(behavior IN {"Spreadsheet Review","Spreadsheet Analysis","Excel Assistance"}, "Spreadsheet Time Saved",
+			    IF(behavior IN {"Email Drafting","Document Drafting","Presentation Creation","Image Generation","Image / Media Analysis","Image/Media Analysis","Agent: Content Generation","Agent: Ideation & Creative"}, "Content Output",
+			    IF(behavior IN {"Real-time Collaboration","Form / Survey Work"}, "Team Collaboration",
+			    IF(behavior = "Running a Workflow" || env = "Cowork", "Workflow Automation",
+			    IF(behavior = "Task Management", "Task Coordination",
+			    IF(isSensitive && env <> "Agents" && env <> "Cowork", "Compliance & Risk",
+			    IF(behavior IN {"Data Querying","Agent: Data & Reporting","Agent: Research & Analysis"}, "Data-Driven Decisions",
+			    IF(behavior IN {"Code Writing","Code Analysis","Code Analysis (URL)"}, "Coding Capability",
+			    IF(behavior IN {"Agent: Coaching","Agent: Coaching (URL)"}, "Skills Development",
+			    IF(behavior = "Agent: Sales & Customer", "Revenue Enablement",
+			    IF(behavior = "Agent: IT & Service Desk", "Service Desk Deflection",
+			    IF(behavior = "Agent: Compliance & Policy", "Compliance & Risk",
+			    IF(behavior = "Agent: HR & People", "HR Expertise",
+			    IF(behavior IN {"Domain-Specific Agent","Cross-Org Agent"}, "Specialist Expertise",
+			    "General AI Productivity")))))))))))))))))))
+		dataType: string
+		lineageTag: ff030001-0001-0001-0001-000000000008
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Agent-name-based reclassification of generic Q&A into a specific agent category (needed for downstream logic)
+	column Behavior_Enriched =
+			VAR behavior = 'Chat + Agent Interactions (Audit Logs)'[Behavior_Category]
+			VAR agentName = LOWER('Chat + Agent Interactions (Audit Logs)'[AgentName])
+			VAR env = 'Chat + Agent Interactions (Audit Logs)'[Environment]
+			RETURN
+			    IF(env <> "Agents" && env <> "Cowork", behavior,
+			    IF(NOT(behavior IN {"General Q&A","M365 Chat Q&A","Teams Q&A","Browser Q&A","General Chat"}), behavior,
+			    IF(CONTAINSSTRING(agentName, "coach") || CONTAINSSTRING(agentName, "mentor") || CONTAINSSTRING(agentName, "learning") || CONTAINSSTRING(agentName, "career"), "Agent: Coaching",
+			    IF(CONTAINSSTRING(agentName, "research") || CONTAINSSTRING(agentName, "analyst") || CONTAINSSTRING(agentName, "analy"), "Agent: Research & Analysis",
+			    IF(CONTAINSSTRING(agentName, "sales") || CONTAINSSTRING(agentName, "commercial") || CONTAINSSTRING(agentName, "customer") || CONTAINSSTRING(agentName, "crm") || CONTAINSSTRING(agentName, "revenue"), "Agent: Sales & Customer",
+			    IF(CONTAINSSTRING(agentName, "hr") || CONTAINSSTRING(agentName, "recruit") || CONTAINSSTRING(agentName, "talent") || CONTAINSSTRING(agentName, "onboard") || CONTAINSSTRING(agentName, "people"), "Agent: HR & People",
+			    IF(CONTAINSSTRING(agentName, "policy") || CONTAINSSTRING(agentName, "compliance") || CONTAINSSTRING(agentName, "legal") || CONTAINSSTRING(agentName, "audit") || CONTAINSSTRING(agentName, "risk"), "Agent: Compliance & Policy",
+			    IF(CONTAINSSTRING(agentName, "service") || CONTAINSSTRING(agentName, "support") || CONTAINSSTRING(agentName, "help") || CONTAINSSTRING(agentName, "ticket") || CONTAINSSTRING(agentName, "incident"), "Agent: IT & Service Desk",
+			    IF(CONTAINSSTRING(agentName, "summar") || CONTAINSSTRING(agentName, "draft") || CONTAINSSTRING(agentName, "translat") || CONTAINSSTRING(agentName, "editor"), "Agent: Content Generation",
+			    IF(CONTAINSSTRING(agentName, "data") || CONTAINSSTRING(agentName, "report") || CONTAINSSTRING(agentName, "dashboard") || CONTAINSSTRING(agentName, "metric"), "Agent: Data & Reporting",
+			    IF(CONTAINSSTRING(agentName, "knowledge") || CONTAINSSTRING(agentName, "faq") || CONTAINSSTRING(agentName, "wiki") || CONTAINSSTRING(agentName, "buddy") || CONTAINSSTRING(agentName, "guide"), "Agent: Knowledge Base",
+			    IF(CONTAINSSTRING(agentName, "idea") || CONTAINSSTRING(agentName, "brainstorm") || CONTAINSSTRING(agentName, "creative") || CONTAINSSTRING(agentName, "design"), "Agent: Ideation & Creative",
+			    "Agent: General Purpose"))))))))))))
+		dataType: string
+		isHidden
+		lineageTag: ff030001-0001-0001-0001-000000000012
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Alias of User_Stage_Maturity. Points to the other column to avoid duplicate computation.
+	column User_Stage = 'Chat + Agent Interactions (Audit Logs)'[User_Stage_Maturity]
+		dataType: string
+		lineageTag: ff030001-0001-0001-0001-000000000013
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column AccessedResource_SensitivityLabelId
+		dataType: string
+		lineageTag: ff030001-0001-0001-0001-000000000019
+		summarizeBy: none
+		sourceColumn: AccessedResource_SensitivityLabelId
+
+		annotation SummarizationSetBy = Automatic
+
+	column WeekStart
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 120a5150-5b30-4d85-892c-8b604f4fa54e
+		summarizeBy: none
+		sourceColumn: WeekStart
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column InteractionDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 35fa7604-15bb-4d35-9c30-ed15e09a220b
+		summarizeBy: none
+		sourceColumn: InteractionDate
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column MonthStart
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 259ab0b4-609f-45d7-986a-919bc3627b3c
+		summarizeBy: none
+		sourceColumn: MonthStart
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	/// AI Usage Mode (5-stage maturity model)
+	/// 1-Asking → 2-Finding → 3-Consuming → 4-Producing → 5-Delegating
+	/// Asking      : general Q&A, no document grounding (entry point).
+	/// Finding     : retrieving info from systems (search, lookup).
+	/// Consuming   : digesting existing content (summarising, reviewing).
+	/// Producing   : creating output or specialist agent work.
+	/// Delegating  : handing tasks to autonomous agents or workflow systems
+	/// (env=Cowork, appHost=autonomous, Running a Workflow rows, or the agent
+	/// is registered as Autonomous/Workflow/Triggered in Agents 365).
+	/// 16 May 2026 — renamed Automating → Delegating. Tightened rule to drop Copilot Studio
+	/// authoring + DCA chats. Moved Note Taking, Teams Messaging, Meeting
+	/// Scheduling, Task Management to Producing. Added Sensitive Content
+	/// Interaction to Consuming.
+	/// 29 May 2026 — Tightened workflow signal: dropped bare appHost="logic app"
+	/// (was sweeping in tenant plumbing / scheduled syncs). Logic App rows now
+	/// only count when Behavior_Category classifies them as "Running a Workflow"
+	/// (i.e. they carry AgentName/AgentId). Bare connector/http rows now require
+	/// an action verb. A365 enrichment (agentTypeA365) remains optional and
+	/// additive — graceful when Agents 365 is not connected.
+	column Usage_Mode =
+			VAR behavior      = 'Chat + Agent Interactions (Audit Logs)'[Behavior_Enriched_Full]
+			VAR env           = 'Chat + Agent Interactions (Audit Logs)'[Environment]
+			VAR appHost       = LOWER('Chat + Agent Interactions (Audit Logs)'[AppHost])
+			-- Agents 365 enrichment (optional — degrades gracefully when A365 not connected)
+			VAR agentTypeA365 = IFERROR(RELATED('Agents 365'[Agent type (A365)]), BLANK())
+			VAR isDelegating =
+			       env = "Cowork"
+			    || appHost = "autonomous"
+			    || behavior = "Running a Workflow"
+			    || agentTypeA365 IN {"Autonomous", "Workflow", "Triggered"}
+			RETURN
+			    IF(isDelegating, "5 - Delegating",
+			    IF(behavior IN {"Email Drafting","Document Drafting","Presentation Creation","Image Generation","Code Writing","Code Analysis","Code Analysis (URL)","Data Querying","Spreadsheet Analysis","Excel Assistance","Agent: Content Generation","Agent: Ideation & Creative","Agent: Research & Analysis","Agent: Data & Reporting","Agent: Sales & Customer","Agent: HR & People","Agent: IT & Service Desk","Agent: Compliance & Policy","Agent: Coaching","Agent: Coaching (URL)","Domain-Specific Agent","Cross-Org Agent","Form / Survey Work","Real-time Collaboration","Note Taking","Teams Messaging","Meeting Scheduling","Task Management"}, "4 - Producing",
+			    IF(behavior IN {"Document Summarising","Email Summarising","Email Thread Summary","Email Triage","Presentation Summarising","Video Summarising","Meeting Prep","Image / Media Analysis","Image/Media Analysis","Sensitive Content Interaction"}, "3 - Consuming",
+			    IF(behavior IN {"Web Searching","Enterprise Searching","PDF Analysis","SharePoint Access","File Retrieval","People Lookup","Agent: Knowledge Base","Spreadsheet Review"}, "2 - Finding",
+			    "1 - Asking"))))
+		dataType: string
+		lineageTag: ff030001-0001-0001-0001-000000000020
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Skill role AI is augmenting — broader than the original specialist-only definition.
+	/// Covers comms, content, presentations, design, meetings, research, data, collaboration
+	/// in addition to the strict specialist roles. 20 distinct roles total.
+	/// Generic Q&A / chat catch-alls remain BLANK by design (no clear skill being augmented).
+	/// 16 May 2026 — Communications Specialist split: kept Email Drafting only.
+	/// Email Triage + Meeting Scheduling → Executive Assistant (new).
+	/// Email Summarising + Email Thread Summary → Researcher (synthesis joins doc summarising).
+	/// Teams Messaging → Collaboration Lead (coordination chat).
+	/// 17 May 2026 — Researcher split (was a 9-behaviour catch-all):
+	/// • Researcher (true synthesis) → Web Searching, PDF Analysis, Agent: Knowledge Base only
+	/// • Knowledge Navigator (NEW) → Enterprise Searching, SharePoint Access, File Retrieval, People Lookup
+	/// • Email Summarising + Email Thread Summary → Executive Assistant (inbox synthesis, joins triage + scheduling)
+	column Expertise_Role =
+			VAR behavior = 'Chat + Agent Interactions (Audit Logs)'[Behavior_Enriched_Full]
+			RETURN
+			    -- Specialist roles (strict — kept from original definition)
+			    IF(behavior IN {"Data Querying","Agent: Data & Reporting","Spreadsheet Analysis"}, "Data Analyst",
+			    IF(behavior IN {"Code Writing","Code Analysis","Code Analysis (URL)"}, "Software Engineer",
+			    IF(behavior IN {"Agent: Research & Analysis"}, "Business Analyst",
+			    IF(behavior IN {"Agent: Compliance & Policy","Sensitive Content Interaction"}, "Compliance Specialist",
+			    IF(behavior IN {"Agent: Sales & Customer"}, "Sales Consultant",
+			    IF(behavior IN {"Agent: IT & Service Desk"}, "IT Specialist",
+			    IF(behavior IN {"Agent: HR & People"}, "HR Specialist",
+			    IF(behavior IN {"Agent: Coaching","Agent: Coaching (URL)"}, "Coach",
+			    IF(behavior IN {"Running a Workflow","Task Management"}, "Automation Engineer",
+			    IF(behavior IN {"Domain-Specific Agent","Cross-Org Agent"}, "Domain Expert",
+			    -- Communications Specialist now narrow: drafting only (was a 5-behaviour catch-all)
+			    IF(behavior IN {"Email Drafting"}, "Communications Specialist",
+			    -- Executive Assistant (NEW): inbox triage + calendar admin + inbox synthesis (Email Summarising / Thread Summary moved here 17 May)
+			    IF(behavior IN {"Email Triage","Meeting Scheduling","Email Summarising","Email Thread Summary"}, "Executive Assistant",
+			    -- Content Writer
+			    IF(behavior IN {"Document Drafting","Agent: Content Generation","Note Taking","Document Summarising"}, "Content Writer",
+			    IF(behavior IN {"Presentation Creation","Presentation Summarising"}, "Presentation Designer",
+			    IF(behavior IN {"Image Generation","Image/Media Analysis","Image / Media Analysis","Agent: Ideation & Creative"}, "Visual Designer",
+			    -- Meeting Coordinator (Scheduling moved to Executive Assistant)
+			    IF(behavior IN {"Meeting Prep","Video Summarising"}, "Meeting Coordinator",
+			    -- Researcher (TIGHTENED 17 May): true synthesis / external research / curated KB only
+			    IF(behavior IN {"Web Searching","PDF Analysis","Agent: Knowledge Base"}, "Researcher",
+			    -- Knowledge Navigator (NEW 17 May): internal information retrieval — finding what / who / where
+			    IF(behavior IN {"Enterprise Searching","SharePoint Access","File Retrieval","People Lookup"}, "Knowledge Navigator",
+			    IF(behavior IN {"Spreadsheet Review","Excel Assistance"}, "Spreadsheet Specialist",
+			    -- Collaboration Lead (now includes Teams Messaging — coordination chat)
+			    IF(behavior IN {"Real-time Collaboration","Form / Survey Work","Form/Survey Work","Teams Messaging"}, "Collaboration Lead",
+			    BLANK()))))))))))))))))))))
+		dataType: string
+		lineageTag: ff030001-0001-0001-0001-000000000095
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Efficiency breakdown: where is time being saved?
+	/// Revised Efficiency Breakdown: 12 categories validated across 4 datasets
+	column Efficiency_Breakdown =
+			VAR behavior = 'Chat + Agent Interactions (Audit Logs)'[Behavior_Enriched_Full]
+			VAR cat = 'Chat + Agent Interactions (Audit Logs)'[Behavior_Category]
+			RETURN
+			    IF(behavior IN {"Email Summarising","Email Triage","Email Thread Summary","Email Drafting"}, "Email",
+			    IF(behavior IN {"Document Summarising","Note Taking","Document Drafting","Agent: Content Generation"}, "Document Assistance",
+			    IF(behavior IN {"Presentation Summarising","Presentation Creation"}, "Presentations",
+			    IF(behavior IN {"Meeting Prep","Video Summarising","Meeting Scheduling"}, "Meetings",
+			    IF(behavior IN {"Web Searching","Enterprise Searching","PDF Analysis","SharePoint Access","File Retrieval","People Lookup","Agent: Knowledge Base","Agent: Research & Analysis"}, "Search & Research",
+			    IF(behavior IN {"Spreadsheet Review","Excel Assistance","Spreadsheet Analysis","Data Querying","Agent: Data & Reporting"}, "Data & Spreadsheets",
+			    IF(behavior IN {"Image Generation","Image / Media Analysis","Image/Media Analysis","Agent: Ideation & Creative","Code Writing","Code Analysis","Code Analysis (URL)"}, "Creative & Technical",
+			    IF(behavior IN {"Teams Messaging","Real-time Collaboration","Form / Survey Work","Task Management","Running a Workflow"}, "Collaboration & Workflows",
+			    IF(behavior IN {"Agent: Sales & Customer","Agent: IT & Service Desk","Agent: HR & People","Agent: Compliance & Policy","Agent: Coaching","Agent: Coaching (URL)","Domain-Specific Agent","Cross-Org Agent"}, "Specialist Agents",
+			    IF(cat = "Teams Q&A", "Teams Chat",
+			    IF(cat = "M365 Chat Q&A", "BizChat Q&A",
+			    IF(cat = "Browser Q&A", "BizChat Q&A",
+			    "General Q&A"))))))))))))
+		dataType: string
+		lineageTag: ff030001-0001-0001-0001-000000000096
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column AppIdentity_AppId
+		dataType: string
+		isHidden
+		lineageTag: 120264b3-d8cc-47e6-8d80-aa66d06d0e2d
+		summarizeBy: none
+		sourceColumn: AppIdentity_AppId
+
+		annotation SummarizationSetBy = Automatic
+
+	column AppIdentity_DisplayName
+		dataType: string
+		isHidden
+		lineageTag: 6e5c1eae-fb67-4d5b-a812-c72269d13af2
+		summarizeBy: none
+		sourceColumn: AppIdentity_DisplayName
+
+		annotation SummarizationSetBy = Automatic
+
+	column ApplicationName
+		dataType: string
+		isHidden
+		lineageTag: 039ae66d-de5e-413b-b647-5602bdecf338
+		summarizeBy: none
+		sourceColumn: ApplicationName
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Date-only copy of InteractionDate used for the Calendar relationship (lower cardinality than raw datetime)
+	column ActivityDate = 'Chat + Agent Interactions (Audit Logs)'[InteractionDate]
+		dataType: dateTime
+		isHidden
+		formatString: General Date
+		lineageTag: 23423086-31bb-4769-bba6-455d200862c5
+		summarizeBy: none
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'License Status' =
+			VAR LicenseVal = UPPER(TRIM('Chat + Agent Interactions (Audit Logs)'[Has license]))
+			RETURN
+			IF(
+			    LicenseVal = "YES" || LicenseVal = "TRUE" || LicenseVal = "Y" || LicenseVal = "1",
+			    "M365 Copilot Licensed",
+			    "Unlicensed"
+			)
+		dataType: string
+		lineageTag: a6863ae7-217a-49f5-805c-62ef4677c5d0
+		summarizeBy: none
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Environment — licence-first 3-way bucketing of every audit row.
+	/// Cowork     : Microsoft Copilot Cowork feature only (literal "cowork" in AgentName).
+	/// Tiny niche cohort, kept separate so it can appear in the autonomy mix.
+	/// Licensed   : ANY activity by a licensed Copilot user (chat OR agent OR workflow).
+	/// Unlicensed : ANY activity by a user without a Copilot license (chat OR agent OR workflow).
+	/// 
+	/// Agent / workflow / autonomous activity is now captured by the companion
+	/// `Is_Agent_Activity` boolean column so it can overlap with Licensed / Unlicensed
+	/// (a licensed user running a workflow is BOTH Licensed AND an Agent row).
+	/// 
+	/// 17 May 2026 — switched from 4-way mutually-exclusive to licence-first 3-way.
+	/// Previously a licensed user's workflow row was forced into "Agents" and disappeared
+	/// from the "Licensed" slicer; Activity Breakdown treemap visibly lost the entire
+	/// "Running a Workflow" block when clicking Licensed. Use [Is_Agent_Activity] for any
+	/// measure / slicer / visual that needs to filter agent rows.
+	column Environment = ```
+			
+			    VAR agentName  = LOWER(TRIM('Chat + Agent Interactions (Audit Logs)'[AgentName]))
+			    VAR license    = UPPER(TRIM('Chat + Agent Interactions (Audit Logs)'[Has license]))
+			    VAR isLicensed = license IN {"YES","TRUE","Y","1"}
+			    RETURN
+			        IF(CONTAINSSTRING(agentName, "cowork"),  "Cowork",
+			        IF(isLicensed,                            "Licensed",
+			                                                  "Unlicensed"))
+			
+			```
+		dataType: string
+		lineageTag: ff030001-0001-0001-0001-000000000004
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Is_Sensitive =
+			(NOT(ISBLANK('Chat + Agent Interactions (Audit Logs)'[SensitivityLabelId])) && 'Chat + Agent Interactions (Audit Logs)'[SensitivityLabelId] <> "")
+			|| (NOT(ISBLANK('Chat + Agent Interactions (Audit Logs)'[AccessedResource_SensitivityLabelId])) && 'Chat + Agent Interactions (Audit Logs)'[AccessedResource_SensitivityLabelId] <> "")
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: ff030001-0001-0001-0001-000000000006
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Human-readable AI model label based on ModelTransparencyDetails
+	column AI_Model =
+			VAR modelName = UPPER('Chat + Agent Interactions (Audit Logs)'[ModelTransparencyDetails_ModelName])
+			RETURN
+			    IF(ISBLANK(modelName) || modelName = "NULL" || modelName = "", "Embedded App (no model logged)",
+			    IF(CONTAINSSTRING(modelName, "DEEP_LEO"), "GPT-4 (Standard)",
+			    IF(CONTAINSSTRING(modelName, "REASONING"), "Reasoning Model (o1/o3)",
+			    IF(CONTAINSSTRING(modelName, "OFFENSIVE"), "Safety Filter (blocked)",
+			    IF(CONTAINSSTRING(modelName, "GPT-41") || CONTAINSSTRING(modelName, "GPT-4.1"), "GPT-4.1 (Next Gen)",
+			    IF(CONTAINSSTRING(modelName, "O3-MINI") || CONTAINSSTRING(modelName, "O3MINI"), "o3-mini (Reasoning)",
+			    IF(CONTAINSSTRING(modelName, "O3") || CONTAINSSTRING(modelName, "O1"), "Reasoning Model (o-series)",
+			    IF(CONTAINSSTRING(modelName, "GPT-5") || CONTAINSSTRING(modelName, "GPT5"), "GPT-5 (Next Gen)",
+			    IF(CONTAINSSTRING(modelName, "CLAUDE"), "Claude (Anthropic)",
+			    IF(CONTAINSSTRING(modelName, "GEMINI"), "Gemini (Google)",
+			    IF(CONTAINSSTRING(modelName, "LLAMA") || CONTAINSSTRING(modelName, "META"), "LLaMA (Meta)",
+			    IF(CONTAINSSTRING(modelName, "PHI"), "Phi (Microsoft Small Model)",
+			    modelName))))))))))))
+		dataType: string
+		lineageTag: ff030001-0001-0001-0001-000000000178
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Frontier Firm Autonomy Pattern. Mutually-exclusive partition of activity for autonomy mix charts.
+	/// Cowork wins, then Agent (Is_Agent_Activity flag), then Licensed chat-only, else BLANK (unlicensed).
+	column Autonomy_Pattern =
+			SWITCH(TRUE(),
+			    'Chat + Agent Interactions (Audit Logs)'[Environment] = "Cowork",            "3 - Cowork",
+			    'Chat + Agent Interactions (Audit Logs)'[Is_Agent_Activity] = TRUE(),        "2 - Agent-Assisted",
+			    'Chat + Agent Interactions (Audit Logs)'[Environment] = "Licensed",          "1 - Copilot",
+			    BLANK()
+			)
+		dataType: string
+		lineageTag: ff0d0001-0001-0001-0001-000000000010
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Composite key (UserId|YYYY-MM) for joining to UserMonthMetrics — computed in DAX, not M
+	column UserMonthKey =
+			'Chat + Agent Interactions (Audit Logs)'[Audit_UserId] & "|" &
+			FORMAT('Chat + Agent Interactions (Audit Logs)'[MonthStart], "yyyy-MM")
+		dataType: string
+		isHidden
+		lineageTag: ff030001-0001-0001-0001-000000000200
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Web_Grounded_Signal = ```
+			
+			    VAR resType    = LOWER('Chat + Agent Interactions (Audit Logs)'[AccessedResource_Type])
+			    VAR siteUrl    = LOWER('Chat + Agent Interactions (Audit Logs)'[AccessedResource_SiteUrl])
+			    VAR isInternal = CONTAINSSTRING(siteUrl, "sharepoint.com") || CONTAINSSTRING(siteUrl, ".onmicrosoft.com")
+			    RETURN
+			        IF(
+			            resType = "websearchquery"
+			            || resType IN {"external","http"}
+			            || (resType = "http://schema.skype.com/hyperlink" && NOT isInternal),
+			            "Web Grounded",
+			            "Not Web Grounded"
+			        )
+			```
+		lineageTag: 07c188c3-7054-44e8-a445-e3c3a2d7a53c
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Behavior_Plausible = ```
+			
+			    VAR lic = 'Chat + Agent Interactions (Audit Logs)'[License Status]
+			    VAR beh = 'Chat + Agent Interactions (Audit Logs)'[Behavior_Category]
+			    VAR UnlicensedPlausible = {
+			        "General Chat",
+			        "Web Searching",
+			        "PDF Analysis",
+			        "Document Summarising",
+			        "Image / Media Analysis",
+			        "Image Generation",
+			        "Code Analysis",
+			        "Translation"
+			    }
+			    RETURN
+			        IF(
+			            lic = "M365 Copilot Licensed" || beh IN UnlicensedPlausible,
+			            beh,
+			            SWITCH(
+			                TRUE(),
+			                beh IN {"Email Summarising", "Email Drafting"},                 "Free Chat Workaround (pasting Email)",
+			                beh IN {"Excel Assistance", "Spreadsheet Review", "Data Querying"}, "Free Chat Workaround (pasting Spreadsheet/Data)",
+			                beh IN {"Meeting Prep", "Meeting Scheduling"},                  "Free Chat Workaround (pasting Meeting info)",
+			                beh = "Teams Messaging",                                        "Free Chat Workaround (pasting Teams content)",
+			                beh IN {"Enterprise Searching", "People Lookup"},               "Free Chat Workaround (pasting Enterprise data)",
+			                beh IN {"Running a Workflow", "Task Management"},               "Free Chat Workaround (pasting Workflow)",
+			                beh = "Real-time Collaboration",                                "Free Chat Workaround (pasting Loop content)",
+			                beh = "Code Writing",                                           "Free Chat Workaround (pasting Code)",
+			                beh = "Video Summarising",                                      "Free Chat Workaround (uploading Video)",
+			                "Free Chat Workaround (Other)"
+			            )
+			        )
+			
+			```
+		lineageTag: 4fd75001-ae51-4382-861f-12ca79d07d41
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Drill-down for "Running a Workflow" rows — what is the workflow actually doing?
+	/// BLANK for all non-workflow rows. Categorises the AccessedResource_Action verb
+	/// into 7 buckets so the Agents cohort can be broken down by workflow purpose
+	/// (Sending, Creating, Invoking, Updating, Reading, Deleting, or Other).
+	/// AppHost is used as a last-resort splitter when no action verb is logged.
+	column Workflow_Action =
+			VAR behavior  = 'Chat + Agent Interactions (Audit Logs)'[Behavior_Enriched_Full]
+			VAR resAction = LOWER('Chat + Agent Interactions (Audit Logs)'[AccessedResource_Action])
+			VAR appHost   = LOWER('Chat + Agent Interactions (Audit Logs)'[AppHost])
+			RETURN
+			    IF(behavior <> "Running a Workflow", "",
+			    IF(CONTAINSSTRING(resAction, "send")   || CONTAINSSTRING(resAction, "post")    || CONTAINSSTRING(resAction, "notify"),  "Sending / Notifying",
+			    IF(CONTAINSSTRING(resAction, "create") || CONTAINSSTRING(resAction, "draft")   || CONTAINSSTRING(resAction, "write")   || CONTAINSSTRING(resAction, "add"),    "Creating Content",
+			    IF(CONTAINSSTRING(resAction, "invoke") || CONTAINSSTRING(resAction, "execute") || CONTAINSSTRING(resAction, "trigger") || CONTAINSSTRING(resAction, "run"),    "Invoking / Triggering",
+			    IF(CONTAINSSTRING(resAction, "update") || CONTAINSSTRING(resAction, "patch")   || CONTAINSSTRING(resAction, "modify")  || CONTAINSSTRING(resAction, "set"),    "Updating Records",
+			    IF(CONTAINSSTRING(resAction, "read")   || CONTAINSSTRING(resAction, "get")    || CONTAINSSTRING(resAction, "list")    || CONTAINSSTRING(resAction, "fetch"),  "Reading Data",
+			    IF(CONTAINSSTRING(resAction, "delete") || CONTAINSSTRING(resAction, "remove"),                                                                                "Deleting / Removing",
+			    IF(appHost = "autonomous",                                                                                                                                    "Autonomous Run (no action logged)",
+			    IF(appHost = "logic app",                                                                                                                                     "Logic App Run (no action logged)",
+			    "Workflow (other)")))))))))
+		dataType: string
+		lineageTag: ff030001-0001-0001-0001-000000000202
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Is_Agent_Activity — TRUE for any agent / autonomous / workflow audit row,
+	/// regardless of who ran it. Lets the Agents cohort overlap with Licensed / Unlicensed
+	/// in slicers and measures (a licensed user's workflow run is BOTH Licensed AND Agent).
+	/// 
+	/// TRUE when ANY of:
+	/// - AgentName is populated, OR
+	/// - AgentId is populated, OR
+	/// - AppHost IN {autonomous, logic app}, OR
+	/// - AccessedResource_Type IN {flow, connector}
+	/// 
+	/// Note: Cowork rows have AgentName containing "cowork", so Is_Agent_Activity is also
+	/// TRUE for Cowork rows (Cowork ⊂ Agents conceptually).
+	column Is_Agent_Activity = ```
+			
+			    VAR hasAgent     = NOT(ISBLANK('Chat + Agent Interactions (Audit Logs)'[AgentName])) && TRIM('Chat + Agent Interactions (Audit Logs)'[AgentName]) <> ""
+			    VAR hasAgentId   = NOT(ISBLANK('Chat + Agent Interactions (Audit Logs)'[AgentId]))   && TRIM('Chat + Agent Interactions (Audit Logs)'[AgentId])   <> ""
+			    VAR appHost      = LOWER('Chat + Agent Interactions (Audit Logs)'[AppHost])
+			    VAR resType      = LOWER('Chat + Agent Interactions (Audit Logs)'[AccessedResource_Type])
+			    VAR isAutonomous = appHost IN {"autonomous", "logic app"} || resType IN {"flow", "connector"}
+			    RETURN IF(hasAgent || hasAgentId || isAutonomous, TRUE(), FALSE())
+			
+			```
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: ff030001-0001-0001-0001-000000000005
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Agent Filter — slicer-friendly label derived from Is_Agent_Activity.
+	/// Returns "Agents" for any agent / autonomous / workflow / cowork row, BLANK otherwise.
+	/// Use as the binding column for a single-tile "Agents" slicer on report pages.
+	/// BLANK rows are hidden by Power BI by default in slicers, so a tile-style slicer
+	/// shows exactly one button labelled "Agents".
+	column 'Agent Filter' = IF('Chat + Agent Interactions (Audit Logs)'[Is_Agent_Activity] = TRUE(), "Agents", BLANK())
+		dataType: string
+		lineageTag: ff030001-0001-0001-0001-000000000a07
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Agent Publish Status — strict published-agent classification using AUDIT LOGS ONLY.
+	/// Use in the filter pane to include / exclude unpublished agents on agent-focused pages.
+	/// 17 May 2026 — rebuilt from scratch. No A365 dependency. No activity gate.
+	/// 
+	/// Rule (intentionally simple and audit-log only):
+	/// 1. AgentId must be populated  (the row IS an agent invocation, not chat / workflow / autonomous flow)
+	/// 2. AgentName must NOT contain "draft as 1p"  (excludes Copilot Studio "Draft as 1P Agent" preview runs)
+	/// 
+	/// Why this works:
+	/// • AgentId is the strongest "this row is an agent" signal in the audit log — chat rows,
+	/// workflow rows, and autonomous flow rows leave it blank.
+	/// • "Draft as 1P Agent" is Copilot Studio's preview-as-1P feature. The preview session
+	/// gets an AgentId AND a populated Agent_TitleID, so the old Title-ID-based rule
+	/// couldn't see it. The agent's NAME is the only unique tell, so we exclude by name.
+	/// 
+	/// Returns one of three values per audit row:
+	/// "Published"        — AgentId populated AND AgentName <> "Draft as 1P Agent" (live, real agent)
+	/// "Unpublished"      — AgentId populated AND AgentName CONTAINS "draft as 1p" (preview / draft)
+	/// "Not an Agent Row" — AgentId blank (chat, workflow trigger, autonomous flow, or other non-agent row)
+	/// 
+	/// Default behaviour: all three are visible. To hide unpublished agents on a page,
+	/// add this column to the filter pane → untick "Unpublished" (leave "Published" and
+	/// "Not an Agent Row" ticked so chat activity is not accidentally hidden).
+	/// 
+	/// If you discover other draft / preview agent name patterns in your tenant, extend the
+	/// `isDraft` CONTAINSSTRING check below (one substring per OR clause).
+	column 'Agent Publish Status' =
+			VAR agentId   = 'Chat + Agent Interactions (Audit Logs)'[AgentId]
+			VAR agentName = LOWER(TRIM('Chat + Agent Interactions (Audit Logs)'[AgentName]))
+			VAR hasAgentId = NOT(ISBLANK(agentId)) && TRIM(agentId) <> ""
+			VAR isDraft   = CONTAINSSTRING(agentName, "draft as 1p")
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        NOT(hasAgentId),  "Not an Agent Row",
+			        isDraft,          "Unpublished",
+			        "Published"
+			    )
+		dataType: string
+		lineageTag: ff030001-0001-0001-0001-000000000a08
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Resource_Count
+		dataType: int64
+		formatString: 0
+		lineageTag: 7c82c9cb-70e6-4293-8688-13ffe16bbe15
+		summarizeBy: sum
+		sourceColumn: Resource_Count
+
+		annotation SummarizationSetBy = Automatic
+
+	column Audit_UserKey
+		dataType: string
+		lineageTag: 5e9153ec-09c1-42f8-96c4-ffb8a7a0f806
+		summarizeBy: none
+		sourceColumn: Audit_UserKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column Workload
+		dataType: string
+		lineageTag: e4f651c7-0cf7-42a0-a2b0-afa5b674e546
+		summarizeBy: none
+		sourceColumn: Workload
+
+		annotation SummarizationSetBy = Automatic
+
+	column ClientRegion
+		dataType: string
+		lineageTag: 59a534d0-651b-49d6-bba5-9dee15306146
+		summarizeBy: none
+		sourceColumn: ClientRegion
+
+		annotation SummarizationSetBy = Automatic
+
+	/// 29 May 2026 — Row-level delegation event identifier.
+	/// One row = one delegated act of work. Aggregated by [Delegation Events]
+	/// (DISTINCTCOUNT) to give a behavioural count of "AI did work on my behalf"
+	/// rather than the inflated event-row count from the audit feed.
+	/// Composite of user + day + agent/workflow/host so that repeated triggers
+	/// of the same workflow on the same day for the same user collapse to one.
+	column Delegation_Event_Key =
+			'Chat + Agent Interactions (Audit Logs)'[Audit_UserId] & "|" &
+			FORMAT('Chat + Agent Interactions (Audit Logs)'[InteractionDate], "yyyy-mm-dd") & "|" &
+			COALESCE(
+			    'Chat + Agent Interactions (Audit Logs)'[AgentName],
+			    'Chat + Agent Interactions (Audit Logs)'[Workflow_Action],
+			    'Chat + Agent Interactions (Audit Logs)'[AppHost],
+			    "unknown-workflow"
+			)
+		dataType: string
+		isHidden
+		lineageTag: 79b4407c-bb2b-4fee-a270-ce9d1e72b60f
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	hierarchy 'Value_Outcome Hierarchy'
+		lineageTag: 32c2c649-b74e-4956-bff7-559d24a67fd9
+
+		level Value_Outcome
+			lineageTag: 97e316e7-d38e-4173-bae1-33318dff2696
+			column: Value_Outcome
+
+		level Behavior
+			lineageTag: c1d964dc-0f31-4e8e-b174-bc0b9fcd6e2d
+			column: Behavior_Enriched_Full
+
+	partition 'Chat + Agent Interactions (Audit Logs)' = m
+		mode: import
+		source =
+				let
+				    #"Promoted Headers" = FabricTable("Copilot_Interactions_Parsed"),
+				
+				    #"Add Message_isPrompt"        = Table.AddColumn(#"Promoted Headers",        "Message_isPrompt",                    each "TRUE", type text),
+				    #"Add ApplicationName"         = Table.AddColumn(#"Add Message_isPrompt",     "ApplicationName",                     each null, type text),
+				    #"Add Audit_UserKey"           = Table.AddColumn(#"Add ApplicationName",      "Audit_UserKey",                       each null, type text),
+				    #"Add SensitivityLabelId"      = Table.AddColumn(#"Add Audit_UserKey",        "SensitivityLabelId",                  each null, type text),
+				    #"Add AR_SensLabel"            = Table.AddColumn(#"Add SensitivityLabelId",   "AccessedResource_SensitivityLabelId", each null, type text),
+				
+				    #"Add AppIdentity_AppId"       = Table.AddColumn(#"Add AR_SensLabel",          "AppIdentity_AppId",       each null, type text),
+				    #"Add AppIdentity_DisplayName" = Table.AddColumn(#"Add AppIdentity_AppId",    "AppIdentity_DisplayName", each try Text.From([AppIdentity]) otherwise null, type text),
+				    #"Drop AppIdentity"            = Table.RemoveColumns(#"Add AppIdentity_DisplayName", {"AppIdentity"}, MissingField.Ignore),
+				
+				    #"Parse AR" = Table.AddColumn(#"Drop AppIdentity", "_resources", each
+				        let
+				            raw    = [AccessedResources],
+				            parsed = if raw = null or raw = "" then null else try Json.Document(raw) otherwise null,
+				            asList = if parsed is list then parsed
+				                     else if parsed is record then {parsed}
+				                     else {[Type = null, Action = null, SiteUrl = null]},
+				            safe   = if List.Count(asList) > 0 then asList else {[Type = null, Action = null, SiteUrl = null]}
+				        in safe),
+				    #"Drop AR Original" = Table.RemoveColumns(#"Parse AR", {"AccessedResources"}, MissingField.Ignore),
+				    #"Expand AR Rows"   = Table.ExpandListColumn(#"Drop AR Original", "_resources"),
+				    #"Expand AR Cols"   = Table.ExpandRecordColumn(#"Expand AR Rows", "_resources",
+				        {"Type", "Action", "SiteUrl"},
+				        {"AccessedResource_Type", "AccessedResource_Action", "AccessedResource_SiteUrl"}),
+				
+				    #"Parse Plugin" = Table.AddColumn(#"Expand AR Cols", "_plugin", each
+				        let
+				            raw    = [AISystemPlugin],
+				            parsed = if raw = null or raw = "" then null else try Json.Document(raw) otherwise null,
+				            single = if parsed is list and List.Count(parsed) > 0 then parsed{0}
+				                     else if parsed is record then parsed
+				                     else [Id = null, Name = null]
+				        in single),
+				    #"Drop Plugin Original" = Table.RemoveColumns(#"Parse Plugin", {"AISystemPlugin"}, MissingField.Ignore),
+				    #"Expand Plugin"        = Table.ExpandRecordColumn(#"Drop Plugin Original", "_plugin",
+				        {"Id", "Name"},
+				        {"AISystemPlugin_Id", "AISystemPlugin_Name"}),
+				
+				    #"Typed CreationDate" = Table.TransformColumnTypes(#"Expand Plugin", {{"CreationDate", type datetime}}, "en-US"),
+				
+				    #"Drop Existing Date Cols" = Table.RemoveColumns(#"Typed CreationDate", {"InteractionDate", "WeekStart", "MonthStart"}, MissingField.Ignore),
+				    #"Add InteractionDate" = Table.AddColumn(#"Drop Existing Date Cols", "InteractionDate", each try DateTime.Date([CreationDate]) otherwise null, type date),
+				    #"Add WeekStart" = Table.AddColumn(#"Add InteractionDate", "WeekStart", each try Date.StartOfWeek([InteractionDate], Day.Monday) otherwise null, type date),
+				    #"Add MonthStart" = Table.AddColumn(#"Add WeekStart", "MonthStart", each try Date.StartOfMonth([InteractionDate]) otherwise null, type date),
+				
+				    #"Add Resource Count" =
+				        if Table.HasColumns(#"Add MonthStart", "Resource_Count")
+				        then Table.TransformColumnTypes(#"Add MonthStart", {{"Resource_Count", Int64.Type}})
+				        else Table.AddColumn(#"Add MonthStart", "Resource_Count", each 1, Int64.Type),
+				
+				    #"Normalize UPN" = Table.AddColumn(#"Add Resource Count", "_NormUPN", each
+				        if Table.HasColumns(#"Add Resource Count", "Audit_UserId_Normalized")
+				        then [Audit_UserId_Normalized]
+				        else try Text.Lower(Text.Trim(Text.From([Audit_UserId]))) otherwise null,
+				        type text),
+				
+				    #"Merged Licenses" = Table.NestedJoin(#"Normalize UPN", {"_NormUPN"}, #"Copilot Licensed", {"UPN_Normalized"}, "LicenseInfo", JoinKind.LeftOuter),
+				    #"Expanded License" = Table.ExpandTableColumn(#"Merged Licenses", "LicenseInfo", {"Has license"}, {"Has license"}),
+				
+				    #"Compute Agent_TitleID" = Table.AddColumn(#"Expanded License", "_Agent_TitleID_New", each
+				        let
+				            existing = if Table.HasColumns(#"Expanded License", "Agent_TitleID")
+				                       then (try Text.Trim(Text.From([Agent_TitleID])) otherwise null)
+				                       else null,
+				            aid = if [AgentId] = null then null else Text.Trim(Text.From([AgentId])),
+				            dot = if aid = null then -1 else Text.PositionOf(aid, ".")
+				        in
+				            if existing <> null and existing <> "" then existing
+				            else if aid = null or aid = "" then null
+				            else if dot < 0 then aid
+				            else Text.Start(aid, dot),
+				        type text),
+				    #"Drop Old Agent_TitleID" = Table.RemoveColumns(#"Compute Agent_TitleID", {"Agent_TitleID"}, MissingField.Ignore),
+				    #"Rename Agent_TitleID"   = Table.RenameColumns(#"Drop Old Agent_TitleID", {{"_Agent_TitleID_New", "Agent_TitleID"}}),
+				
+				    #"Final" = Table.RemoveColumns(#"Rename Agent_TitleID", {"_NormUPN", "Audit_UserId_Normalized"}, MissingField.Ignore)
+				in
+				    #"Final"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

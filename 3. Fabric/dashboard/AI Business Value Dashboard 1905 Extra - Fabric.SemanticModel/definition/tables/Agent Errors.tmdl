@@ -1,0 +1,78 @@
+/// One row per ErrorTraceData event seen in a Copilot Studio transcript.
+/// Joined to Agent Sessions by conversation_id. Built by parse_copilot_transcripts.py.
+table 'Agent Errors'
+	lineageTag: ag0003er-0001-0001-0001-000000000001
+
+	measure 'Total Errors' = COUNTROWS('Agent Errors')
+		formatString: #,0
+		displayFolder: 🚨 Errors
+		lineageTag: ag0003er-meas-0001-000000000001
+
+	column conversation_id
+		dataType: string
+		lineageTag: ag0003er-col0-0001-000000000001
+		summarizeBy: none
+		sourceColumn: conversation_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column error_timestamp_utc
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: ag0003er-col0-0001-000000000002
+		summarizeBy: none
+		sourceColumn: error_timestamp_utc
+
+		annotation SummarizationSetBy = Automatic
+
+	column error_code
+		dataType: string
+		lineageTag: ag0003er-col0-0001-000000000003
+		summarizeBy: none
+		sourceColumn: error_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column error_sub_code
+		dataType: string
+		lineageTag: ag0003er-col0-0001-000000000004
+		summarizeBy: none
+		sourceColumn: error_sub_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column error_message
+		dataType: string
+		lineageTag: ag0003er-col0-0001-000000000005
+		summarizeBy: none
+		sourceColumn: error_message
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_user_error
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: ag0003er-col0-0001-000000000006
+		summarizeBy: none
+		sourceColumn: is_user_error
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Agent Errors' = m
+		mode: import
+		source =
+				let
+				    Promoted = if Enable_Dataverse then (try FabricTable("agent_errors") otherwise EmptyTable({"conversation_id", "error_timestamp_utc", "error_code", "error_sub_code", "error_message", "is_user_error"})) else EmptyTable({"conversation_id", "error_timestamp_utc", "error_code", "error_sub_code", "error_message", "is_user_error"}),
+				    Typed = Table.TransformColumnTypes(Promoted, {
+				        {"conversation_id", type text},
+				        {"error_timestamp_utc", type datetime},
+				        {"error_code", type text},
+				        {"error_sub_code", type text},
+				        {"error_message", type text},
+				        {"is_user_error", type logical}
+				    })
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

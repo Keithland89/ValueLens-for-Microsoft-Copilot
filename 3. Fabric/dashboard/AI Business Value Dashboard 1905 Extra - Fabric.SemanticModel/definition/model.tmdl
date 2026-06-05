@@ -1,0 +1,46 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-GB
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["Fabric SQL Endpoint","Lakehouse Name","FabricTable","Chat + Agent Interactions (Audit Logs)","Copilot Licensed","Chat + Agent Org Data","Agents 365","Agent 365","Behavior Value Map","Human Time Estimates","Augmented Skills Map","Task Value Mapping","Agent Catalogue","Agent Sessions","Agent Turns","Agent Errors","Agent Sub-Agent Calls","ProductFeedback","Agent Performance"]
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_ProTooling = ["MCP-PBIModeling","DevMode","TMDL-Extension"]
+
+ref table 'Chat + Agent Interactions (Audit Logs)'
+ref table 'Copilot Licensed'
+ref table 'Chat + Agent Org Data'
+ref table ActiveDaysSummary
+ref table Calendar
+ref table 'Unlicensed Chat User Rankings'
+ref table 'Licensed Chat User Summary'
+ref table 'Licensed Chat User Rankings'
+ref table 'Agents 365'
+ref table '📖 Metric Glossary'
+ref table 'Behavior Value Map'
+ref table 'Heatmap Toggle'
+ref table 'Human Time Estimates'
+ref table 'Augmented Skills Map'
+ref table UserMonthMetrics
+ref table Headlines
+ref table 'AI PPUPM'
+ref table 'Hourly Value'
+ref table 'Penalty Factor'
+ref table 'Task Value Mapping'
+ref table 'License Status (Legend)'
+ref table 'Activity (Legend)'
+ref table 'Agent Catalogue'
+ref table 'Agent Sessions'
+ref table 'Agent Turns'
+ref table 'Agent Errors'
+ref table 'Agent Sub-Agent Calls'
+ref table ProductFeedback
+ref table 'Agent Performance'
+
+ref cultureInfo en-US
+
