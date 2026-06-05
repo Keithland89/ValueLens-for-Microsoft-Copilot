@@ -28,8 +28,34 @@ table 'Agent Sessions'
 		formatString: #,0
 		displayFolder: 🤖 Agent Performance
 		lineageTag: ag0001se-meas-0001-000000000004
-
 		annotation PBI_FormatHint = {"isDecimal":true}
+
+	/// Resolves each credit session's user (AAD objectId in user_id_hash) to an Organization. Unmatched
+	/// users surface as "(Unmapped)" so cross-tenant / cross-environment identity mismatches are visible
+	/// instead of silently inflating every org's share; matched users with no department show "(No Department)".
+	column 'Credit User Org' = IF ( NOT ISEMPTY ( FILTER ( 'Chat + Agent Org Data', 'Chat + Agent Org Data'[id] = 'Agent Sessions'[user_id_hash] ) ), COALESCE ( LOOKUPVALUE ( 'Chat + Agent Org Data'[Organization], 'Chat + Agent Org Data'[id], 'Agent Sessions'[user_id_hash] ), "(No Department)" ), "(Unmapped)" )
+		lineageTag: ag0001se-col0-credituserorg01
+		summarizeBy: none
+		dataType: string
+
+	/// Credit units that could NOT be attributed to any organization (user objectId absent from Org data).
+	measure 'Unmapped Credit Units' = CALCULATE ( [Total Cost Units], 'Agent Sessions'[Credit User Org] = "(Unmapped)" )
+		formatString: #,0
+		displayFolder: 💳 Credits
+		lineageTag: ag0001se-meas-unmappedcu01
+
+	/// Share of credit units not attributed to an org. High => identity mismatch (transcripts from a
+	/// different environment/tenant than the Entra org data).
+	measure 'Unmapped Credit %' = DIVIDE ( [Unmapped Credit Units], [Total Cost Units] )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 💳 Credits
+		lineageTag: ag0001se-meas-unmappedpct1
+
+	/// Credit units successfully attributed to an organization.
+	measure 'Mapped Credit Units' = [Total Cost Units] - [Unmapped Credit Units]
+		formatString: #,0
+		displayFolder: 💳 Credits
+		lineageTag: ag0001se-meas-mappedcu01
 
 	/// Mean cost per conversation.
 	measure 'Avg Cost per Session' = AVERAGE('Agent Sessions'[total_displayed_cost])
