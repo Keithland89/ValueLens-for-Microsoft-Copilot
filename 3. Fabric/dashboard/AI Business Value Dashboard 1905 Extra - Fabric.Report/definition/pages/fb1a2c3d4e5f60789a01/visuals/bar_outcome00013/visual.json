@@ -18,13 +18,13 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Agent Catalogue"
+                      "Entity": "Agent Performance"
                     }
                   },
-                  "Property": "agent_display_name"
+                  "Property": "BotFriendlyName"
                 }
               },
-              "queryRef": "Agent Catalogue.agent_display_name",
+              "queryRef": "Agent Performance.BotFriendlyName",
               "nativeQueryRef": "Agent",
               "active": true
             }

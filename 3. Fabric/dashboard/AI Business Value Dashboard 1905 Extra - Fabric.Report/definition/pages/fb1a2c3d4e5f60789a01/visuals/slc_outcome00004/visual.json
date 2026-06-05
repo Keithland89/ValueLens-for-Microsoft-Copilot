@@ -1,11 +1,11 @@
 {
   "position": {
-    "x": 648,
+    "x": 495,
     "y": 70,
-    "z": 102,
+    "z": 101,
     "height": 56,
-    "width": 305,
-    "tabOrder": 102
+    "width": 470,
+    "tabOrder": 101
   },
   "visual": {
     "visualType": "slicer",
@@ -18,14 +18,14 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Agent Sessions"
+                      "Entity": "Agent Performance"
                     }
                   },
-                  "Property": "primary_agent_schema"
+                  "Property": "SessionOutcome"
                 }
               },
-              "queryRef": "Agent Sessions.primary_agent_schema",
-              "nativeQueryRef": "Agent Schema",
+              "queryRef": "Agent Performance.SessionOutcome",
+              "nativeQueryRef": "Session Outcome",
               "active": true
             }
           ]
@@ -65,5 +65,5 @@
     "drillFilterOtherVisuals": true
   },
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
-  "name": "slc_chan00000005"
+  "name": "slc_outcome00004"
 }

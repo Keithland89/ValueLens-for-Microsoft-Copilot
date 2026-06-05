@@ -17,7 +17,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Explicit thumbs are typically <5% of sessions. Lead with the proxy signals (Implied Success, Resolution, Errors); CSAT lights up as thumbs accumulate.",
+                    "value": "Explicit thumbs are typically <5% of sessions — lead with the proxy signals (Implied Success, Resolution, Errors). CSAT lights up automatically as thumbs accumulate.",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9pt",

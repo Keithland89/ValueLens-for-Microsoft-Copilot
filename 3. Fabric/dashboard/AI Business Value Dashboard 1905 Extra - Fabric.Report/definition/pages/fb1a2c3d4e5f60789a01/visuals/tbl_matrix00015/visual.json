@@ -18,13 +18,13 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Agent Catalogue"
+                      "Entity": "Agent Performance"
                     }
                   },
-                  "Property": "agent_display_name"
+                  "Property": "BotFriendlyName"
                 }
               },
-              "queryRef": "Agent Catalogue.agent_display_name",
+              "queryRef": "Agent Performance.BotFriendlyName",
               "nativeQueryRef": "Agent"
             },
             {
@@ -32,14 +32,14 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Agent Sessions"
+                      "Entity": "Agent Performance"
                     }
                   },
-                  "Property": "Transcript Sessions"
+                  "Property": "Total Conversations"
                 }
               },
-              "queryRef": "Agent Sessions.Transcript Sessions",
-              "nativeQueryRef": "Sessions"
+              "queryRef": "Agent Performance.Total Conversations",
+              "nativeQueryRef": "Conversations"
             },
             {
               "field": {
@@ -88,28 +88,28 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Agent Sessions"
+                      "Entity": "Agent Performance"
                     }
                   },
-                  "Property": "Session Error Rate"
+                  "Property": "Escalation Rate"
                 }
               },
-              "queryRef": "Agent Sessions.Session Error Rate",
-              "nativeQueryRef": "ErrorRate"
+              "queryRef": "Agent Performance.Escalation Rate",
+              "nativeQueryRef": "Escalation"
             },
             {
               "field": {
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Agent Sessions"
+                      "Entity": "Agent Performance"
                     }
                   },
-                  "Property": "Knowledge Answered Rate"
+                  "Property": "Avg Turns"
                 }
               },
-              "queryRef": "Agent Sessions.Knowledge Answered Rate",
-              "nativeQueryRef": "KnowledgeAnswered"
+              "queryRef": "Agent Performance.Avg Turns",
+              "nativeQueryRef": "AvgTurns"
             }
           ]
         }
@@ -122,7 +122,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'AGENT QUALITY MATRIX'"
+                  "Value": "'AGENT QUALITY MATRIX (PERFORMANCE)'"
                 }
               }
             },
