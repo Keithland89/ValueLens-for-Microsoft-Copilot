@@ -22,6 +22,7 @@ and the measures simply return `0`/blank.
 | `Enable_Dataverse` | `true` | the 6 agent tables (`agent_sessions`, `agent_turns`, `agent_errors`, `agent_subagents`, `agent_catalogue`, `agent_performance`) |
 | `Enable_ProductFeedback` | `true` | `user_feedback` (ProductFeedback) |
 | `Enable_Agent365` | `true` | `agents_365` (Agents 365) |
+| `Enable_Consumption` | `true` | the 3 billing tables (`credit_consumption_tenant/agent/user`) |
 
 Set a toggle to `false` to skip that source entirely (no fetch attempt) — useful when a customer
 hasn't licensed/exported it, or to speed up refresh.

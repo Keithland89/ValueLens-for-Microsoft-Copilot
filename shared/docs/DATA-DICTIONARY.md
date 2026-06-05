@@ -34,6 +34,9 @@ template never breaks. See `OPTIONAL-SOURCES.md` for the `EmptyTable` + `try…o
 | 9 | Agent Sub-Agent Calls | `agent_subagents` | *Optional* (Dataverse) | `Copilot_Agent_Transcript_Parser` | n/a |
 | 10 | Agent Catalogue | `agent_catalogue` | *Optional* (Dataverse) | `Copilot_Agent_Transcript_Parser` | n/a |
 | 11 | Agent Performance | `agent_performance` | *Optional* (Dataverse) | `Copilot_Agent_Transcript_Parser` | n/a |
+| 12 | Credit Consumption (Tenant) | `credit_consumption_tenant` | *Optional* (billing) | `Copilot_Credit_Consumption_Ingester` | n/a |
+| 13 | Credit Consumption (Agent) | `credit_consumption_agent` | *Optional* (billing) | `Copilot_Credit_Consumption_Ingester` | n/a |
+| 14 | Credit Consumption (User) | `credit_consumption_user` | *Optional* (billing) | `Copilot_Credit_Consumption_Ingester` | n/a |
 
 All other model tables (Calendar, legends, ranking/summary, glossary, value maps, etc.) are
 **calculated/DAX or static** — they have no external source and are version-independent.
