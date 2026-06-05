@@ -139,6 +139,18 @@ table 'Credit Consumption (Agent)'
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Distinct agents present in the billing actuals.
+	measure 'Billing Agents with Credits' = DISTINCTCOUNT ( 'Credit Consumption (Agent)'[Agent_Name] )
+		formatString: #,0
+		displayFolder: 💳 Billing (Actuals)
+		lineageTag: cc0001ag-meas-agentcnt0001
+
+	/// Mean consumed credits per agent (billing actuals).
+	measure 'Avg Credits per Agent (Billing)' = DIVIDE ( [Total Consumed Credits], [Billing Agents with Credits] )
+		formatString: #,0
+		displayFolder: 💳 Billing (Actuals)
+		lineageTag: cc0001ag-meas-avgagent0001
+
 	partition 'Credit Consumption (Agent)' = m
 		mode: import
 		source =
@@ -164,3 +176,4 @@ table 'Credit Consumption (Agent)'
 				    Typed
 
 	annotation PBI_ResultType = Table
+

@@ -24,8 +24,7 @@ table 'Credit Consumption (User)'
 		lineageTag: cc0002us-meas-0001-000000000003
 
 	/// Mean credits used per credit-consuming user (billing actuals).
-	measure 'Avg Credits per User (Billing)' =
-			DIVIDE([Total Credits Used (Billing)], [Billing Active Users])
+	measure 'Avg Credits per User (Billing)' = DIVIDE([Total Credits Used (Billing)], [Billing Active Users])
 		formatString: #,0.00
 		displayFolder: 💳 Billing (Actuals)
 		lineageTag: cc0002us-meas-0001-000000000004
@@ -88,6 +87,18 @@ table 'Credit Consumption (User)'
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Lower/trim of User_Email — join key to Chat + Agent Org Data[PersonId_Normalized] (UPN) for org attribution of billing credits.
+	column User_Email_Normalized = LOWER ( TRIM ( 'Credit Consumption (User)'[User_Email] ) )
+		lineageTag: cc0002us-col0-emailnorm0001
+		summarizeBy: none
+		dataType: string
+
+	/// Share of billing credits used by each organization (via the User->Org relationship).
+	measure 'Billing Org Credit Share %' = DIVIDE ( [Total Credits Used (Billing)], CALCULATE ( [Total Credits Used (Billing)], ALL ( 'Chat + Agent Org Data' ) ) )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 💳 Billing (Actuals)
+		lineageTag: cc0002us-meas-orgshare0001
+
 	partition 'Credit Consumption (User)' = m
 		mode: import
 		source =
@@ -107,3 +118,4 @@ table 'Credit Consumption (User)'
 				    Typed
 
 	annotation PBI_ResultType = Table
+

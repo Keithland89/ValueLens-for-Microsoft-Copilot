@@ -1,11 +1,11 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
   "name": "6b497340b8e0db18a5b8",
   "position": {
     "x": 16.455696202531644,
     "y": 150.63291139240505,
     "z": 5000,
-    "height": 556.96202531645565,
+    "height": 556.9620253164557,
     "width": 424.05063291139237,
     "tabOrder": 5000
   },
@@ -39,14 +39,14 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Agent Sessions"
+                      "Entity": "Credit Consumption (User)"
                     }
                   },
-                  "Property": "Total Cost Units"
+                  "Property": "Total Credits Used (Billing)"
                 }
               },
-              "queryRef": "Agent Sessions.Total Cost Units",
-              "nativeQueryRef": "Total Credits",
+              "queryRef": "Credit Consumption (User).Total Credits Used (Billing)",
+              "nativeQueryRef": "Total Credits Used (Billing)",
               "displayName": "Total Credits"
             },
             {
@@ -54,13 +54,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Agent Sessions"
+                      "Entity": "Credit Consumption (User)"
                     }
                   },
-                  "Property": "Org Credit Share %"
+                  "Property": "Billing Org Credit Share %"
                 }
               },
-              "queryRef": "Agent Sessions.Org Credit Share %",
+              "queryRef": "Credit Consumption (User).Billing Org Credit Share %",
               "nativeQueryRef": "Org Credit Share %"
             }
           ]
@@ -73,10 +73,10 @@
               "Measure": {
                 "Expression": {
                   "SourceRef": {
-                    "Entity": "Agent Sessions"
+                    "Entity": "Credit Consumption (User)"
                   }
                 },
-                "Property": "Org Credit Share %"
+                "Property": "Billing Org Credit Share %"
               }
             },
             "direction": "Descending"
@@ -622,10 +622,10 @@
                         "Measure": {
                           "Expression": {
                             "SourceRef": {
-                              "Entity": "Agent Sessions"
+                              "Entity": "Credit Consumption (User)"
                             }
                           },
-                          "Property": "Org Credit Share %"
+                          "Property": "Billing Org Credit Share %"
                         }
                       },
                       "FillRule": {

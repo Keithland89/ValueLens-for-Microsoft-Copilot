@@ -84,10 +84,6 @@ relationship ca06rel-0001-0001-0001-000000000001
 	fromColumn: 'Agent Sessions'.'Session Start Date'
 	toColumn: Calendar.Date
 
-relationship ca08rel-0001-0001-0001-000000000001
-	fromColumn: 'Agent Sessions'.user_id_hash
-	toColumn: 'Chat + Agent Org Data'.id
-
 relationship ca09rel-0001-0001-0001-000000000001
 	fromColumn: ProductFeedback.'Date Submitted Date'
 	toColumn: Calendar.Date
@@ -96,3 +92,13 @@ relationship ca10rel-0001-0001-0001-000000000001
 	fromColumn: 'Agent Performance'.InteractionDate
 	toColumn: Calendar.Date
 
+relationship AutoDetected_249a3c50-3c04-450f-9f80-96f12bd12544
+	isActive: false
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: 'Copilot Licensed'.Display_Name
+	toColumn: 'Chat + Agent Org Data'.displayName
+
+relationship cc00-user-org-emailnorm-0001
+	fromColumn: 'Credit Consumption (User)'.User_Email_Normalized
+	toColumn: 'Chat + Agent Org Data'.PersonId_Normalized
