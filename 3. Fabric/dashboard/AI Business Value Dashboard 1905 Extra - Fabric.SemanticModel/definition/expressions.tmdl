@@ -29,9 +29,9 @@ expression FabricTable =
 
 	annotation PBI_ResultType = Function
 
-/// Agent 365 CSV (MAC export) hosted in SharePoint. SharePoint URL only.
-/// Will be replaced by a Graph API loader in a future iteration.
-expression 'Agent 365' = "https://microsoft.sharepoint-df.com/teams/CopilotROIandOrgAdvisors/Shared Documents/AI-in-One Dashboard/Dummy Data/Dummy 1805/Agents_2026-02-03_11_37_27 (2).csv" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=false]
+/// DEPRECATED in the Fabric model: Agent 365 now lands in the Lakehouse via the
+/// Copilot_Agent365_Lander notebook and is read via FabricTable("agents_365"). Left blank.
+expression 'Agent 365' = "" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=false]
 	lineageTag: a5e989dd-a8e3-4a4d-b930-599e61dcfeff
 
 	annotation PBI_NavigationStepName = Navigation
