@@ -30,16 +30,9 @@ table 'Agent Sessions'
 		lineageTag: ag0001se-meas-0001-000000000004
 		annotation PBI_FormatHint = {"isDecimal":true}
 
-	/// Resolves each credit session's user (AAD objectId in user_id_hash) to an Organization. Unmatched
-	/// users surface as "(Unmapped)" so cross-tenant / cross-environment identity mismatches are visible
-	/// instead of silently inflating every org's share; matched users with no department show "(No Department)".
-	column 'Credit User Org' = VAR _matched = NOT ISBLANK ( RELATED ( 'Chat + Agent Org Data'[PersonId] ) ) RETURN IF ( _matched, COALESCE ( RELATED ( 'Chat + Agent Org Data'[Organization] ), "(No Department)" ), "(Unmapped)" )
-		lineageTag: ag0001se-col0-credituserorg01
-		summarizeBy: none
-		dataType: string
-
-	/// Credit units that could NOT be attributed to any organization (user objectId absent from Org data).
-	measure 'Unmapped Credit Units' = CALCULATE ( [Total Cost Units], 'Agent Sessions'[Credit User Org] = "(Unmapped)" )
+	/// Credit units NOT attributable to any org = Total - Mapped (Mapped uses a TREATAS virtual join on
+	/// user_id_hash -> Org[id], so this is correct even if the physical relationship is invalid/blank).
+	measure 'Unmapped Credit Units' = [Total Cost Units] - [Mapped Credit Units]
 		formatString: #,0
 		displayFolder: 💳 Credits
 		lineageTag: ag0001se-meas-unmappedcu01
@@ -52,7 +45,7 @@ table 'Agent Sessions'
 		lineageTag: ag0001se-meas-unmappedpct1
 
 	/// Credit units successfully attributed to an organization.
-	measure 'Mapped Credit Units' = [Total Cost Units] - [Unmapped Credit Units]
+	measure 'Mapped Credit Units' = CALCULATE ( [Total Cost Units], TREATAS ( CALCULATETABLE ( VALUES ( 'Chat + Agent Org Data'[id] ), KEEPFILTERS ( 'Chat + Agent Org Data'[id] <> "" ) ), 'Agent Sessions'[user_id_hash] ) )
 		formatString: #,0
 		displayFolder: 💳 Credits
 		lineageTag: ag0001se-meas-mappedcu01
