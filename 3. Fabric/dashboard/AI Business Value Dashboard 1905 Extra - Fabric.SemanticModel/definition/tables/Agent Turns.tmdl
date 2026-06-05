@@ -1,0 +1,229 @@
+/// One row per Copilot Studio message activity (user prompt or bot response).
+/// Joined to Agent Sessions by conversation_id. Built by parse_copilot_transcripts.py.
+/// In Fabric this comes from the lakehouse Delta table `agent_turns`.
+table 'Agent Turns'
+	lineageTag: ag0002tu-0001-0001-0001-000000000001
+
+	/// Total messages (user + bot) across all sessions in scope.
+	measure 'Total Turns' = COUNTROWS('Agent Turns')
+		formatString: #,0
+		displayFolder: 📚 Prompt Quality
+		lineageTag: ag0002tu-meas-0001-000000000001
+
+	/// User-initiated turns only.
+	measure 'User Turns' = CALCULATE(COUNTROWS('Agent Turns'), 'Agent Turns'[turn_role] = "user")
+		formatString: #,0
+		displayFolder: 📚 Prompt Quality
+		lineageTag: ag0002tu-meas-0001-000000000002
+
+	/// Average user prompt length (characters).
+	measure 'Avg Prompt Length (chars)' = CALCULATE(AVERAGE('Agent Turns'[text_length]), 'Agent Turns'[turn_role] = "user")
+		formatString: #,0
+		displayFolder: 📚 Prompt Quality
+		lineageTag: ag0002tu-meas-0001-000000000003
+
+	/// Mean intent classification score across user turns where intent was recognised.
+	measure 'Avg Intent Score' =
+			CALCULATE(
+			    AVERAGE('Agent Turns'[intent_score]),
+			    NOT(ISBLANK('Agent Turns'[intent_id]))
+			)
+		formatString: 0.00
+		displayFolder: 📚 Prompt Quality
+		lineageTag: ag0002tu-meas-0001-000000000004
+
+	/// % of intent-classified turns with score > 0.8.
+	measure 'High-Confidence Intent %' =
+			VAR _scored = CALCULATE(COUNTROWS('Agent Turns'), NOT(ISBLANK('Agent Turns'[intent_id])))
+			VAR _high = CALCULATE(COUNTROWS('Agent Turns'), 'Agent Turns'[intent_score] > 0.8)
+			RETURN DIVIDE(_high, _scored)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 📚 Prompt Quality
+		lineageTag: ag0002tu-meas-0001-000000000005
+
+	column conversation_id
+		dataType: string
+		lineageTag: ag0002tu-col0-0001-000000000001
+		summarizeBy: none
+		sourceColumn: conversation_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column turn_id
+		dataType: string
+		lineageTag: ag0002tu-col0-0001-000000000002
+		summarizeBy: none
+		sourceColumn: turn_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column turn_timestamp_utc
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: ag0002tu-col0-0001-000000000003
+		summarizeBy: none
+		sourceColumn: turn_timestamp_utc
+
+		annotation SummarizationSetBy = Automatic
+
+	column turn_role
+		dataType: string
+		lineageTag: ag0002tu-col0-0001-000000000004
+		summarizeBy: none
+		sourceColumn: turn_role
+
+		annotation SummarizationSetBy = Automatic
+
+	column turn_channel
+		dataType: string
+		lineageTag: ag0002tu-col0-0001-000000000005
+		summarizeBy: none
+		sourceColumn: turn_channel
+
+		annotation SummarizationSetBy = Automatic
+
+	column from_user_hash
+		dataType: string
+		lineageTag: ag0002tu-col0-0001-000000000006
+		summarizeBy: none
+		sourceColumn: from_user_hash
+
+		annotation SummarizationSetBy = Automatic
+
+	column text_preview_500
+		dataType: string
+		lineageTag: ag0002tu-col0-0001-000000000007
+		summarizeBy: none
+		sourceColumn: text_preview_500
+
+		annotation SummarizationSetBy = Automatic
+
+	column text_length
+		dataType: int64
+		formatString: 0
+		lineageTag: ag0002tu-col0-0001-000000000008
+		summarizeBy: sum
+		sourceColumn: text_length
+
+		annotation SummarizationSetBy = Automatic
+
+	column intent_title
+		dataType: string
+		lineageTag: ag0002tu-col0-0001-000000000009
+		summarizeBy: none
+		sourceColumn: intent_title
+
+		annotation SummarizationSetBy = Automatic
+
+	column intent_id
+		dataType: string
+		lineageTag: ag0002tu-col0-0001-000000000010
+		summarizeBy: none
+		sourceColumn: intent_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column intent_score
+		dataType: double
+		formatString: 0.00
+		lineageTag: ag0002tu-col0-0001-000000000011
+		summarizeBy: none
+		sourceColumn: intent_score
+
+		annotation SummarizationSetBy = Automatic
+
+	column knowledge_searched
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: ag0002tu-col0-0001-000000000012
+		summarizeBy: none
+		sourceColumn: knowledge_searched
+
+		annotation SummarizationSetBy = Automatic
+
+	column knowledge_answered
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: ag0002tu-col0-0001-000000000013
+		summarizeBy: none
+		sourceColumn: knowledge_answered
+
+		annotation SummarizationSetBy = Automatic
+
+	column knowledge_sources
+		dataType: string
+		lineageTag: ag0002tu-col0-0001-000000000014
+		summarizeBy: none
+		sourceColumn: knowledge_sources
+
+		annotation SummarizationSetBy = Automatic
+
+	column feedback_offered
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: ag0002tu-col0-0001-000000000015
+		summarizeBy: none
+		sourceColumn: feedback_offered
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Bucketed intent confidence for slicers.
+	column 'Intent Confidence Bucket' =
+			SWITCH(
+			    TRUE(),
+			    ISBLANK('Agent Turns'[intent_id]), "-",
+			    'Agent Turns'[intent_score] > 0.8, "High (>0.8)",
+			    'Agent Turns'[intent_score] >= 0.5, "Medium (0.5–0.8)",
+			    "Low (<0.5)"
+			)
+		dataType: string
+		lineageTag: ag0002tu-col0-0001-000000000016
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column feedback_verdict
+		dataType: string
+		lineageTag: ag0002tu-col0-0001-000000000017
+		summarizeBy: none
+		sourceColumn: feedback_verdict
+
+		annotation SummarizationSetBy = Automatic
+
+	column feedback_comment
+		dataType: string
+		lineageTag: ag0002tu-col0-0001-000000000018
+		summarizeBy: none
+		sourceColumn: feedback_comment
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Agent Turns' = m
+		mode: import
+		source =
+				let
+				    Promoted = FabricTable("agent_turns"),
+				    Typed = Table.TransformColumnTypes(Promoted, {
+				        {"conversation_id", type text},
+				        {"turn_id", type text},
+				        {"turn_timestamp_utc", type datetime},
+				        {"turn_role", type text},
+				        {"turn_channel", type text},
+				        {"from_user_hash", type text},
+				        {"text_preview_500", type text},
+				        {"text_length", Int64.Type},
+				        {"intent_title", type text},
+				        {"intent_id", type text},
+				        {"intent_score", type number},
+				        {"knowledge_searched", type logical},
+				        {"knowledge_answered", type logical},
+				        {"knowledge_sources", type text},
+				        {"feedback_offered", type logical},
+				        {"feedback_verdict", type text},
+				        {"feedback_comment", type text}
+				    })
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

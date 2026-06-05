@@ -1,0 +1,41 @@
+/// Fabric Lakehouse/Warehouse SQL connection string (the SQL analytics endpoint).
+/// Find it in Fabric: open the Lakehouse → Settings → SQL analytics endpoint → Connection string,
+/// e.g. xxxxxxxxxxxx.datawarehouse.fabric.microsoft.com
+expression 'Fabric SQL Endpoint' = "REPLACE-WITH-YOUR-ENDPOINT.datawarehouse.fabric.microsoft.com" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 1a2b3c4d-fab1-4001-8001-000000000001
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Text
+
+/// Name of the Lakehouse (or Warehouse) that holds the Delta tables written by the four Fabric notebooks.
+expression 'Lakehouse Name' = "REPLACE-WITH-YOUR-LAKEHOUSE-NAME" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 1a2b3c4d-fab1-4002-8002-000000000002
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Text
+
+/// Helper: read a Delta table from the Fabric Lakehouse SQL endpoint by name (dbo schema).
+/// Every CT/audit/licensed/org table sources through this so only the two parameters above need setting.
+expression FabricTable =
+		(tableName as text) as table =>
+			let
+				Db = Sql.Database(#"Fabric SQL Endpoint", #"Lakehouse Name"),
+				Data = Db{[Schema = "dbo", Item = tableName]}[Data]
+			in
+				Data
+	lineageTag: 1a2b3c4d-fab1-4003-8003-000000000003
+
+	annotation PBI_ResultType = Function
+
+/// Agent 365 CSV (MAC export) hosted in SharePoint. SharePoint URL only.
+/// Will be replaced by a Graph API loader in a future iteration.
+expression 'Agent 365' = "https://microsoft.sharepoint-df.com/teams/CopilotROIandOrgAdvisors/Shared Documents/AI-in-One Dashboard/Dummy Data/Dummy 1805/Agents_2026-02-03_11_37_27 (2).csv" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=false]
+	lineageTag: a5e989dd-a8e3-4a4d-b930-599e61dcfeff
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Text
+
+

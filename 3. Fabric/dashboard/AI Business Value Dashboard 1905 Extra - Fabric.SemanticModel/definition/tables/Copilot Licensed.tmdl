@@ -1,0 +1,265 @@
+table 'Copilot Licensed'
+	lineageTag: d2642023-4b65-422e-b87e-2db288a27359
+
+	/// Total licensed users count (deduped on UPN_Normalized).
+	/// Re-used by Inactive Licensed Users + Licensed Utilisation %.
+	measure 'Total Licensed Users' =
+			CALCULATE(
+			    DISTINCTCOUNT('Copilot Licensed'[UPN_Normalized]),
+			    UPPER(TRIM('Copilot Licensed'[Has license])) IN {"YES","TRUE","Y","1"}
+			)
+		formatString: #,##0
+		displayFolder: License Readiness
+		lineageTag: cc010001-0001-0001-0001-000000000001
+
+	/// Licensed utilisation: % of licensed users who are active in current filter context.
+	measure 'Licensed Utilisation %' =
+			DIVIDE(
+			    [NoOfActiveChatUsers (Licensed)],
+			    [Total Licensed Users],
+			    0
+			)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: License Readiness
+		lineageTag: cc010001-0001-0001-0001-000000000003
+
+	/// Active unlicensed users (chat) — alias of NoOfActiveChatUsers (Unlicensed) on the
+	/// Audit Logs table, exposed under the License Readiness folder for the Redesign page.
+	measure 'Active Unlicensed Users' = [NoOfActiveChatUsers (Unlicensed)]
+		formatString: #,##0
+		displayFolder: License Readiness
+		lineageTag: cc010001-0001-0001-0001-000000000010
+
+	/// Active licensed users (chat) — alias of NoOfActiveChatUsers (Licensed).
+	measure 'Active Licensed Users' = [NoOfActiveChatUsers (Licensed)]
+		formatString: #,##0
+		displayFolder: License Readiness
+		lineageTag: cc010001-0001-0001-0001-000000000011
+
+	/// Active agent users — alias of UsersInteractingWithAgents.
+	measure 'Active Agent Users' = [UsersInteractingWithAgents]
+		formatString: #,##0
+		displayFolder: License Readiness
+		lineageTag: cc010001-0001-0001-0001-000000000012
+
+	/// % active licensed = active licensed / total licensed.
+	measure '% Active Licensed Users' = ```
+			
+			    DIVIDE([Active Licensed Users], [Licensed Users (Filter-Aware)], 0)
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: License Readiness
+		lineageTag: cc010001-0001-0001-0001-000000000015
+
+	/// % active unlicensed = active unlicensed / total unlicensed.
+	measure '% Active Unlicensed Users' = ```
+			
+			    DIVIDE([Active Unlicensed Users], [Unlicensed Users (Filter-Aware)], 0)
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: License Readiness
+		lineageTag: cc010001-0001-0001-0001-000000000016
+
+	/// Total user population for the current filter context (Date, Organization slicer,
+	/// axis department, etc). Built from 'Chat + Agent Org Data' so the Department dimension
+	/// flows through naturally. This is the denominator for all "(of Total)" share measures.
+	measure 'Total Users (Filter-Aware)' = DISTINCTCOUNT('Chat + Agent Org Data'[PersonId_Normalized])
+		formatString: #,##0
+		displayFolder: License Readiness
+		lineageTag: cc010001-0001-0001-0001-000000000020
+
+	/// Licensed users respecting the current Department / Org filter context.
+	/// Uses TREATAS to virtually relate Copilot Licensed[UPN_Normalized] to
+	/// Org Data[PersonId_Normalized] so a Department slicer correctly restricts
+	/// the licensed population (no physical relationship exists between the two).
+	measure 'Licensed Users (Filter-Aware)' =
+			VAR LicensedUPNs =
+			    CALCULATETABLE(
+			        VALUES('Copilot Licensed'[UPN_Normalized]),
+			        UPPER(TRIM('Copilot Licensed'[Has license])) IN {"YES","TRUE","Y","1"},
+			        REMOVEFILTERS('Chat + Agent Org Data')
+			    )
+			RETURN
+			    CALCULATE(
+			        DISTINCTCOUNT('Chat + Agent Org Data'[PersonId_Normalized]),
+			        TREATAS(LicensedUPNs, 'Chat + Agent Org Data'[PersonId_Normalized])
+			    )
+		formatString: #,##0
+		displayFolder: License Readiness
+		lineageTag: cc010001-0001-0001-0001-000000000021
+
+	/// Unlicensed users in current filter context = Total − Licensed (both filter-aware).
+	measure 'Unlicensed Users (Filter-Aware)' = [Total Users (Filter-Aware)] - [Licensed Users (Filter-Aware)]
+		formatString: #,##0
+		displayFolder: License Readiness
+		lineageTag: cc010001-0001-0001-0001-000000000022
+
+	/// Inactive licensed users in current filter context.
+	measure 'Inactive Licensed Users (Filter-Aware)' = [Licensed Users (Filter-Aware)] - [Active Licensed Users]
+		formatString: #,##0
+		displayFolder: License Readiness
+		lineageTag: cc010001-0001-0001-0001-000000000023
+
+	/// Inactive unlicensed users in current filter context.
+	measure 'Inactive Unlicensed Users (Filter-Aware)' = [Unlicensed Users (Filter-Aware)] - [Active Unlicensed Users]
+		formatString: #,##0
+		displayFolder: License Readiness
+		lineageTag: cc010001-0001-0001-0001-000000000024
+
+	/// % of all users in the current filter context (Date, Org, Department on axis, etc.)
+	/// who are active licensed Copilot users.
+	measure '% Active Licensed Users (of Total)' = DIVIDE([Active Licensed Users], [Total Users (Filter-Aware)], 0)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: License Readiness
+		lineageTag: cc010001-0001-0001-0001-000000000025
+
+	/// % of all users in the current filter context who are active unlicensed chat users.
+	measure '% Active Unlicensed Users (of Total)' = DIVIDE([Active Unlicensed Users], [Total Users (Filter-Aware)], 0)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: License Readiness
+		lineageTag: cc010001-0001-0001-0001-000000000026
+
+	/// All active users (licensed + unlicensed) in current filter context — alias of
+	/// 'Chat + Agent Interactions (Audit Logs)'[All Active Users], exposed here so the
+	/// License Readiness folder owns the numerator paired with [Total Users (Filter-Aware)].
+	measure 'Active Users (Filter-Aware)' = [All Active Users]
+		formatString: 0
+		displayFolder: License Readiness
+		lineageTag: cc010001-0001-0001-0001-000000000040
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	/// % of all users (in current filter context) who are active in any capacity.
+	/// Filter-aware on Date, Organization, axis Department, usage-rank slicers.
+	measure '% Active Users (of Total)' = DIVIDE([Active Users (Filter-Aware)], [Total Users (Filter-Aware)], 0)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: License Readiness
+		lineageTag: cc010001-0001-0001-0001-000000000041
+
+	/// % of all users (in current filter context) who interacted with at least one agent.
+	/// Numerator is [Active Agent Users] (alias of [UsersInteractingWithAgents] on Audit Logs);
+	/// denominator is the filter-aware Org Data spine, so this responds to Date, Organization,
+	/// axis Department, and the usage-rank slicers.
+	measure '% Active Users Using Agents' = ```
+			
+			    DIVIDE([Active Agent Users], [Active Users (Filter-Aware)], 0)
+			
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: License Readiness
+		lineageTag: cc010001-0001-0001-0001-000000000042
+
+	measure 'Using Copilot / Not Using Agents' = ```
+			
+			    MAX(0, [Active Users (Filter-Aware)] - [Active Agent Users])
+			
+			```
+		formatString: 0
+		displayFolder: License Readiness
+		lineageTag: 2dcc8e65-00bf-4314-8f20-a63486fd7394
+
+	measure '% Inactive Users (of Total)' = ```
+			
+			    DIVIDE([Inactive Users (Filter-Aware)], [Total Users (Filter-Aware)], 0)
+			
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: License Readiness
+		lineageTag: 1305efc5-94b7-4630-bc84-0611429f17a9
+
+	column 'User Principal Name'
+		dataType: string
+		lineageTag: 272d6b1b-4f26-4fcf-aedf-0b0bbbbe42a7
+		summarizeBy: none
+		sourceColumn: User Principal Name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Has license'
+		dataType: string
+		lineageTag: 71a5d25c-0ad3-4d0c-abf2-f2f75725fe21
+		summarizeBy: none
+		sourceColumn: Has license
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column UPN_Normalized
+		dataType: string
+		lineageTag: d34e7c05-021e-4f79-96db-dce2199ce840
+		summarizeBy: none
+		sourceColumn: UPN_Normalized
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Copilot Licensed' = m
+		mode: import
+		source =
+				let
+				    // Accepts a SharePoint URL (https://...) or a local file path (c:\... or \\server\...).
+				    #"Promoted Headers" = FabricTable("copilot_licensed_users"),
+				
+				    // List accepted variants for User Principal Name
+				    userPrincipalNameVariants = {"User Principal Name", "userPrincipalName", "UserPrincipalName", "User principal name"},
+				    actualUPNColumn = List.First(List.Intersect({userPrincipalNameVariants, Table.ColumnNames(#"Promoted Headers")}), null),
+				
+				    // List accepted variants for Has License
+				    hasLicenseVariants = {
+				        "Has license",
+				        "Has License",
+				        "HasLicense",
+				        "HasCopilot",
+				        "Has Copilot",
+				        "Has Copilot License",
+				        "Has Copilot license",
+				        "HasCopilotLicense",
+				        "Has Copilot License Assigned",
+				        "Has Copilot license assigned",
+				        "isUser"
+				    },
+				    actualHasLicenseColumn = List.First(List.Intersect({hasLicenseVariants, Table.ColumnNames(#"Promoted Headers")}), null),
+				
+				    // Add missing columns with defaults if not found, then rename
+				    #"With UPN" = if actualUPNColumn <> null then
+				            #"Promoted Headers"
+				        else
+				            Table.AddColumn(#"Promoted Headers", "User Principal Name", each null, type text),
+				
+				    #"With License" = if actualHasLicenseColumn <> null then
+				            #"With UPN"
+				        else
+				            Table.AddColumn(#"With UPN", "Has license", each "Unknown", type text),
+				
+				    #"Renamed Columns" =
+				        Table.RenameColumns(
+				            #"With License",
+				            List.Combine({
+				                if actualUPNColumn <> null and actualUPNColumn <> "User Principal Name" then {{actualUPNColumn, "User Principal Name"}} else {},
+				                if actualHasLicenseColumn <> null and actualHasLicenseColumn <> "Has license" then {{actualHasLicenseColumn, "Has license"}} else {}
+				            }),
+				            MissingField.Ignore
+				        ),
+				
+				    // Add a normalized join key (case-insensitive match helper)
+				    #"Added UPN Normalized" =
+				        Table.AddColumn(
+				            #"Renamed Columns",
+				            "UPN_Normalized",
+				            each
+				                let v = [User Principal Name]
+				                in if v = null then null else Text.Lower(Text.Trim(Text.From(v))),
+				            type text
+				        ),
+				
+				    // Remove duplicates using the normalized key
+				    #"Removed Duplicates" = Table.Distinct(#"Added UPN Normalized", {"UPN_Normalized"})
+				in
+				    #"Removed Duplicates"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,174 @@
+# Data Dictionary & Source Contract
+
+This is the **single source of truth** for the tables the dashboard consumes. Both deployment
+versions read the *same* logical tables with the *same* column names — only the **source layer**
+differs:
+
+| Version | Source layer | Each table loads via |
+| --- | --- | --- |
+| **Fabric** | OneLake Lakehouse (Delta) | `FabricTable("<delta_table>")` → Lakehouse SQL endpoint |
+| **SharePoint** | CSV files in SharePoint/OneDrive | `SharePointCsv("<file>")` / `Web.Contents(...)` |
+
+Because the schema is identical, the report, every measure, and all downstream M is shared. A
+producer (notebook or script) is "compatible" **iff** the Delta table / CSV it writes exposes the
+exact column names below (casing and spaces matter).
+
+---
+
+## Tier model — core vs optional
+
+Optional sources must **degrade to an empty table with the correct columns** when absent, so the
+template never breaks. See `OPTIONAL-SOURCES.md` for the `EmptyTable` + `try…otherwise` +
+`Enable_*` toggle pattern.
+
+| # | Dashboard table | Lakehouse Delta name | Tier | Fabric producer | SharePoint producer |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Chat + Agent Interactions (Audit Logs) | `Copilot_Interactions_Parsed` | **Core** | `Copilot_Audit_Log_Direct_Ingester` | `GetCopilotInteractions*` |
+| 2 | Copilot Licensed | `copilot_licensed_users` | **Core** | `Copilot_Licensed_Users_Direct_Ingester` | `GetCopilotUsers*` |
+| 3 | Chat + Agent Org Data | `copilot_org_data` | **Core** | `Copilot_Org_Data_Direct_Ingester` | `Get-EntraOrgData*` |
+| 4 | Agents 365 | `agents_365` *(see note)* | *Optional* | land CSV → Lakehouse | `Get-Agents365Registry` |
+| 5 | ProductFeedback | `user_feedback` | *Optional* | `Copilot_Agent_Transcript_Parser` (`build_feedback`) | OCV feedback CSV |
+| 6 | Agent Sessions | `agent_sessions` | *Optional* (Dataverse) | `Copilot_Agent_Transcript_Parser` | n/a |
+| 7 | Agent Turns | `agent_turns` | *Optional* (Dataverse) | `Copilot_Agent_Transcript_Parser` | n/a |
+| 8 | Agent Errors | `agent_errors` | *Optional* (Dataverse) | `Copilot_Agent_Transcript_Parser` | n/a |
+| 9 | Agent Sub-Agent Calls | `agent_subagents` | *Optional* (Dataverse) | `Copilot_Agent_Transcript_Parser` | n/a |
+| 10 | Agent Catalogue | `agent_catalogue` | *Optional* (Dataverse) | `Copilot_Agent_Transcript_Parser` | n/a |
+| 11 | Agent Performance | `agent_performance` | *Optional* (Dataverse) | `Copilot_Agent_Transcript_Parser` | n/a |
+
+All other model tables (Calendar, legends, ranking/summary, glossary, value maps, etc.) are
+**calculated/DAX or static** — they have no external source and are version-independent.
+
+---
+
+## Core tables
+
+### 1. `Copilot_Interactions_Parsed` — audit interactions
+Producer flattens Purview/Graph `CopilotInteraction` audit JSON **upstream** (the report M is a thin
+pass-through guarded by `Table.HasColumns`, so missing optional columns are tolerated).
+
+```
+CreationDate, AgentId, AgentName,
+AppIdentity_AppId, AppIdentity_DisplayName, AppIdentity_PublisherId,
+ApplicationName, ClientRegion,
+Audit_UserId, Audit_UserId_Normalized, Workload,
+AppHost, ThreadId, SensitivityLabelId, Context_Type,
+AISystemPlugin_Id, AISystemPlugin_Name, ModelTransparencyDetails_ModelName,
+AccessedResource_Type, AccessedResource_Action, AccessedResource_SiteUrl, AccessedResource_SensitivityLabelId,
+Message_Id, Message_isPrompt, Resource_Count,
+InteractionDate, WeekStart, MonthStart
+```
+
+### 2. `copilot_licensed_users` — licensed user list
+⚠️ **Contract fix required.** The producer sanitizes spaces→underscores, writing
+`User_Principal_Name` and `Has_license`, but the dashboard's variant lists only contain spaced/camel
+forms. Either (B1) add `User_Principal_Name` / `Has_license` to the model's variant lists, or
+(B2) keep the spaced names in the Delta table (column-mapping). Key columns:
+
+```
+User_Principal_Name  (canonical join key; also accepts: User Principal Name / userPrincipalName / UserPrincipalName)
+Has_license          (Yes/No flag; also accepts: Has license / HasLicense / HasCopilot / …)
+UPN_Normalized       (lower(trim(UPN)) — dedupe + join key)
+… plus all Office365ActiveUserDetail columns (sanitized)
+```
+
+### 3. `copilot_org_data` — Entra org / people data
+Dashboard normalizes dynamically (UPN/PersonId variants, `Department`→`Organization`) and adds
+`PersonId_Normalized` + `TotalEmployees` if missing.
+
+```
+PersonId, displayName, Organization, JobTitle, companyName,
+officeLocation, city, country, accountEnabled, managerUPN
+```
+
+---
+
+## Optional tables
+
+### 4. `agents_365`
+Currently sourced from a SharePoint CSV URL even in the Fabric model. **Action:** land it into the
+Lakehouse (shortcut / small load cell / Dataflow Gen2) and switch the table to `FabricTable("agents_365")`
+so the Fabric model is 100% Lakehouse-sourced. 39 columns from the Agents MAC export.
+
+### 5. `user_feedback` — Product Feedback (OCV export)
+**Not** a Dataverse source — it is an OCV/Viva feedback **CSV** dropped at
+`Files/copilot_transcripts/feedback.csv`, parsed by `build_feedback()`. The dashboard's
+`ProductFeedback` table renames the OCV space-named columns. The empty placeholder now emits the
+**full superset** (fixed) so a missing/partial export cannot break refresh:
+
+```
+Feedback Id, Comment, Translated Comment, Comment Language,
+Date Submitted UTC, Feedback Type, Microsoft Response Status,
+App, App Language, Platform, Source Type, Logs, Attachments,
+User Id, User Email, Browser, Browser Version,
+AI Context Prompt, AI Context Response Message,
+Survey Question, Survey Response Option, Additional Metadata,
+Date Submitted Date, Sentiment
+```
+*(Recommended: also add `MissingField.Ignore` to the model's `Table.RenameColumns` so partial OCV exports are tolerant.)*
+
+### 6–11. Dataverse agent tables (from `conversationtranscripts`)
+Produced by `Copilot_Agent_Transcript_Parser` (`SOURCE_MODE='dataverse'`, `AUTH_MODE='sp'`).
+**Note:** Fabric `notebookutils.getToken` cannot mint a Dataverse token — the notebook must use an
+**app-registration service principal** added as an **Application User** (e.g. *Bot Transcript Viewer*
+role) in each environment. When Dataverse is not configured these six tables load empty.
+
+**`agent_sessions`** (23)
+```
+conversation_id, session_start_utc, session_duration_ms, user_id_hash,
+primary_agent_schema, connected_agent_schemas, connected_agent_count,
+msg_count, user_msg_count, bot_msg_count, plan_step_count,
+total_displayed_cost, total_latency_ms,
+knowledge_searched, knowledge_answered, knowledge_sources_count,
+error_count, first_error_code,
+feedback_offered_count, feedback_submitted, feedback_verdict, feedback_comment,
+first_user_prompt
+```
+**`agent_turns`** (17)
+```
+conversation_id, turn_id, turn_timestamp_utc, turn_role, turn_channel,
+from_user_hash, text_preview_500, text_length,
+intent_title, intent_id, intent_score,
+knowledge_searched, knowledge_answered, knowledge_sources,
+feedback_offered, feedback_verdict, feedback_comment
+```
+**`agent_errors`** (6)
+```
+conversation_id, error_timestamp_utc, error_code, error_sub_code, error_message, is_user_error
+```
+**`agent_subagents`** (8)
+```
+conversation_id, invocation_timestamp_utc, event_type,
+parent_agent_schema, connected_agent_schema, dialog_schema,
+user_id_hash, plan_step_id
+```
+**`agent_catalogue`** (3, +`source_environments` when `TAG_ENVIRONMENT=True`)
+```
+agent_schema, agent_display_name, agent_class
+```
+**`agent_performance`** (39)
+```
+ConversationTranscriptId, ConversationStartTime, SchemaVersion, BotName, BotId,
+AADTenantId, BatchId, SessionStartTimeUtc, SessionEndTimeUtc,
+SessionType, SessionOutcome, TurnCount, OutcomeReason, ImpliedSuccess,
+LastUserIntentId, IsDesignMode, Locale,
+UserMessageCount, BotMessageCount, TotalMessageCount,
+FirstUserMessage, LastUserMessage, FirstBotMessage, LastBotMessage,
+TopicsTriggered, TopicCount, PrimaryTopic,
+DurationSeconds, AverageLatencyMs,
+Var_ESS_UserContext_UPN, Var_ESS_Message_Disclaimer,
+Var_ESS_UserContext_RefreshInterval_Hours, Var_ESS_UserContext_Conversation_Initialized,
+AllVariables, TotalActivityCount, TraceActivityCount, EventActivityCount,
+StatusCode, StateCode
+```
+*When `TAG_ENVIRONMENT=True`, the five fact tables also carry `source_environment` (and
+`agent_catalogue` carries `source_environments`).*
+
+---
+
+## Known compatibility findings (tracked)
+
+| ID | Table | Finding | Fix |
+| --- | --- | --- | --- |
+| A | `user_feedback` | Empty placeholder had 6 cols; `Table.RenameColumns` expects 17 → refresh broke when no feedback.csv | **Fixed** in notebook (full superset). Also add `MissingField.Ignore` in model. |
+| B | `copilot_licensed_users` | Producer writes underscore names; model variant lists only have spaced/camel forms → UPN + licence load null | Add underscore variants to model **or** keep spaced names in Delta |
+| C | `agents_365` | Fabric model still reads a SharePoint URL | Land to Lakehouse → `FabricTable("agents_365")` |
