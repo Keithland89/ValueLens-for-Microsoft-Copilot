@@ -33,7 +33,7 @@ table 'Agent Sessions'
 	/// Resolves each credit session's user (AAD objectId in user_id_hash) to an Organization. Unmatched
 	/// users surface as "(Unmapped)" so cross-tenant / cross-environment identity mismatches are visible
 	/// instead of silently inflating every org's share; matched users with no department show "(No Department)".
-	column 'Credit User Org' = IF ( NOT ISEMPTY ( FILTER ( 'Chat + Agent Org Data', 'Chat + Agent Org Data'[id] = 'Agent Sessions'[user_id_hash] ) ), COALESCE ( LOOKUPVALUE ( 'Chat + Agent Org Data'[Organization], 'Chat + Agent Org Data'[id], 'Agent Sessions'[user_id_hash] ), "(No Department)" ), "(Unmapped)" )
+	column 'Credit User Org' = VAR _matched = NOT ISBLANK ( RELATED ( 'Chat + Agent Org Data'[PersonId] ) ) RETURN IF ( _matched, COALESCE ( RELATED ( 'Chat + Agent Org Data'[Organization] ), "(No Department)" ), "(Unmapped)" )
 		lineageTag: ag0001se-col0-credituserorg01
 		summarizeBy: none
 		dataType: string
