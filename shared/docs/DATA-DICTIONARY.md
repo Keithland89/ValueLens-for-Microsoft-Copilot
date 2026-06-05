@@ -26,7 +26,7 @@ template never breaks. See `OPTIONAL-SOURCES.md` for the `EmptyTable` + `try…o
 | 1 | Chat + Agent Interactions (Audit Logs) | `Copilot_Interactions_Parsed` | **Core** | `Copilot_Audit_Log_Direct_Ingester` | `GetCopilotInteractions*` |
 | 2 | Copilot Licensed | `copilot_licensed_users` | **Core** | `Copilot_Licensed_Users_Direct_Ingester` | `GetCopilotUsers*` |
 | 3 | Chat + Agent Org Data | `copilot_org_data` | **Core** | `Copilot_Org_Data_Direct_Ingester` | `Get-EntraOrgData*` |
-| 4 | Agents 365 | `agents_365` *(see note)* | *Optional* | land CSV → Lakehouse | `Get-Agents365Registry` |
+| 4 | Agents 365 | `agents_365` | *Optional* | `Copilot_Agent365_Lander` | `Get-Agents365Registry` |
 | 5 | ProductFeedback | `user_feedback` | *Optional* | `Copilot_Agent_Transcript_Parser` (`build_feedback`) | OCV feedback CSV |
 | 6 | Agent Sessions | `agent_sessions` | *Optional* (Dataverse) | `Copilot_Agent_Transcript_Parser` | n/a |
 | 7 | Agent Turns | `agent_turns` | *Optional* (Dataverse) | `Copilot_Agent_Transcript_Parser` | n/a |
@@ -85,9 +85,9 @@ officeLocation, city, country, accountEnabled, managerUPN
 ## Optional tables
 
 ### 4. `agents_365`
-Currently sourced from a SharePoint CSV URL even in the Fabric model. **Action:** land it into the
-Lakehouse (shortcut / small load cell / Dataflow Gen2) and switch the table to `FabricTable("agents_365")`
-so the Fabric model is 100% Lakehouse-sourced. 39 columns from the Agents MAC export.
+Landed into the Lakehouse by `Copilot_Agent365_Lander` (CSV → `dbo.agents_365`; Delta column-mapping
+preserves spaced header names like `Agent name`) and read via `FabricTable("agents_365")`, wrapped with
+`Enable_Agent365`. The Fabric model is now **100% Lakehouse-sourced**. Columns from the Agents MAC export.
 
 ### 5. `user_feedback` — Product Feedback (OCV export)
 **Not** a Dataverse source — it is an OCV/Viva feedback **CSV** dropped at
@@ -171,4 +171,4 @@ StatusCode, StateCode
 | --- | --- | --- | --- |
 | A | `user_feedback` | Empty placeholder had 6 cols; `Table.RenameColumns` expects 17 → refresh broke when no feedback.csv | **Fixed** in notebook (full superset). Also add `MissingField.Ignore` in model. |
 | B | `copilot_licensed_users` | Producer writes underscore names; model variant lists only have spaced/camel forms → UPN + licence load null | Add underscore variants to model **or** keep spaced names in Delta |
-| C | `agents_365` | Fabric model still reads a SharePoint URL | Land to Lakehouse → `FabricTable("agents_365")` |
+| C | `agents_365` | Fabric model read a SharePoint URL | **Fixed** — `Copilot_Agent365_Lander` lands `dbo.agents_365`; table now `FabricTable` + `Enable_Agent365` |
