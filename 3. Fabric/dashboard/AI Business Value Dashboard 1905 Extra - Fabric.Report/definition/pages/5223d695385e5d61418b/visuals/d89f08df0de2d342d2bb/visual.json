@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Agent Sessions"
+                      "Entity": "Credit Consumption (Agent)"
                     }
                   },
-                  "Property": "Total Cost Units"
+                  "Property": "Total Consumed Credits"
                 }
               },
-              "queryRef": "Agent Sessions.Total Cost Units",
+              "queryRef": "Credit Consumption (Agent).Total Consumed Credits",
               "nativeQueryRef": "Total Credits Consumed",
               "displayName": "Total Credits Consumed"
             }
@@ -40,10 +40,10 @@
               "Measure": {
                 "Expression": {
                   "SourceRef": {
-                    "Entity": "Agent Sessions"
+                    "Entity": "Credit Consumption (Agent)"
                   }
                 },
-                "Property": "Total Cost Units"
+                "Property": "Total Consumed Credits"
               }
             },
             "direction": "Descending"

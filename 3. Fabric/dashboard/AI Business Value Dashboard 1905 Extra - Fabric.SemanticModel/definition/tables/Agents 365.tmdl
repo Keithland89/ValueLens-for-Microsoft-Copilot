@@ -670,7 +670,6 @@ table 'Agents 365'
 		mode: import
 		source = ```
 				let
-				    FilePath = #"Agent 365",
 				
 				    // List the column names and types as in your table output after all transforms
 				    EmptyTable = #table(
@@ -689,11 +688,10 @@ table 'Agents 365'
 				    ),
 				
 				    Output =
-				        if FilePath <> null and Text.Trim(FilePath) <> "" then
+				        if Enable_Agent365 then
 				            let
-				                // SharePoint URL only — local paths are deliberately not supported on this variant.
-				                Source = Csv.Document(Web.Contents(FilePath), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.None]),
-				                #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				                // Sourced from the Fabric Lakehouse Delta table agents_365 (landed by the Agent 365 producer notebook).
+				                #"Promoted Headers" = try FabricTable("agents_365") otherwise EmptyTable,
 				
 				                // Detect column name variants (old vs new format)
 				                cols = Table.ColumnNames(#"Promoted Headers"),

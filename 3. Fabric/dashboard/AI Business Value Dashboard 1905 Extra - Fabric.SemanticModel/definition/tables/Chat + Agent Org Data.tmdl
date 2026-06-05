@@ -307,9 +307,13 @@ table 'Chat + Agent Org Data'
 				        else
 				            RenamedPersonId,
 				
-				    // Normalize *values* for joins (safe for UPN/email): lower + trim only
+				    // Normalize *values* for joins (safe for UPN/email): lower + trim only.
+				    // Idempotent: if the source Delta table already has PersonId_Normalized
+				    // (older pre-normalized ingester output), keep it instead of re-adding.
 				    AddPersonIdNormalized =
-				        if Table.HasColumns(RenamedColumns, "PersonId") then
+				        if Table.HasColumns(RenamedColumns, "PersonId_Normalized") then
+				            RenamedColumns
+				        else if Table.HasColumns(RenamedColumns, "PersonId") then
 				            Table.AddColumn(
 				                RenamedColumns,
 				                "PersonId_Normalized",

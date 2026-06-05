@@ -3,9 +3,9 @@
   "name": "d54656e08d2245955502",
   "position": {
     "x": 229.61936727844034,
-    "y": 64.351924587588371,
+    "y": 64.35192458758837,
     "z": 4000,
-    "height": 78.977361993858466,
+    "height": 78.97736199385847,
     "width": 421.21259730057847,
     "tabOrder": 4000
   },
@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Agent Sessions"
+                      "Entity": "Credit Consumption (Agent)"
                     }
                   },
-                  "Property": "Agents with Credits"
+                  "Property": "Billing Agents with Credits"
                 }
               },
-              "queryRef": "Agent Sessions.Agents with Credits",
+              "queryRef": "Credit Consumption (Agent).Billing Agents with Credits",
               "nativeQueryRef": "Agents with Credits1"
             },
             {
@@ -34,13 +34,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Agent Sessions"
+                      "Entity": "Credit Consumption (Agent)"
                     }
                   },
-                  "Property": "Avg Credits per Agent"
+                  "Property": "Avg Credits per Agent (Billing)"
                 }
               },
-              "queryRef": "Agent Sessions.Avg Credits per Agent",
+              "queryRef": "Credit Consumption (Agent).Avg Credits per Agent (Billing)",
               "nativeQueryRef": "Avg Credits per Agent"
             }
           ]
@@ -53,10 +53,10 @@
               "Measure": {
                 "Expression": {
                   "SourceRef": {
-                    "Entity": "Agent Sessions"
+                    "Entity": "Credit Consumption (Agent)"
                   }
                 },
-                "Property": "Agents with Credits"
+                "Property": "Billing Agents with Credits"
               }
             },
             "direction": "Descending"

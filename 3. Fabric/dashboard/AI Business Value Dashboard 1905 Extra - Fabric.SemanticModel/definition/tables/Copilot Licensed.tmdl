@@ -244,16 +244,21 @@ table 'Copilot Licensed'
 				            MissingField.Ignore
 				        ),
 				
-				    // Add a normalized join key (case-insensitive match helper)
+				    // Add a normalized join key (case-insensitive match helper).
+				    // Idempotent: if the source Delta table already has UPN_Normalized
+				    // (older pre-normalized ingester output), keep it instead of re-adding.
 				    #"Added UPN Normalized" =
-				        Table.AddColumn(
-				            #"Renamed Columns",
-				            "UPN_Normalized",
-				            each
-				                let v = [User Principal Name]
-				                in if v = null then null else Text.Lower(Text.Trim(Text.From(v))),
-				            type text
-				        ),
+				        if Table.HasColumns(#"Renamed Columns", "UPN_Normalized") then
+				            #"Renamed Columns"
+				        else
+				            Table.AddColumn(
+				                #"Renamed Columns",
+				                "UPN_Normalized",
+				                each
+				                    let v = [User Principal Name]
+				                    in if v = null then null else Text.Lower(Text.Trim(Text.From(v))),
+				                type text
+				            ),
 				
 				    // Remove duplicates using the normalized key
 				    #"Removed Duplicates" = Table.Distinct(#"Added UPN Normalized", {"UPN_Normalized"})

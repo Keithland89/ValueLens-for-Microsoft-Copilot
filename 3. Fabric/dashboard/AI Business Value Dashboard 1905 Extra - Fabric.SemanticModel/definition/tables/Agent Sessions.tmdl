@@ -28,8 +28,27 @@ table 'Agent Sessions'
 		formatString: #,0
 		displayFolder: 🤖 Agent Performance
 		lineageTag: ag0001se-meas-0001-000000000004
-
 		annotation PBI_FormatHint = {"isDecimal":true}
+
+	/// Credit units NOT attributable to any org = Total - Mapped (Mapped uses a TREATAS virtual join on
+	/// user_id_hash -> Org[id], so this is correct even if the physical relationship is invalid/blank).
+	measure 'Unmapped Credit Units' = [Total Cost Units] - [Mapped Credit Units]
+		formatString: #,0
+		displayFolder: 💳 Credits
+		lineageTag: ag0001se-meas-unmappedcu01
+
+	/// Share of credit units not attributed to an org. High => identity mismatch (transcripts from a
+	/// different environment/tenant than the Entra org data).
+	measure 'Unmapped Credit %' = DIVIDE ( [Unmapped Credit Units], [Total Cost Units] )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 💳 Credits
+		lineageTag: ag0001se-meas-unmappedpct1
+
+	/// Credit units successfully attributed to an organization.
+	measure 'Mapped Credit Units' = CALCULATE ( [Total Cost Units], TREATAS ( CALCULATETABLE ( VALUES ( 'Chat + Agent Org Data'[id] ), KEEPFILTERS ( 'Chat + Agent Org Data'[id] <> "" ) ), 'Agent Sessions'[user_id_hash] ) )
+		formatString: #,0
+		displayFolder: 💳 Credits
+		lineageTag: ag0001se-meas-mappedcu01
 
 	/// Mean cost per conversation.
 	measure 'Avg Cost per Session' = AVERAGE('Agent Sessions'[total_displayed_cost])

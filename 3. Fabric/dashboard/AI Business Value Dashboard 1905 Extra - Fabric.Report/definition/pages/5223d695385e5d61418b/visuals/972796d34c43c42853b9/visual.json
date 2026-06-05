@@ -1,11 +1,11 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
   "name": "972796d34c43c42853b9",
   "position": {
-    "x": 449.36708860759489,
+    "x": 449.3670886075949,
     "y": 149.36708860759492,
     "z": 6000,
-    "height": 558.22784810126575,
+    "height": 558.2278481012657,
     "width": 659.493670886076,
     "tabOrder": 6000
   },
@@ -20,14 +20,14 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Agent Catalogue"
+                      "Entity": "Credit Consumption (User)"
                     }
                   },
-                  "Property": "agent_display_name"
+                  "Property": "Agent_Name"
                 }
               },
-              "queryRef": "Agent Catalogue.agent_display_name",
-              "nativeQueryRef": "agent_display_name",
+              "queryRef": "Credit Consumption (User).Agent_Name",
+              "nativeQueryRef": "Agent_Name1",
               "active": true
             }
           ]
@@ -36,17 +36,23 @@
           "projections": [
             {
               "field": {
-                "Measure": {
+                "Aggregation": {
                   "Expression": {
-                    "SourceRef": {
-                      "Entity": "Agent Sessions"
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Credit Consumption (User)"
+                        }
+                      },
+                      "Property": "Billable_credit_used"
                     }
                   },
-                  "Property": "Total Cost Units"
+                  "Function": 0
                 }
               },
-              "queryRef": "Agent Sessions.Total Cost Units",
-              "nativeQueryRef": "Total Cost Units"
+              "queryRef": "Sum(Credit Consumption (User).Billable_credit_used)",
+              "nativeQueryRef": "Billable Credits Used",
+              "displayName": "Billable Credits Used"
             }
           ]
         }

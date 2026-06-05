@@ -1,0 +1,212 @@
+{
+  "position": {
+    "x": 12,
+    "y": 574,
+    "z": 303,
+    "height": 138,
+    "width": 620,
+    "tabOrder": 303
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Agent Catalogue"
+                    }
+                  },
+                  "Property": "agent_display_name"
+                }
+              },
+              "queryRef": "Agent Catalogue.agent_display_name",
+              "nativeQueryRef": "Agent"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Agent Sessions"
+                    }
+                  },
+                  "Property": "Transcript Sessions"
+                }
+              },
+              "queryRef": "Agent Sessions.Transcript Sessions",
+              "nativeQueryRef": "Sessions"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Agent Performance"
+                    }
+                  },
+                  "Property": "Implied Success %"
+                }
+              },
+              "queryRef": "Agent Performance.Implied Success %",
+              "nativeQueryRef": "ImpliedSuccess"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Agent Performance"
+                    }
+                  },
+                  "Property": "Resolution Rate"
+                }
+              },
+              "queryRef": "Agent Performance.Resolution Rate",
+              "nativeQueryRef": "Resolution"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Agent Performance"
+                    }
+                  },
+                  "Property": "Abandonment Rate"
+                }
+              },
+              "queryRef": "Agent Performance.Abandonment Rate",
+              "nativeQueryRef": "Abandonment"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Agent Sessions"
+                    }
+                  },
+                  "Property": "Session Error Rate"
+                }
+              },
+              "queryRef": "Agent Sessions.Session Error Rate",
+              "nativeQueryRef": "ErrorRate"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Agent Sessions"
+                    }
+                  },
+                  "Property": "Knowledge Answered Rate"
+                }
+              },
+              "queryRef": "Agent Sessions.Knowledge Answered Rate",
+              "nativeQueryRef": "KnowledgeAnswered"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'AGENT QUALITY MATRIX'"
+                }
+              }
+            },
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "titleWrap": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "10D"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'''Segoe UI Semibold'', wf_segoe-ui_semibold, helvetica, arial, sans-serif'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "radius": {
+              "expr": {
+                "Literal": {
+                  "Value": "5D"
+                }
+              }
+            },
+            "width": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
+  "name": "tbl_matrix00015"
+}

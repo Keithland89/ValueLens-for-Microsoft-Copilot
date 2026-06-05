@@ -26,7 +26,7 @@ template never breaks. See `OPTIONAL-SOURCES.md` for the `EmptyTable` + `try…o
 | 1 | Chat + Agent Interactions (Audit Logs) | `Copilot_Interactions_Parsed` | **Core** | `Copilot_Audit_Log_Direct_Ingester` | `GetCopilotInteractions*` |
 | 2 | Copilot Licensed | `copilot_licensed_users` | **Core** | `Copilot_Licensed_Users_Direct_Ingester` | `GetCopilotUsers*` |
 | 3 | Chat + Agent Org Data | `copilot_org_data` | **Core** | `Copilot_Org_Data_Direct_Ingester` | `Get-EntraOrgData*` |
-| 4 | Agents 365 | `agents_365` *(see note)* | *Optional* | land CSV → Lakehouse | `Get-Agents365Registry` |
+| 4 | Agents 365 | `agents_365` | *Optional* | `Copilot_Agent365_Lander` | `Get-Agents365Registry` |
 | 5 | ProductFeedback | `user_feedback` | *Optional* | `Copilot_Agent_Transcript_Parser` (`build_feedback`) | OCV feedback CSV |
 | 6 | Agent Sessions | `agent_sessions` | *Optional* (Dataverse) | `Copilot_Agent_Transcript_Parser` | n/a |
 | 7 | Agent Turns | `agent_turns` | *Optional* (Dataverse) | `Copilot_Agent_Transcript_Parser` | n/a |
@@ -34,6 +34,9 @@ template never breaks. See `OPTIONAL-SOURCES.md` for the `EmptyTable` + `try…o
 | 9 | Agent Sub-Agent Calls | `agent_subagents` | *Optional* (Dataverse) | `Copilot_Agent_Transcript_Parser` | n/a |
 | 10 | Agent Catalogue | `agent_catalogue` | *Optional* (Dataverse) | `Copilot_Agent_Transcript_Parser` | n/a |
 | 11 | Agent Performance | `agent_performance` | *Optional* (Dataverse) | `Copilot_Agent_Transcript_Parser` | n/a |
+| 12 | Credit Consumption (Tenant) | `credit_consumption_tenant` | *Optional* (billing) | `Copilot_Credit_Consumption_Ingester` | n/a |
+| 13 | Credit Consumption (Agent) | `credit_consumption_agent` | *Optional* (billing) | `Copilot_Credit_Consumption_Ingester` | n/a |
+| 14 | Credit Consumption (User) | `credit_consumption_user` | *Optional* (billing) | `Copilot_Credit_Consumption_Ingester` | n/a |
 
 All other model tables (Calendar, legends, ranking/summary, glossary, value maps, etc.) are
 **calculated/DAX or static** — they have no external source and are version-independent.
@@ -76,18 +79,25 @@ Dashboard normalizes dynamically (UPN/PersonId variants, `Department`→`Organiz
 `PersonId_Normalized` + `TotalEmployees` if missing.
 
 ```
-PersonId, displayName, Organization, JobTitle, companyName,
+id, PersonId, displayName, Organization, JobTitle, companyName,
 officeLocation, city, country, accountEnabled, managerUPN
 ```
+
+**Two join keys (important):**
+- `PersonId` = **userPrincipalName (UPN)** — used by the **Audit Logs** path (`Audit_UserId → PersonId`).
+- `id` = **AAD object id** — used by the **Dataverse** path (`Agent Sessions.user_id_hash → id`), because
+  the transcript parser emits the user's `aadObjectId`, not the UPN. The producer must populate `id`
+  (Graph `/users` `id`) or the credit-by-organization breakdown silently shows 100% for every org
+  (dangling relationship → Organization filter never reaches Agent Sessions).
 
 ---
 
 ## Optional tables
 
 ### 4. `agents_365`
-Currently sourced from a SharePoint CSV URL even in the Fabric model. **Action:** land it into the
-Lakehouse (shortcut / small load cell / Dataflow Gen2) and switch the table to `FabricTable("agents_365")`
-so the Fabric model is 100% Lakehouse-sourced. 39 columns from the Agents MAC export.
+Landed into the Lakehouse by `Copilot_Agent365_Lander` (CSV → `dbo.agents_365`; Delta column-mapping
+preserves spaced header names like `Agent name`) and read via `FabricTable("agents_365")`, wrapped with
+`Enable_Agent365`. The Fabric model is now **100% Lakehouse-sourced**. Columns from the Agents MAC export.
 
 ### 5. `user_feedback` — Product Feedback (OCV export)
 **Not** a Dataverse source — it is an OCV/Viva feedback **CSV** dropped at
@@ -170,5 +180,22 @@ StatusCode, StateCode
 | ID | Table | Finding | Fix |
 | --- | --- | --- | --- |
 | A | `user_feedback` | Empty placeholder had 6 cols; `Table.RenameColumns` expects 17 → refresh broke when no feedback.csv | **Fixed** in notebook (full superset). Also add `MissingField.Ignore` in model. |
-| B | `copilot_licensed_users` | Producer writes underscore names; model variant lists only have spaced/camel forms → UPN + licence load null | Add underscore variants to model **or** keep spaced names in Delta |
-| C | `agents_365` | Fabric model still reads a SharePoint URL | Land to Lakehouse → `FabricTable("agents_365")` |
+| B | `copilot_licensed_users` | Producer writes underscore names; model variant lists only have spaced/camel forms → UPN + licence load null | **Fixed** — underscore variants added to model |
+| C | `agents_365` | Fabric model read a SharePoint URL | **Fixed** — `Copilot_Agent365_Lander` lands `dbo.agents_365`; table now `FabricTable` + `Enable_Agent365` |
+| D | Audit/Licensed/Org core M | Staged from an older snapshot assuming RAW audit JSON (unconditional adds + `Json.Document`) → "field already exists" on pre-flattened producer output | **Fixed** — re-based on the §7-fixed versions (17 `HasColumns` guards, conditional parse) |
+| E | `Agent Sessions → Org` (credits) | Join `user_id_hash → id` dangled because org producer never emitted `id`; credit-by-org showed 100% per org | **Fixed (producer)** — org ingester now emits Graph `id` (AAD objectId). Requires org re-land. |
+
+## Known limitation — cross-environment / cross-tenant user identity
+
+The **Dataverse** agent tables key on the user's **AAD objectId** (`user_id_hash`), while **Org** data is
+Entra from *this* tenant. These only reconcile when the **transcripts and the Entra directory describe
+the same users in the same tenant**. If agents are published in a **different environment/tenant** (common
+in demos), the objectIds won't exist in the org table and credit-by-organization will show no/!00%
+breakdown — this is a **data alignment** issue, not a model bug.
+
+**Recommended robust design for the customer template** (not breaking, degrades cleanly):
+1. Keep the objectId join (`user_id_hash → id`) as primary.
+2. Optionally have the parser also emit the **UPN** (`user_upn`) when the transcript activity carries it,
+   and add a fallback relationship `user_upn → PersonId_Normalized`.
+3. Surface unmatched credit rows under an **"(Unmapped)"** organization rather than letting them silently
+   inflate every org's share — so a key mismatch is *visible*, never misleading.
