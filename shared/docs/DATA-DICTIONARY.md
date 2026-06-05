@@ -76,9 +76,16 @@ Dashboard normalizes dynamically (UPN/PersonId variants, `Department`→`Organiz
 `PersonId_Normalized` + `TotalEmployees` if missing.
 
 ```
-PersonId, displayName, Organization, JobTitle, companyName,
+id, PersonId, displayName, Organization, JobTitle, companyName,
 officeLocation, city, country, accountEnabled, managerUPN
 ```
+
+**Two join keys (important):**
+- `PersonId` = **userPrincipalName (UPN)** — used by the **Audit Logs** path (`Audit_UserId → PersonId`).
+- `id` = **AAD object id** — used by the **Dataverse** path (`Agent Sessions.user_id_hash → id`), because
+  the transcript parser emits the user's `aadObjectId`, not the UPN. The producer must populate `id`
+  (Graph `/users` `id`) or the credit-by-organization breakdown silently shows 100% for every org
+  (dangling relationship → Organization filter never reaches Agent Sessions).
 
 ---
 
