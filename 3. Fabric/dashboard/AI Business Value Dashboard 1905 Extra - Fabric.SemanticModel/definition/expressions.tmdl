@@ -22,7 +22,7 @@ expression FabricTable =
 		(tableName as text) as table =>
 			let
 				Db = Sql.Database(#"Fabric SQL Endpoint", #"Lakehouse Name"),
-				Data = Db{[Schema = "dbo", Item = tableName]}[Data]
+				Data = Table.SelectRows(Db, each [Schema] = "dbo" and Text.Lower([Item]) = Text.Lower(tableName)){0}[Data]
 			in
 				Data
 	lineageTag: 1a2b3c4d-fab1-4003-8003-000000000003

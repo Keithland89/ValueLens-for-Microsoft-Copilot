@@ -246,7 +246,7 @@ table 'Copilot Licensed'
 				
 				    // Add a normalized join key (case-insensitive match helper)
 				    #"Added UPN Normalized" =
-				        Table.AddColumn(
+				        if Table.HasColumns(#"Renamed Columns", "UPN_Normalized") then #"Renamed Columns" else Table.AddColumn(
 				            #"Renamed Columns",
 				            "UPN_Normalized",
 				            each

@@ -309,7 +309,7 @@ table 'Chat + Agent Org Data'
 				
 				    // Normalize *values* for joins (safe for UPN/email): lower + trim only
 				    AddPersonIdNormalized =
-				        if Table.HasColumns(RenamedColumns, "PersonId") then
+				        if Table.HasColumns(RenamedColumns, "PersonId") and not Table.HasColumns(RenamedColumns, "PersonId_Normalized") then
 				            Table.AddColumn(
 				                RenamedColumns,
 				                "PersonId_Normalized",
