@@ -177,5 +177,22 @@ StatusCode, StateCode
 | ID | Table | Finding | Fix |
 | --- | --- | --- | --- |
 | A | `user_feedback` | Empty placeholder had 6 cols; `Table.RenameColumns` expects 17 → refresh broke when no feedback.csv | **Fixed** in notebook (full superset). Also add `MissingField.Ignore` in model. |
-| B | `copilot_licensed_users` | Producer writes underscore names; model variant lists only have spaced/camel forms → UPN + licence load null | Add underscore variants to model **or** keep spaced names in Delta |
+| B | `copilot_licensed_users` | Producer writes underscore names; model variant lists only have spaced/camel forms → UPN + licence load null | **Fixed** — underscore variants added to model |
 | C | `agents_365` | Fabric model read a SharePoint URL | **Fixed** — `Copilot_Agent365_Lander` lands `dbo.agents_365`; table now `FabricTable` + `Enable_Agent365` |
+| D | Audit/Licensed/Org core M | Staged from an older snapshot assuming RAW audit JSON (unconditional adds + `Json.Document`) → "field already exists" on pre-flattened producer output | **Fixed** — re-based on the §7-fixed versions (17 `HasColumns` guards, conditional parse) |
+| E | `Agent Sessions → Org` (credits) | Join `user_id_hash → id` dangled because org producer never emitted `id`; credit-by-org showed 100% per org | **Fixed (producer)** — org ingester now emits Graph `id` (AAD objectId). Requires org re-land. |
+
+## Known limitation — cross-environment / cross-tenant user identity
+
+The **Dataverse** agent tables key on the user's **AAD objectId** (`user_id_hash`), while **Org** data is
+Entra from *this* tenant. These only reconcile when the **transcripts and the Entra directory describe
+the same users in the same tenant**. If agents are published in a **different environment/tenant** (common
+in demos), the objectIds won't exist in the org table and credit-by-organization will show no/!00%
+breakdown — this is a **data alignment** issue, not a model bug.
+
+**Recommended robust design for the customer template** (not breaking, degrades cleanly):
+1. Keep the objectId join (`user_id_hash → id`) as primary.
+2. Optionally have the parser also emit the **UPN** (`user_upn`) when the transcript activity carries it,
+   and add a fallback relationship `user_upn → PersonId_Normalized`.
+3. Surface unmatched credit rows under an **"(Unmapped)"** organization rather than letting them silently
+   inflate every org's share — so a key mismatch is *visible*, never misleading.
