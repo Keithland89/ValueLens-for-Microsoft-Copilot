@@ -230,32 +230,57 @@ table 'Agent Performance'
 
 	/// Dynamic narrative theming conversation topics by resolution — strongest, weakest, and most-escalated topics
 	measure '🧠 Topic Resolution Insight' =
-			VAR TopicStats =
+			VAR T =
 			    ADDCOLUMNS(
-			        FILTER(VALUES('Agent Performance'[PrimaryTopic]), CALCULATE(COUNTROWS('Agent Performance')) >= 20),
-			        "Res", [Resolution Rate],
-			        "Esc", [Escalation Rate],
-			        "Vol", CALCULATE(COUNTROWS('Agent Performance'))
+			        FILTER(
+			            VALUES('Agent Performance'[Topic (resolved)]),
+			            CALCULATE([Total Conversations]) >= 5
+			                && NOT (LEFT('Agent Performance'[Topic (resolved)], 1) = "🚫")
+			        ),
+			        "Res", DIVIDE([Resolved Conversations], CALCULATE([Total Conversations], 'Agent Performance'[SessionType] = "Engaged")),
+			        "Esc", [Escalation Rate]
 			    )
-			VAR BestRow = TOPN(1, TopicStats, [Res], DESC)
-			VAR WorstRow = TOPN(1, TopicStats, [Res], ASC)
-			VAR EscRow = TOPN(1, TopicStats, [Esc], DESC)
-			VAR BestName = MAXX(BestRow, [PrimaryTopic])
-			VAR BestRes = MAXX(BestRow, [Res])
-			VAR WorstName = MAXX(WorstRow, [PrimaryTopic])
-			VAR WorstRes = MAXX(WorstRow, [Res])
-			VAR EscName = MAXX(EscRow, [PrimaryTopic])
-			VAR EscVal = MAXX(EscRow, [Esc])
-			VAR Overall = [Resolution Rate]
+			VAR Best = TOPN(1, T, [Res], DESC)
+			VAR Worst = TOPN(1, T, [Res], ASC)
+			VAR EscR = TOPN(1, T, [Esc], DESC)
 			RETURN
-			IF(COUNTROWS(TopicStats) = 0, "Not enough conversations to theme topics in this selection.",
-			    "✅ " & BestName & " is the strongest topic — " & FORMAT(BestRes, "0%") & " resolved. " &
-			    "⚠️ " & WorstName & " is the biggest drag — only " & FORMAT(WorstRes, "0%") & " resolved. " &
-			    "🔁 " & EscName & " escalates to a human most often (" & FORMAT(EscVal, "0%") & "). " &
-			    "Overall, " & FORMAT(Overall, "0%") & " of conversations reach resolution."
+			IF(
+			    COUNTROWS(T) = 0, "Not enough conversations to theme topics in this selection.",
+			    "✅ " & MAXX(Best, 'Agent Performance'[Topic (resolved)]) & " resolves best (" & FORMAT(MAXX(Best, [Res]), "0%") & " of engaged). " &
+			    "⚠️ " & MAXX(Worst, 'Agent Performance'[Topic (resolved)]) & " is the biggest drag (" & FORMAT(MAXX(Worst, [Res]), "0%") & "). " &
+			    "🔁 " & MAXX(EscR, 'Agent Performance'[Topic (resolved)]) & " escalates most (" & FORMAT(MAXX(EscR, [Esc]), "0%") & ")."
 			)
-		displayFolder: 🧠 Prompt Quality
+		displayFolder: 🗂 Topics
 		lineageTag: c0a1b2c3-0002-0001-0002-000000000001
+
+	measure '🧠 Conversation Summary' =
+			VAR Total = [Total Conversations]
+			VAR Engaged = CALCULATE([Total Conversations], 'Agent Performance'[SessionType] = "Engaged")
+			VAR EngPct = DIVIDE(Engaged, Total)
+			VAR ResEng = DIVIDE([Resolved Conversations], Engaged)
+			VAR AbnEng = DIVIDE([Abandoned Conversations], Engaged)
+			VAR T =
+			    ADDCOLUMNS(
+			        FILTER(
+			            VALUES('Agent Performance'[Topic (resolved)]),
+			            NOT (LEFT('Agent Performance'[Topic (resolved)], 1) = "🚫")
+			        ),
+			        "V", [Total Conversations],
+			        "A", [Abandonment Rate]
+			    )
+			VAR TopTopic = MAXX(TOPN(1, T, [V], DESC), 'Agent Performance'[Topic (resolved)])
+			VAR TopVol = MAXX(TOPN(1, T, [V], DESC), [V])
+			VAR WorstTopic = MAXX(TOPN(1, FILTER(T, [V] >= 5), [A], DESC), 'Agent Performance'[Topic (resolved)])
+			RETURN
+			IF(
+			    Total = 0, "No conversations in this selection.",
+			    FORMAT(Total, "#,0") & " conversations, " & FORMAT(EngPct, "0%") & " engaged. " &
+			    "Among engaged: " & FORMAT(ResEng, "0%") & " resolved, " & FORMAT(AbnEng, "0%") & " abandoned. " &
+			    "Busiest topic: " & TopTopic & " (" & FORMAT(TopVol, "#,0") & " convs). " &
+			    "Most abandoned: " & WorstTopic & "."
+			)
+		displayFolder: 🗂 Topics
+		lineageTag: ap0topic-meas-0001-000000000010
 
 	/// Conversations the agent resolved on its own.
 	measure 'Resolved Conversations' = CALCULATE([Total Conversations], 'Agent Performance'[SessionOutcome] = "Resolved")
