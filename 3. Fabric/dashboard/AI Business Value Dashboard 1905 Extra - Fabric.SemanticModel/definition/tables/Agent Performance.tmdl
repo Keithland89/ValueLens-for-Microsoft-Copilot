@@ -813,6 +813,38 @@ table 'Agent Performance'
 
 		annotation SummarizationSetBy = Automatic
 
+	column 'Topic (resolved)' =
+			VAR classic = 'Agent Performance'[PrimaryTopic]
+			VAR m = LOWER(TRIM('Agent Performance'[FirstUserMessage]))
+			VAR derived =
+			    SWITCH(
+			        TRUE(),
+			        ISBLANK(m) || m = "", "🚫 No message",
+			        CONTAINSSTRING(m, "have access to talk to this bot") || CONTAINSSTRING(m, "contact the owner"), "🚫 No Access (system)",
+			        LEFT(m, 1) = "/", "🚫 Command",
+			        m IN {"hi", "hey", "hello", "test", "ok", "thanks", "thank you"}, "🚫 Greeting",
+			        CONTAINSSTRING(m, "what this agent can do") || CONTAINSSTRING(m, "what can you do") || CONTAINSSTRING(m, "example of what"), "🚫 Capability probe",
+			        CONTAINSSTRING(m, "suicid") || CONTAINSSTRING(m, "harm myself") || CONTAINSSTRING(m, "kill myself"), "⚠ Safety / Wellbeing",
+			        CONTAINSSTRING(m, "threat") || CONTAINSSTRING(m, "scare") || CONTAINSSTRING(m, "ignore previous") || CONTAINSSTRING(m, "pretend you"), "⚠ Misuse / Jailbreak",
+			        CONTAINSSTRING(m, "is this valid") || CONTAINSSTRING(m, "is this correct"), "⚠ PII / Validation",
+			        CONTAINSSTRING(m, "leave") || CONTAINSSTRING(m, "holiday") || CONTAINSSTRING(m, "absence") || CONTAINSSTRING(m, "redundancy"), "Leave & Absence",
+			        CONTAINSSTRING(m, "access") || CONTAINSSTRING(m, "permission") || CONTAINSSTRING(m, "carm") || CONTAINSSTRING(m, "login") || CONTAINSSTRING(m, "password") || CONTAINSSTRING(m, "iga"), "Access & Permissions",
+			        CONTAINSSTRING(m, "laptop") || CONTAINSSTRING(m, "order") || CONTAINSSTRING(m, "device") || CONTAINSSTRING(m, "phone") || CONTAINSSTRING(m, "holder"), "Device & Hardware",
+			        CONTAINSSTRING(m, "licen") || CONTAINSSTRING(m, "mural") || CONTAINSSTRING(m, "vpl") || CONTAINSSTRING(m, "power bi") || CONTAINSSTRING(m, "install"), "Software & Licensing",
+			        CONTAINSSTRING(m, "who is") || CONTAINSSTRING(m, "directory") || CONTAINSSTRING(m, "hidden") || CONTAINSSTRING(m, "contact number"), "People & Directory",
+			        CONTAINSSTRING(m, "pay") || CONTAINSSTRING(m, "bonus") || CONTAINSSTRING(m, "expense") || CONTAINSSTRING(m, "payslip") || CONTAINSSTRING(m, "uplift") || CONTAINSSTRING(m, "amex"), "Pay & Expenses",
+			        CONTAINSSTRING(m, "purchas") || CONTAINSSTRING(m, "flexpay") || CONTAINSSTRING(m, "hub") || CONTAINSSTRING(m, "parking") || CONTAINSSTRING(m, "discount"), "Purchasing & Perks",
+			        CONTAINSSTRING(m, "contract") || CONTAINSSTRING(m, "policy") || CONTAINSSTRING(m, "documentation") || CONTAINSSTRING(m, "process") || CONTAINSSTRING(m, "terms"), "Policy & Process",
+			        "Other"
+			    )
+			RETURN
+			    IF(NOT ISBLANK(classic) && classic <> "", classic, derived)
+		lineageTag: ap0topic-col0-0001-000000000002
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+
 	partition 'Agent Performance' = m
 		mode: import
 		source =
