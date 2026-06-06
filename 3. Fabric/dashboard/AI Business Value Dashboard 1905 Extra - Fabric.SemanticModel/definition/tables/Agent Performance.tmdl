@@ -815,6 +815,8 @@ table 'Agent Performance'
 
 	column 'Topic (resolved)' =
 			VAR classic = 'Agent Performance'[PrimaryTopic]
+			VAR lc = LOWER(classic)
+			VAR isSystemClassic = CONTAINSSTRING(lc, "[system]") || lc = "logging" || lc = "greeting"
 			VAR m = LOWER(TRIM('Agent Performance'[FirstUserMessage]))
 			VAR derived =
 			    SWITCH(
@@ -838,12 +840,11 @@ table 'Agent Performance'
 			        "Other"
 			    )
 			RETURN
-			    IF(NOT ISBLANK(classic) && classic <> "", classic, derived)
+			    IF(NOT isSystemClassic && NOT ISBLANK(classic) && classic <> "", classic, derived)
 		lineageTag: ap0topic-col0-0001-000000000002
 		summarizeBy: none
 
 		annotation SummarizationSetBy = Automatic
-
 
 	partition 'Agent Performance' = m
 		mode: import
