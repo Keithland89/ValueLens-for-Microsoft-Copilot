@@ -257,6 +257,42 @@ table 'Agent Performance'
 		displayFolder: 🧠 Prompt Quality
 		lineageTag: c0a1b2c3-0002-0001-0002-000000000001
 
+	/// Conversations the agent resolved on its own.
+	measure 'Resolved Conversations' = CALCULATE([Total Conversations], 'Agent Performance'[SessionOutcome] = "Resolved")
+		formatString: #,0
+		displayFolder: 🗂 Topics
+		lineageTag: ap0topic-meas-0001-000000000001
+
+	/// Conversations handed off to a human.
+	measure 'Escalated Conversations' = CALCULATE([Total Conversations], 'Agent Performance'[SessionOutcome] = "Escalated")
+		formatString: #,0
+		displayFolder: 🗂 Topics
+		lineageTag: ap0topic-meas-0001-000000000002
+
+	/// Conversations the user dropped without a resolution.
+	measure 'Abandoned Conversations' = CALCULATE([Total Conversations], 'Agent Performance'[SessionOutcome] = "Abandoned")
+		formatString: #,0
+		displayFolder: 🗂 Topics
+		lineageTag: ap0topic-meas-0001-000000000003
+
+	/// Of conversations that reached a clear outcome (resolved OR escalated to a
+	/// human), the share the agent contained itself. Drives "Best Self-Served Topics".
+	measure 'Deflection Rate' = DIVIDE([Resolved Conversations], [Resolved Conversations] + [Escalated Conversations])
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 🗂 Topics
+		lineageTag: ap0topic-meas-0001-000000000004
+
+	/// Share of resolved conversations the agent closed within 3 turns (fast wins).
+	measure 'Quick-Resolve Rate (<=3 turns)' =
+			DIVIDE(
+			    CALCULATE([Total Conversations],
+			        'Agent Performance'[SessionOutcome] = "Resolved",
+			        'Agent Performance'[TurnCount] <= 3),
+			    [Resolved Conversations])
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 🗂 Topics
+		lineageTag: ap0topic-meas-0001-000000000005
+
 	column ConversationTranscriptId
 		dataType: string
 		lineageTag: 4db8c731-76cb-4736-92c2-31f8c653f79d
@@ -755,6 +791,25 @@ table 'Agent Performance'
 		formatString: 0
 		lineageTag: b1c2d3e4-0002-0002-0001-000000000001
 		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Higher-level grouping of PrimaryTopic for the Topic Themes treemap / slicer.
+	/// Quick-win keyword bucketing — swap for a Topic Theme Mapping table when ready.
+	column 'Topic Theme' =
+			VAR t = LOWER('Agent Performance'[PrimaryTopic])
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        CONTAINSSTRING(t, "password") || CONTAINSSTRING(t, "mfa") || CONTAINSSTRING(t, "login") || CONTAINSSTRING(t, "access"), "IT & Access",
+			        CONTAINSSTRING(t, "payroll") || CONTAINSSTRING(t, "expense") || CONTAINSSTRING(t, "pension") || CONTAINSSTRING(t, "payslip"), "Finance",
+			        CONTAINSSTRING(t, "leave") || CONTAINSSTRING(t, "holiday") || CONTAINSSTRING(t, "absence") || CONTAINSSTRING(t, "onboard"), "HR & People",
+			        CONTAINSSTRING(t, "policy") || CONTAINSSTRING(t, "compliance") || CONTAINSSTRING(t, "benefit"), "Policy",
+			        ISBLANK(t) || t = "", "Untagged",
+			        "Other"
+			    )
+		lineageTag: ap0topic-col0-0001-000000000001
+		summarizeBy: none
 
 		annotation SummarizationSetBy = Automatic
 
