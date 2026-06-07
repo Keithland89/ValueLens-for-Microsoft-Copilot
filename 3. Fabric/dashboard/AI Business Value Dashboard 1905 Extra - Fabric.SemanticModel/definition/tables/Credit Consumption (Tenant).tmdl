@@ -111,7 +111,7 @@ table 'Credit Consumption (Tenant)'
 		source =
 				let
 				    Cols = {"BillingPlan_Id", "BillingPlan_Name", "Environment_Id", "Environment_Name", "Capacity_Type", "Entitled_Quantity", "Prepaid_Consumed_Quantity", "Pay_as_you_go_Consumed_Quantity", "Usage_Date"},
-				    Promoted = if Enable_Consumption then (try FabricTable("credit_consumption_tenant") otherwise EmptyTable(Cols)) else EmptyTable(Cols),
+				    Promoted = if Enable_Consumption = "Include" then (try FabricTable("credit_consumption_tenant") otherwise EmptyTable(Cols)) else EmptyTable(Cols),
 				    Typed = Table.TransformColumnTypes(Promoted, {
 				        {"BillingPlan_Id", type text},
 				        {"BillingPlan_Name", type text},

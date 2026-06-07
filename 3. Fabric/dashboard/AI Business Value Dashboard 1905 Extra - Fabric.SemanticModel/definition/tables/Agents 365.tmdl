@@ -631,7 +631,7 @@ table 'Agents 365'
 				    ),
 				
 				    Output =
-				        if Enable_Agent365 then
+				        if Enable_Agent365 = "Include" then
 				            let
 				                // Sourced from the Fabric Lakehouse Delta table agents_365 (landed by the Agent 365 producer notebook).
 				                #"Promoted Headers" = try FabricTable("agents_365") otherwise EmptyTable,

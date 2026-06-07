@@ -156,7 +156,7 @@ table 'Credit Consumption (Agent)'
 		source =
 				let
 				    Cols = {"Agent_Name", "Agent_Id", "Product", "AI_Feature_Billable_Feature", "Billed_credit", "Non_billed_credit", "Channel", "Knowledge_Sources", "Tool_Used", "LLM_Model", "Scenario_Name", "Environment_Id", "Environment_Name"},
-				    Promoted = if Enable_Consumption then (try FabricTable("credit_consumption_agent") otherwise EmptyTable(Cols)) else EmptyTable(Cols),
+				    Promoted = if Enable_Consumption = "Include" then (try FabricTable("credit_consumption_agent") otherwise EmptyTable(Cols)) else EmptyTable(Cols),
 				    Typed = Table.TransformColumnTypes(Promoted, {
 				        {"Agent_Name", type text},
 				        {"Agent_Id", type text},

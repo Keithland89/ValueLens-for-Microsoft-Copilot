@@ -187,7 +187,7 @@ table 'Agent Turns'
 		mode: import
 		source =
 				let
-				    Promoted = if Enable_Dataverse then (try FabricTable("agent_turns") otherwise EmptyTable({"conversation_id", "turn_id", "turn_timestamp_utc", "turn_role", "turn_channel", "from_user_hash", "text_preview_500", "text_length", "intent_title", "intent_id", "intent_score", "knowledge_searched", "knowledge_answered", "knowledge_sources", "feedback_offered", "feedback_verdict", "feedback_comment"})) else EmptyTable({"conversation_id", "turn_id", "turn_timestamp_utc", "turn_role", "turn_channel", "from_user_hash", "text_preview_500", "text_length", "intent_title", "intent_id", "intent_score", "knowledge_searched", "knowledge_answered", "knowledge_sources", "feedback_offered", "feedback_verdict", "feedback_comment"}),
+				    Promoted = if Enable_Dataverse = "Include" then (try FabricTable("agent_turns") otherwise EmptyTable({"conversation_id", "turn_id", "turn_timestamp_utc", "turn_role", "turn_channel", "from_user_hash", "text_preview_500", "text_length", "intent_title", "intent_id", "intent_score", "knowledge_searched", "knowledge_answered", "knowledge_sources", "feedback_offered", "feedback_verdict", "feedback_comment"})) else EmptyTable({"conversation_id", "turn_id", "turn_timestamp_utc", "turn_role", "turn_channel", "from_user_hash", "text_preview_500", "text_length", "intent_title", "intent_id", "intent_score", "knowledge_searched", "knowledge_answered", "knowledge_sources", "feedback_offered", "feedback_verdict", "feedback_comment"}),
 				    Typed = Table.TransformColumnTypes(Promoted, {
 				        {"conversation_id", type text},
 				        {"turn_id", type text},

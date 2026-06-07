@@ -104,7 +104,7 @@ table 'Credit Consumption (User)'
 		source =
 				let
 				    Cols = {"User_Id", "User_Email", "Agent_Id", "Agent_Name", "Billable_credit_used", "Credits_used", "M365_Copilot_Licensed"},
-				    Promoted = if Enable_Consumption then (try FabricTable("credit_consumption_user") otherwise EmptyTable(Cols)) else EmptyTable(Cols),
+				    Promoted = if Enable_Consumption = "Include" then (try FabricTable("credit_consumption_user") otherwise EmptyTable(Cols)) else EmptyTable(Cols),
 				    Typed = Table.TransformColumnTypes(Promoted, {
 				        {"User_Id", type text},
 				        {"User_Email", type text},

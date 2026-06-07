@@ -33,7 +33,7 @@ table 'Agent Catalogue'
 		mode: import
 		source =
 				let
-				    Promoted = if Enable_Dataverse then (try FabricTable("agent_catalogue") otherwise EmptyTable({"agent_schema", "agent_display_name", "agent_class"})) else EmptyTable({"agent_schema", "agent_display_name", "agent_class"}),
+				    Promoted = if Enable_Dataverse = "Include" then (try FabricTable("agent_catalogue") otherwise EmptyTable({"agent_schema", "agent_display_name", "agent_class"})) else EmptyTable({"agent_schema", "agent_display_name", "agent_class"}),
 				    Typed = Table.TransformColumnTypes(Promoted, {
 				        {"agent_schema", type text},
 				        {"agent_display_name", type text},

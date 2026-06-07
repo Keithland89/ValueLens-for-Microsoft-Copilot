@@ -37,28 +37,29 @@ expression EmptyTable = (columns as list) as table => #table(columns, {})
 	annotation PBI_ResultType = Function
 
 /// Toggle (optional): load the Dataverse agent tables. False => they load empty.
-expression Enable_Dataverse = true meta [IsParameterQuery=true, Type="Logical", IsParameterQueryRequired=true]
+expression Enable_Dataverse = "Include" meta [IsParameterQuery=true, List={"Include", "Exclude"}, DefaultValue="Include", Type="Text", IsParameterQueryRequired=true]
 	lineageTag: 1a2b3c4d-fab1-4005-8005-000000000005
 
-	annotation PBI_ResultType = Logical
+	annotation PBI_ResultType = Text
 
 /// Toggle (optional): load the Product Feedback (OCV) table user_feedback.
-expression Enable_ProductFeedback = true meta [IsParameterQuery=true, Type="Logical", IsParameterQueryRequired=true]
+expression Enable_ProductFeedback = "Include" meta [IsParameterQuery=true, List={"Include", "Exclude"}, DefaultValue="Include", Type="Text", IsParameterQueryRequired=true]
 	lineageTag: 1a2b3c4d-fab1-4006-8006-000000000006
 
-	annotation PBI_ResultType = Logical
+	annotation PBI_ResultType = Text
 
 /// Toggle (optional): load the Agents 365 registry table.
-expression Enable_Agent365 = true meta [IsParameterQuery=true, Type="Logical", IsParameterQueryRequired=true]
+expression Enable_Agent365 = "Include" meta [IsParameterQuery=true, List={"Include", "Exclude"}, DefaultValue="Include", Type="Text", IsParameterQueryRequired=true]
 	lineageTag: 1a2b3c4d-fab1-4007-8007-000000000007
 
-	annotation PBI_ResultType = Logical
+	annotation PBI_ResultType = Text
 
 /// Toggle (optional): load the Power Platform credit-consumption (billing) tables —
 /// credit_consumption_agent / _user / _tenant, landed by Copilot_Credit_Consumption_Ingester.
 /// Leave FALSE for customers who don't supply the EntitlementConsumption exports; the
 /// billing tables then load empty and the transcript-native Total Cost Units keeps working.
-expression Enable_Consumption = true meta [IsParameterQuery=true, Type="Logical", IsParameterQueryRequired=true]
+expression Enable_Consumption = "Include" meta [IsParameterQuery=true, List={"Include", "Exclude"}, DefaultValue="Include", Type="Text", IsParameterQueryRequired=true]
 	lineageTag: 1a2b3c4d-fab1-4008-8008-000000000008
 
-	annotation PBI_ResultType = Logical
+	annotation PBI_ResultType = Text
+
