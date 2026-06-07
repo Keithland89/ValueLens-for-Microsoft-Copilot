@@ -102,3 +102,4 @@ relationship AutoDetected_249a3c50-3c04-450f-9f80-96f12bd12544
 relationship cc00-user-org-emailnorm-0001
 	fromColumn: 'Credit Consumption (User)'.User_Email_Normalized
 	toColumn: 'Chat + Agent Org Data'.PersonId_Normalized
+

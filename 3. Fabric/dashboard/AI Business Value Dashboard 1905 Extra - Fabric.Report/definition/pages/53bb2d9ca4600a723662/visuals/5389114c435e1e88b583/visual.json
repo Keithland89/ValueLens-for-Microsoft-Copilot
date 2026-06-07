@@ -1,13 +1,13 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
   "name": "5389114c435e1e88b583",
   "position": {
-    "x": 825.44194107452336,
-    "y": 449.844020797227,
-    "z": 8000,
-    "height": 263.29289428076254,
-    "width": 262.04506065857885,
-    "tabOrder": 8000
+    "x": 862.731730846531,
+    "y": 150.15483559771687,
+    "z": 7000,
+    "height": 256.84379773293671,
+    "width": 225.23225339657529,
+    "tabOrder": 7000
   },
   "visual": {
     "visualType": "cardVisual",
@@ -86,6 +86,40 @@
             }
           }
         }
+      ],
+      "fillCustom": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "outline": [
+        {
+          "properties": {
+            "lineColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": -0.2
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "id": "default"
+          }
+        }
       ]
     },
     "visualContainerObjects": {
@@ -136,7 +170,7 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
+                  "Value": "false"
                 }
               }
             },
@@ -157,6 +191,13 @@
               "expr": {
                 "Literal": {
                   "Value": "1D"
+                }
+              }
+            },
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
                 }
               }
             }

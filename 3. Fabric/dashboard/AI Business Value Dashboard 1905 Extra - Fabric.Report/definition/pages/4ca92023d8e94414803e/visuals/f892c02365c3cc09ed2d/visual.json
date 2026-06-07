@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
   "name": "f892c02365c3cc09ed2d",
   "position": {
     "x": 13.530655391120508,
@@ -78,21 +78,6 @@
         }
       },
       "sortDefinition": {
-        "sort": [
-          {
-            "field": {
-              "Measure": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "Chat + Agent Interactions (Audit Logs)"
-                  }
-                },
-                "Property": "Top Value Outcome"
-              }
-            },
-            "direction": "Ascending"
-          }
-        ],
         "isDefaultSort": true
       }
     },
@@ -733,5 +718,6 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  }
+  },
+  "isHidden": true
 }

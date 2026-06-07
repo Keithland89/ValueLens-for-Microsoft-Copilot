@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
   "name": "42a563f42ee853735b35",
   "position": {
     "x": 315.28698709012667,
@@ -63,23 +63,6 @@
             }
           ]
         }
-      },
-      "sortDefinition": {
-        "sort": [
-          {
-            "field": {
-              "Measure": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "Copilot Licensed"
-                  }
-                },
-                "Property": "Active Users (Filter-Aware)"
-              }
-            },
-            "direction": "Descending"
-          }
-        ]
       }
     },
     "objects": {
@@ -386,5 +369,6 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  }
+  },
+  "isHidden": true
 }

@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
   "name": "565eebbde8b2205a053e",
   "position": {
     "x": 560.46670735688633,
@@ -51,23 +51,6 @@
             }
           ]
         }
-      },
-      "sortDefinition": {
-        "sort": [
-          {
-            "field": {
-              "Measure": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "Chat + Agent Interactions (Audit Logs)"
-                  }
-                },
-                "Property": "Copilot AI Tasks Per User"
-              }
-            },
-            "direction": "Descending"
-          }
-        ]
       }
     },
     "objects": {
@@ -491,45 +474,6 @@
           }
         },
         "type": "Categorical",
-        "filter": {
-          "Version": 2,
-          "From": [
-            {
-              "Name": "c",
-              "Entity": "Chat + Agent Interactions (Audit Logs)",
-              "Type": 0
-            }
-          ],
-          "Where": [
-            {
-              "Condition": {
-                "In": {
-                  "Expressions": [
-                    {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Source": "c"
-                          }
-                        },
-                        "Property": "License Status"
-                      }
-                    }
-                  ],
-                  "Values": [
-                    [
-                      {
-                        "Literal": {
-                          "Value": "'M365 Copilot Licensed'"
-                        }
-                      }
-                    ]
-                  ]
-                }
-              }
-            }
-          ]
-        },
         "howCreated": "User"
       },
       {
@@ -548,5 +492,6 @@
         "howCreated": "User"
       }
     ]
-  }
+  },
+  "isHidden": true
 }

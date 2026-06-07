@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
   "name": "g0slicer001",
   "position": {
     "x": 20.512820512820511,
@@ -89,7 +89,7 @@
                           [
                             {
                               "Literal": {
-                                "Value": "'◆ Activation'"
+                                "Value": "'💬 User Feedback (Product)'"
                               }
                             }
                           ]

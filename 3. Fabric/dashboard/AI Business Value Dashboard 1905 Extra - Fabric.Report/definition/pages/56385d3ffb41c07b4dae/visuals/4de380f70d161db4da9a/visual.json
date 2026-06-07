@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
   "name": "4de380f70d161db4da9a",
   "position": {
     "x": 197.05882352941174,
@@ -124,6 +124,23 @@
             }
           ]
         }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Agent Performance"
+                  }
+                },
+                "Property": "Unique Users"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
       }
     },
     "expansionStates": [
@@ -5422,7 +5439,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Agent Evaluation'"
+                  "Value": "'AGENT EVALUATION'"
                 }
               }
             },

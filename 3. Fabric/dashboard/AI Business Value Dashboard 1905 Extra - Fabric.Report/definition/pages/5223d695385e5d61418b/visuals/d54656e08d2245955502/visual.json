@@ -1,12 +1,12 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
   "name": "d54656e08d2245955502",
   "position": {
-    "x": 229.61936727844034,
-    "y": 64.35192458758837,
+    "x": 229.07041773715062,
+    "y": 63.95366992661566,
     "z": 4000,
-    "height": 78.97736199385847,
-    "width": 421.21259730057847,
+    "height": 79.069991909270271,
+    "width": 631.39714127549644,
     "tabOrder": 4000
   },
   "visual": {
@@ -15,6 +15,20 @@
       "queryState": {
         "Data": {
           "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Credit Consumption (Agent)"
+                    }
+                  },
+                  "Property": "Total Consumed Credits"
+                }
+              },
+              "queryRef": "Credit Consumption (Agent).Total Consumed Credits",
+              "nativeQueryRef": "Total Consumed Credits"
+            },
             {
               "field": {
                 "Measure": {
@@ -56,7 +70,7 @@
                     "Entity": "Credit Consumption (Agent)"
                   }
                 },
-                "Property": "Billing Agents with Credits"
+                "Property": "Total Consumed Credits"
               }
             },
             "direction": "Descending"

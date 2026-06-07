@@ -33,6 +33,18 @@ table 'Credit Consumption (Agent)'
 		displayFolder: 💳 Billing (Actuals)
 		lineageTag: cc0001ag-meas-0001-000000000004
 
+	/// Distinct agents present in the billing actuals.
+	measure 'Billing Agents with Credits' = DISTINCTCOUNT ( 'Credit Consumption (Agent)'[Agent_Name] )
+		formatString: #,0
+		displayFolder: 💳 Billing (Actuals)
+		lineageTag: cc0001ag-meas-agentcnt0001
+
+	/// Mean consumed credits per agent (billing actuals).
+	measure 'Avg Credits per Agent (Billing)' = DIVIDE ( [Total Consumed Credits], [Billing Agents with Credits] )
+		formatString: #,0
+		displayFolder: 💳 Billing (Actuals)
+		lineageTag: cc0001ag-meas-avgagent0001
+
 	column Agent_Name
 		dataType: string
 		lineageTag: cc0001ag-col0-0001-000000000001
@@ -138,18 +150,6 @@ table 'Credit Consumption (Agent)'
 		sourceColumn: Environment_Name
 
 		annotation SummarizationSetBy = Automatic
-
-	/// Distinct agents present in the billing actuals.
-	measure 'Billing Agents with Credits' = DISTINCTCOUNT ( 'Credit Consumption (Agent)'[Agent_Name] )
-		formatString: #,0
-		displayFolder: 💳 Billing (Actuals)
-		lineageTag: cc0001ag-meas-agentcnt0001
-
-	/// Mean consumed credits per agent (billing actuals).
-	measure 'Avg Credits per Agent (Billing)' = DIVIDE ( [Total Consumed Credits], [Billing Agents with Credits] )
-		formatString: #,0
-		displayFolder: 💳 Billing (Actuals)
-		lineageTag: cc0001ag-meas-avgagent0001
 
 	partition 'Credit Consumption (Agent)' = m
 		mode: import

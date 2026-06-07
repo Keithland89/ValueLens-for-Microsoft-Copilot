@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
   "name": "0d087a37e85f2b35ed6e",
   "position": {
     "x": 73.256021915941574,
@@ -19,14 +19,14 @@
               {
                 "textRuns": [
                   {
-                    "value": "Studio Agents ",
+                    "value": "Copilot Studio  ",
                     "textStyle": {
                       "fontWeight": "bold",
                       "fontSize": "18pt"
                     }
                   },
                   {
-                    "value": "Prompt Quality",
+                    "value": "Topic Analysis",
                     "textStyle": {
                       "fontFamily": "Segoe UI Light",
                       "fontSize": "16pt"

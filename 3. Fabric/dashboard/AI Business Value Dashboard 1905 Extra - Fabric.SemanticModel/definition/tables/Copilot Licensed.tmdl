@@ -195,75 +195,259 @@ table 'Copilot Licensed'
 
 		annotation SummarizationSetBy = Automatic
 
+	column Assigned_Products
+		dataType: string
+		lineageTag: b76359a9-fbb8-41e7-8dd4-29c43f665b8a
+		summarizeBy: none
+		sourceColumn: Assigned_Products
+
+		annotation SummarizationSetBy = Automatic
+
+	column Deleted_Date
+		dataType: string
+		lineageTag: c4635f42-c9de-4d37-8480-6368286bd01c
+		summarizeBy: none
+		sourceColumn: Deleted_Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column Display_Name
+		dataType: string
+		lineageTag: d822ab98-cf03-4dc9-84f3-88aeda9b2159
+		summarizeBy: none
+		sourceColumn: Display_Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Exchange_Last_Activity_Date
+		dataType: string
+		lineageTag: 8d986167-5fce-46ec-87ef-c37b7320c3b8
+		summarizeBy: none
+		sourceColumn: Exchange_Last_Activity_Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column Exchange_License_Assign_Date
+		dataType: string
+		lineageTag: 12e10950-7433-4756-9613-4bc84b20d447
+		summarizeBy: none
+		sourceColumn: Exchange_License_Assign_Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column Has_Exchange_License
+		dataType: string
+		lineageTag: 026beedb-ed56-4076-86e0-c68c84958524
+		summarizeBy: none
+		sourceColumn: Has_Exchange_License
+
+		annotation SummarizationSetBy = Automatic
+
+	column Has_OneDrive_License
+		dataType: string
+		lineageTag: 88944b2b-af18-4a94-9710-dcbf8e64a96d
+		summarizeBy: none
+		sourceColumn: Has_OneDrive_License
+
+		annotation SummarizationSetBy = Automatic
+
+	column Has_SharePoint_License
+		dataType: string
+		lineageTag: 8cd9d057-08b8-4f51-a334-d38258e53800
+		summarizeBy: none
+		sourceColumn: Has_SharePoint_License
+
+		annotation SummarizationSetBy = Automatic
+
+	column Has_Skype_For_Business_License
+		dataType: string
+		lineageTag: a0e9fd51-74d3-4523-8a07-b4d89cf3b7fa
+		summarizeBy: none
+		sourceColumn: Has_Skype_For_Business_License
+
+		annotation SummarizationSetBy = Automatic
+
+	column Has_Teams_License
+		dataType: string
+		lineageTag: 7fa572b2-b6a8-4762-abca-ae6840332e3d
+		summarizeBy: none
+		sourceColumn: Has_Teams_License
+
+		annotation SummarizationSetBy = Automatic
+
+	column Has_Yammer_License
+		dataType: string
+		lineageTag: c1d280e2-7444-406d-976c-082dcb7be439
+		summarizeBy: none
+		sourceColumn: Has_Yammer_License
+
+		annotation SummarizationSetBy = Automatic
+
+	column Is_Deleted
+		dataType: string
+		lineageTag: 758a8a63-d9e8-48bf-bc28-3b8eccd1ada2
+		summarizeBy: none
+		sourceColumn: Is_Deleted
+
+		annotation SummarizationSetBy = Automatic
+
+	column OneDrive_Last_Activity_Date
+		dataType: string
+		lineageTag: 80859909-b578-4e10-bd96-2fac66ba4d41
+		summarizeBy: none
+		sourceColumn: OneDrive_Last_Activity_Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column OneDrive_License_Assign_Date
+		dataType: string
+		lineageTag: 94df6804-3c9a-40aa-9539-317481d8ef27
+		summarizeBy: none
+		sourceColumn: OneDrive_License_Assign_Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column Report_Refresh_Date
+		dataType: string
+		lineageTag: 058fdf0c-982f-41e3-b5c7-207bb547896a
+		summarizeBy: none
+		sourceColumn: Report_Refresh_Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column SharePoint_Last_Activity_Date
+		dataType: string
+		lineageTag: fbb5f604-8d6b-4301-91ae-1a1f100009a8
+		summarizeBy: none
+		sourceColumn: SharePoint_Last_Activity_Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column SharePoint_License_Assign_Date
+		dataType: string
+		lineageTag: 36b09b5a-cea6-46ad-b756-e50aac2b0598
+		summarizeBy: none
+		sourceColumn: SharePoint_License_Assign_Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column Skype_For_Business_Last_Activity_Date
+		dataType: string
+		lineageTag: 9829b9a0-4a24-4917-a948-1078ca724bea
+		summarizeBy: none
+		sourceColumn: Skype_For_Business_Last_Activity_Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column Skype_For_Business_License_Assign_Date
+		dataType: string
+		lineageTag: ff39c889-69c1-461b-b1d2-713e12793afc
+		summarizeBy: none
+		sourceColumn: Skype_For_Business_License_Assign_Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column Teams_Last_Activity_Date
+		dataType: string
+		lineageTag: bc6491ff-514b-4906-8894-f21254e6f837
+		summarizeBy: none
+		sourceColumn: Teams_Last_Activity_Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column Teams_License_Assign_Date
+		dataType: string
+		lineageTag: 2d79b655-3ddc-4eca-8c67-2c80a7999e9f
+		summarizeBy: none
+		sourceColumn: Teams_License_Assign_Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column Yammer_Last_Activity_Date
+		dataType: string
+		lineageTag: 78441603-8775-45be-9b55-c369f52149fe
+		summarizeBy: none
+		sourceColumn: Yammer_Last_Activity_Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column Yammer_License_Assign_Date
+		dataType: string
+		lineageTag: efcdb8cf-8953-4aaa-b9b1-f9fc7c42379c
+		summarizeBy: none
+		sourceColumn: Yammer_License_Assign_Date
+
+		annotation SummarizationSetBy = Automatic
+
 	partition 'Copilot Licensed' = m
 		mode: import
 		source =
 				let
-				    // Accepts a SharePoint URL (https://...) or a local file path (c:\... or \\server\...).
-				    #"Promoted Headers" = FabricTable("copilot_licensed_users"),
+								    // Accepts a SharePoint URL (https://...) or a local file path (c:\... or \\server\...).
+								    #"Promoted Headers" = FabricTable("copilot_licensed_users"),
 				
-				    // List accepted variants for User Principal Name
-				    userPrincipalNameVariants = {"User Principal Name", "userPrincipalName", "UserPrincipalName", "User principal name", "User_Principal_Name"},
-				    actualUPNColumn = List.First(List.Intersect({userPrincipalNameVariants, Table.ColumnNames(#"Promoted Headers")}), null),
+								    // List accepted variants for User Principal Name
+								    userPrincipalNameVariants = {"User Principal Name", "userPrincipalName", "UserPrincipalName", "User principal name", "User_Principal_Name"},
+								    actualUPNColumn = List.First(List.Intersect({userPrincipalNameVariants, Table.ColumnNames(#"Promoted Headers")}), null),
 				
-				    // List accepted variants for Has License
-				    hasLicenseVariants = {
-				        "Has license",
-				        "Has License",
-				        "HasLicense",
-				        "HasCopilot",
-				        "Has Copilot",
-				        "Has Copilot License",
-				        "Has Copilot license",
-				        "HasCopilotLicense",
-				        "Has Copilot License Assigned",
-				        "Has Copilot license assigned",
-				        "isUser",
-                "Has_license"
-				    },
-				    actualHasLicenseColumn = List.First(List.Intersect({hasLicenseVariants, Table.ColumnNames(#"Promoted Headers")}), null),
+								    // List accepted variants for Has License
+								    hasLicenseVariants = {
+								        "Has license",
+								        "Has License",
+								        "HasLicense",
+								        "HasCopilot",
+								        "Has Copilot",
+								        "Has Copilot License",
+								        "Has Copilot license",
+								        "HasCopilotLicense",
+								        "Has Copilot License Assigned",
+								        "Has Copilot license assigned",
+								        "isUser",
+				                "Has_license"
+								    },
+								    actualHasLicenseColumn = List.First(List.Intersect({hasLicenseVariants, Table.ColumnNames(#"Promoted Headers")}), null),
 				
-				    // Add missing columns with defaults if not found, then rename
-				    #"With UPN" = if actualUPNColumn <> null then
-				            #"Promoted Headers"
-				        else
-				            Table.AddColumn(#"Promoted Headers", "User Principal Name", each null, type text),
+								    // Add missing columns with defaults if not found, then rename
+								    #"With UPN" = if actualUPNColumn <> null then
+								            #"Promoted Headers"
+								        else
+								            Table.AddColumn(#"Promoted Headers", "User Principal Name", each null, type text),
 				
-				    #"With License" = if actualHasLicenseColumn <> null then
-				            #"With UPN"
-				        else
-				            Table.AddColumn(#"With UPN", "Has license", each "Unknown", type text),
+								    #"With License" = if actualHasLicenseColumn <> null then
+								            #"With UPN"
+								        else
+								            Table.AddColumn(#"With UPN", "Has license", each "Unknown", type text),
 				
-				    #"Renamed Columns" =
-				        Table.RenameColumns(
-				            #"With License",
-				            List.Combine({
-				                if actualUPNColumn <> null and actualUPNColumn <> "User Principal Name" then {{actualUPNColumn, "User Principal Name"}} else {},
-				                if actualHasLicenseColumn <> null and actualHasLicenseColumn <> "Has license" then {{actualHasLicenseColumn, "Has license"}} else {}
-				            }),
-				            MissingField.Ignore
-				        ),
+								    #"Renamed Columns" =
+								        Table.RenameColumns(
+								            #"With License",
+								            List.Combine({
+								                if actualUPNColumn <> null and actualUPNColumn <> "User Principal Name" then {{actualUPNColumn, "User Principal Name"}} else {},
+								                if actualHasLicenseColumn <> null and actualHasLicenseColumn <> "Has license" then {{actualHasLicenseColumn, "Has license"}} else {}
+								            }),
+								            MissingField.Ignore
+								        ),
 				
-				    // Add a normalized join key (case-insensitive match helper).
-				    // Idempotent: if the source Delta table already has UPN_Normalized
-				    // (older pre-normalized ingester output), keep it instead of re-adding.
-				    #"Added UPN Normalized" =
-				        if Table.HasColumns(#"Renamed Columns", "UPN_Normalized") then
-				            #"Renamed Columns"
-				        else
-				            Table.AddColumn(
-				                #"Renamed Columns",
-				                "UPN_Normalized",
-				                each
-				                    let v = [User Principal Name]
-				                    in if v = null then null else Text.Lower(Text.Trim(Text.From(v))),
-				                type text
-				            ),
+								    // Add a normalized join key (case-insensitive match helper).
+								    // Idempotent: if the source Delta table already has UPN_Normalized
+								    // (older pre-normalized ingester output), keep it instead of re-adding.
+								    #"Added UPN Normalized" =
+								        if Table.HasColumns(#"Renamed Columns", "UPN_Normalized") then
+								            #"Renamed Columns"
+								        else
+								            Table.AddColumn(
+								                #"Renamed Columns",
+								                "UPN_Normalized",
+								                each
+								                    let v = [User Principal Name]
+								                    in if v = null then null else Text.Lower(Text.Trim(Text.From(v))),
+								                type text
+								            ),
 				
-				    // Remove duplicates using the normalized key
-				    #"Removed Duplicates" = Table.Distinct(#"Added UPN Normalized", {"UPN_Normalized"})
-				in
-				    #"Removed Duplicates"
+								    // Remove duplicates using the normalized key
+								    #"Removed Duplicates" = Table.Distinct(#"Added UPN Normalized", {"UPN_Normalized"})
+								in
+								    #"Removed Duplicates"
 
 	annotation PBI_NavigationStepName = Navigation
 

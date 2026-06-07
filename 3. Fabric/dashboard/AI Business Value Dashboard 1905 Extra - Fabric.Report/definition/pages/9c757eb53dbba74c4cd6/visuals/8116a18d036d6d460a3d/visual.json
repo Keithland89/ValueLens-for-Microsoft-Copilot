@@ -1,12 +1,12 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
   "name": "8116a18d036d6d460a3d",
   "position": {
-    "x": 552.94117647058818,
-    "y": 66.17647058823529,
+    "x": 3.9473811015274904,
+    "y": 381.58017314765738,
     "z": 6000,
-    "height": 325,
-    "width": 555.88235294117646,
+    "height": 338.158981030855,
+    "width": 757.89717149327817,
     "tabOrder": 6000
   },
   "visual": {
@@ -23,11 +23,11 @@
                       "Entity": "Agent Performance"
                     }
                   },
-                  "Property": "BotName"
+                  "Property": "Topic (resolved)"
                 }
               },
-              "queryRef": "Agent Performance.BotName",
-              "nativeQueryRef": "BotName",
+              "queryRef": "Agent Performance.Topic (resolved)",
+              "nativeQueryRef": "Topic (resolved)",
               "active": true
             }
           ]
@@ -39,14 +39,14 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Chat + Agent Interactions (Audit Logs)"
+                      "Entity": "Agent Performance"
                     }
                   },
-                  "Property": "Agent AI Tasks"
+                  "Property": "Total Conversations"
                 }
               },
-              "queryRef": "Chat + Agent Interactions (Audit Logs).Agent AI Tasks",
-              "nativeQueryRef": "Agent AI Tasks"
+              "queryRef": "Agent Performance.Total Conversations",
+              "nativeQueryRef": "Total Conversations"
             }
           ]
         }
@@ -66,17 +66,15 @@
                 }
               }
             },
-            "position": {
-              "expr": {
-                "Literal": {
-                  "Value": "'LeftCenter'"
-                }
-              }
-            },
-            "showTitle": {
-              "expr": {
-                "Literal": {
-                  "Value": "false"
+            "labelColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 1,
+                      "Percent": 0.2
+                    }
+                  }
                 }
               }
             }
@@ -86,1179 +84,31 @@
       "categoryLabels": [
         {
           "properties": {
-            "fontFamily": {
+            "show": {
               "expr": {
                 "Literal": {
-                  "Value": "'''Segoe UI'', wf_segoe-ui_normal, helvetica, arial, sans-serif'"
+                  "Value": "true"
                 }
               }
             },
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "8D"
+                  "Value": "9D"
                 }
               }
             }
-          }
-        }
-      ],
-      "dataPoint": [
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#29AC76'"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "data": [
-              {
-                "scopeId": {
-                  "Comparison": {
-                    "ComparisonKind": 0,
-                    "Left": {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Entity": "Action Map"
-                          }
-                        },
-                        "Property": "Action"
-                      }
-                    },
-                    "Right": {
-                      "Literal": {
-                        "Value": "'Excel analysis'"
-                      }
-                    }
-                  }
-                }
-              }
-            ]
           }
         },
         {
           "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#97D792'"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "data": [
-              {
-                "scopeId": {
-                  "Comparison": {
-                    "ComparisonKind": 0,
-                    "Left": {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Entity": "Action Map"
-                          }
-                        },
-                        "Property": "Action"
-                      }
-                    },
-                    "Right": {
-                      "Literal": {
-                        "Value": "'Create Excel formula'"
-                      }
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#315532'"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "data": [
-              {
-                "scopeId": {
-                  "Comparison": {
-                    "ComparisonKind": 0,
-                    "Left": {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Entity": "Action Map"
-                          }
-                        },
-                        "Property": "Action"
-                      }
-                    },
-                    "Right": {
-                      "Literal": {
-                        "Value": "'Excel formatting'"
-                      }
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        },
-        {
-          "properties": {
-            "fill": {
+            "color": {
               "solid": {
                 "color": {
                   "expr": {
                     "ThemeDataColor": {
                       "ColorId": 0,
-                      "Percent": -0.2
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "data": [
-              {
-                "scopeId": {
-                  "Comparison": {
-                    "ComparisonKind": 0,
-                    "Left": {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Entity": "Action Map"
-                          }
-                        },
-                        "Property": "Action"
-                      }
-                    },
-                    "Right": {
-                      "Literal": {
-                        "Value": "'Generate email draft (Outlook)'"
-                      }
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "ThemeDataColor": {
-                      "ColorId": 1,
-                      "Percent": 0.6
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "data": [
-              {
-                "scopeId": {
-                  "Comparison": {
-                    "ComparisonKind": 0,
-                    "Left": {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Entity": "Action Map"
-                          }
-                        },
-                        "Property": "Action"
-                      }
-                    },
-                    "Right": {
-                      "Literal": {
-                        "Value": "'Summarize email thread (Outlook)'"
-                      }
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "ThemeDataColor": {
-                      "ColorId": 1,
-                      "Percent": 0.2
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "data": [
-              {
-                "scopeId": {
-                  "Comparison": {
-                    "ComparisonKind": 0,
-                    "Left": {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Entity": "Action Map"
-                          }
-                        },
-                        "Property": "Action"
-                      }
-                    },
-                    "Right": {
-                      "Literal": {
-                        "Value": "'Email coaching (Outlook)'"
-                      }
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "ThemeDataColor": {
-                      "ColorId": 4,
-                      "Percent": 0.6
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "data": [
-              {
-                "scopeId": {
-                  "Comparison": {
-                    "ComparisonKind": 0,
-                    "Left": {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Entity": "Action Map"
-                          }
-                        },
-                        "Property": "Action"
-                      }
-                    },
-                    "Right": {
-                      "Literal": {
-                        "Value": "'Create presentation (PPT)'"
-                      }
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "ThemeDataColor": {
-                      "ColorId": 4,
-                      "Percent": 0.2
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "data": [
-              {
-                "scopeId": {
-                  "Comparison": {
-                    "ComparisonKind": 0,
-                    "Left": {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Entity": "Action Map"
-                          }
-                        },
-                        "Property": "Action"
-                      }
-                    },
-                    "Right": {
-                      "Literal": {
-                        "Value": "'Add content to presentation (PPT)'"
-                      }
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "ThemeDataColor": {
-                      "ColorId": 4,
-                      "Percent": -0.25
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "data": [
-              {
-                "scopeId": {
-                  "Comparison": {
-                    "ComparisonKind": 0,
-                    "Left": {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Entity": "Action Map"
-                          }
-                        },
-                        "Property": "Action"
-                      }
-                    },
-                    "Right": {
-                      "Literal": {
-                        "Value": "'Summarize presentation (PPT)'"
-                      }
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "ThemeDataColor": {
-                      "ColorId": 4,
-                      "Percent": -0.5
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "data": [
-              {
-                "scopeId": {
-                  "Comparison": {
-                    "ComparisonKind": 0,
-                    "Left": {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Entity": "Action Map"
-                          }
-                        },
-                        "Property": "Action"
-                      }
-                    },
-                    "Right": {
-                      "Literal": {
-                        "Value": "'Organize presentation (PPT)'"
-                      }
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "ThemeDataColor": {
-                      "ColorId": 3,
-                      "Percent": -0.5
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "data": [
-              {
-                "scopeId": {
-                  "Comparison": {
-                    "ComparisonKind": 0,
-                    "Left": {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Entity": "Action Map"
-                          }
-                        },
-                        "Property": "Action"
-                      }
-                    },
-                    "Right": {
-                      "Literal": {
-                        "Value": "'Intelligent recap (Teams)'"
-                      }
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "ThemeDataColor": {
-                      "ColorId": 3,
-                      "Percent": -0.25
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "data": [
-              {
-                "scopeId": {
-                  "Comparison": {
-                    "ComparisonKind": 0,
-                    "Left": {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Entity": "Action Map"
-                          }
-                        },
-                        "Property": "Action"
-                      }
-                    },
-                    "Right": {
-                      "Literal": {
-                        "Value": "'Summarize meeting (Teams)'"
-                      }
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "ThemeDataColor": {
-                      "ColorId": 3,
-                      "Percent": 0.6
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "data": [
-              {
-                "scopeId": {
-                  "Comparison": {
-                    "ComparisonKind": 0,
-                    "Left": {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Entity": "Action Map"
-                          }
-                        },
-                        "Property": "Action"
-                      }
-                    },
-                    "Right": {
-                      "Literal": {
-                        "Value": "'Summarize chat (Teams)'"
-                      }
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "ThemeDataColor": {
-                      "ColorId": 2,
-                      "Percent": 0.6
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "data": [
-              {
-                "scopeId": {
-                  "Comparison": {
-                    "ComparisonKind": 0,
-                    "Left": {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Entity": "Action Map"
-                          }
-                        },
-                        "Property": "Action"
-                      }
-                    },
-                    "Right": {
-                      "Literal": {
-                        "Value": "'Rewrite text (Word)'"
-                      }
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "ThemeDataColor": {
-                      "ColorId": 2,
-                      "Percent": 0.2
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "data": [
-              {
-                "scopeId": {
-                  "Comparison": {
-                    "ComparisonKind": 0,
-                    "Left": {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Entity": "Action Map"
-                          }
-                        },
-                        "Property": "Action"
-                      }
-                    },
-                    "Right": {
-                      "Literal": {
-                        "Value": "'Draft Word document'"
-                      }
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "ThemeDataColor": {
-                      "ColorId": 2,
-                      "Percent": -0.25
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "data": [
-              {
-                "scopeId": {
-                  "Comparison": {
-                    "ComparisonKind": 0,
-                    "Left": {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Entity": "Action Map"
-                          }
-                        },
-                        "Property": "Action"
-                      }
-                    },
-                    "Right": {
-                      "Literal": {
-                        "Value": "'Summarize Word doc'"
-                      }
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "ThemeDataColor": {
-                      "ColorId": 3,
-                      "Percent": 0.2
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "data": [
-              {
-                "scopeId": {
-                  "Comparison": {
-                    "ComparisonKind": 0,
-                    "Left": {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Entity": "Action Map"
-                          }
-                        },
-                        "Property": "Action"
-                      }
-                    },
-                    "Right": {
-                      "Literal": {
-                        "Value": "'Compose chat message (Teams)'"
-                      }
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "ThemeDataColor": {
-                      "ColorId": 8,
-                      "Percent": 0.2
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "data": [
-              {
-                "scopeId": {
-                  "Comparison": {
-                    "ComparisonKind": 0,
-                    "Left": {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Entity": "Action Map"
-                          }
-                        },
-                        "Property": "Action"
-                      }
-                    },
-                    "Right": {
-                      "Literal": {
-                        "Value": "'Chat (web) prompts'"
-                      }
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "ThemeDataColor": {
-                      "ColorId": 6,
-                      "Percent": 0.2
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "metadata": "Sum(CopilotData.Copilot chat (work) prompts submitted)"
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "ThemeDataColor": {
-                      "ColorId": 3,
-                      "Percent": -0.5
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "metadata": "Sum(CopilotData.Intelligent recap actions taken)"
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#D1CC44'"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "metadata": "Sum(CopilotData.Copilot Chat (web) prompts submitted)"
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "ThemeDataColor": {
-                      "ColorId": 3,
-                      "Percent": -0.25
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "metadata": "Sum(CopilotData.Summarize meeting actions taken using Copilot in Teams)"
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "ThemeDataColor": {
-                      "ColorId": 0,
-                      "Percent": -0.2
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "metadata": "Sum(CopilotData.Generate email draft actions taken using Copilot in Outlook)"
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "ThemeDataColor": {
-                      "ColorId": 2,
-                      "Percent": 0.6
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "metadata": "Sum(CopilotData.Rewrite text actions taken using Copilot in Word)"
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "ThemeDataColor": {
-                      "ColorId": 2,
-                      "Percent": 0.2
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "metadata": "Sum(CopilotData.Draft Word document actions taken using Copilot)"
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "ThemeDataColor": {
-                      "ColorId": 3,
-                      "Percent": 0.6
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "metadata": "Sum(CopilotData.Compose chat message actions taken using Copilot in Teams)"
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "ThemeDataColor": {
-                      "ColorId": 3,
-                      "Percent": 0.2
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "metadata": "Sum(CopilotData.Summarize Word document actions taken using Copilot in Word)"
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "ThemeDataColor": {
-                      "ColorId": 1,
-                      "Percent": 0.1
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "metadata": "Sum(CopilotData.Summarize email thread actions taken using Copilot in Outlook)"
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "ThemeDataColor": {
-                      "ColorId": 1,
-                      "Percent": 0.4
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "metadata": "Sum(CopilotData.Email coaching actions taken using Copilot)"
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "ThemeDataColor": {
-                      "ColorId": 3,
-                      "Percent": 0.4
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "metadata": "Sum(CopilotData.Summarize chat actions taken using Copilot in Teams)"
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "ThemeDataColor": {
-                      "ColorId": 8,
-                      "Percent": -0.5
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "metadata": "Sum(CopilotData.Excel analysis actions taken using Copilot)"
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "ThemeDataColor": {
-                      "ColorId": 8,
-                      "Percent": 0.2
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "metadata": "Sum(CopilotData.Create Excel formula actions taken using Copilot)"
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "ThemeDataColor": {
-                      "ColorId": 4,
-                      "Percent": -0.5
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "metadata": "Sum(CopilotData.Create presentation actions taken using Copilot)"
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "ThemeDataColor": {
-                      "ColorId": 4,
-                      "Percent": 0.2
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "metadata": "Sum(CopilotData.Add content to presentation actions taken)"
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "ThemeDataColor": {
-                      "ColorId": 8,
-                      "Percent": 0.6
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "metadata": "Sum(CopilotData.Excel formatting actions taken using Copilot)"
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "ThemeDataColor": {
-                      "ColorId": 4,
-                      "Percent": 0.6
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "metadata": "Sum(CopilotData.Summarize presentation actions taken using Copilot in PowerPoint)"
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "ThemeDataColor": {
-                      "ColorId": 3,
-                      "Percent": 0.6
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "metadata": "Sum(CopilotData.Visualize as table actions taken using Copilot in Word)"
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "FillRule": {
-                      "Input": {
-                        "Measure": {
-                          "Expression": {
-                            "SourceRef": {
-                              "Entity": "Agent Topics Bridge"
-                            }
-                          },
-                          "Property": "Sessions (Topic)"
-                        }
-                      },
-                      "FillRule": {
-                        "linearGradient2": {
-                          "min": {
-                            "color": {
-                              "Literal": {
-                                "Value": "'#b7abc8'"
-                              }
-                            }
-                          },
-                          "max": {
-                            "color": {
-                              "Literal": {
-                                "Value": "'#382258'"
-                              }
-                            }
-                          },
-                          "nullColoringStrategy": {
-                            "strategy": {
-                              "Literal": {
-                                "Value": "'asZero'"
-                              }
-                            }
-                          }
-                        }
-                      }
+                      "Percent": 0
                     }
                   }
                 }
@@ -1276,13 +126,575 @@
           }
         }
       ],
+      "dataPoint": [
+        {
+          "properties": {
+            "fill": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 4,
+                      "Percent": -0.25
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "scopeId": {
+                  "Comparison": {
+                    "ComparisonKind": 0,
+                    "Left": {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Entity": "Chat + Agent Interactions (Audit Logs)"
+                          }
+                        },
+                        "Property": "Behavior_Category"
+                      }
+                    },
+                    "Right": {
+                      "Literal": {
+                        "Value": "'Meeting Prep'"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "properties": {
+            "fill": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 1,
+                      "Percent": 0.6
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "scopeId": {
+                  "Comparison": {
+                    "ComparisonKind": 0,
+                    "Left": {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Entity": "Chat + Agent Interactions (Audit Logs)"
+                          }
+                        },
+                        "Property": "Behavior_Category"
+                      }
+                    },
+                    "Right": {
+                      "Literal": {
+                        "Value": "'Presentation Summarising'"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "properties": {
+            "fill": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 6,
+                      "Percent": 0.6
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "scopeId": {
+                  "Comparison": {
+                    "ComparisonKind": 0,
+                    "Left": {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Entity": "Chat + Agent Interactions (Audit Logs)"
+                          }
+                        },
+                        "Property": "Behavior_Category"
+                      }
+                    },
+                    "Right": {
+                      "Literal": {
+                        "Value": "'Teams Messaging'"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "properties": {
+            "fill": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 7,
+                      "Percent": -0.5
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "scopeId": {
+                  "Comparison": {
+                    "ComparisonKind": 0,
+                    "Left": {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Entity": "Chat + Agent Interactions (Audit Logs)"
+                          }
+                        },
+                        "Property": "Behavior_Category"
+                      }
+                    },
+                    "Right": {
+                      "Literal": {
+                        "Value": "'Data Querying'"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "properties": {
+            "fill": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 7,
+                      "Percent": -0.5
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "scopeId": {
+                  "Comparison": {
+                    "ComparisonKind": 0,
+                    "Left": {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Entity": "Chat + Agent Interactions (Audit Logs)"
+                          }
+                        },
+                        "Property": "Value_Outcome"
+                      }
+                    },
+                    "Right": {
+                      "Literal": {
+                        "Value": "'People & Org Intelligence'"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "properties": {
+            "fill": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 6,
+                      "Percent": -0.5
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "scopeId": {
+                  "Comparison": {
+                    "ComparisonKind": 0,
+                    "Left": {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Entity": "Chat + Agent Interactions (Audit Logs)"
+                          }
+                        },
+                        "Property": "Behavior_Category"
+                      }
+                    },
+                    "Right": {
+                      "Literal": {
+                        "Value": "'Email Summarising'"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "properties": {
+            "fill": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 5,
+                      "Percent": -0.25
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "scopeId": {
+                  "Comparison": {
+                    "ComparisonKind": 0,
+                    "Left": {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Entity": "Chat + Agent Interactions (Audit Logs)"
+                          }
+                        },
+                        "Property": "Behavior_Category"
+                      }
+                    },
+                    "Right": {
+                      "Literal": {
+                        "Value": "'General Chat'"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "properties": {
+            "fill": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 6,
+                      "Percent": -0.5
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "scopeId": {
+                  "Comparison": {
+                    "ComparisonKind": 0,
+                    "Left": {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Entity": "Chat + Agent Interactions (Audit Logs)"
+                          }
+                        },
+                        "Property": "Behavior_Enriched"
+                      }
+                    },
+                    "Right": {
+                      "Literal": {
+                        "Value": "'Agent: Coaching'"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "properties": {
+            "fill": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 4,
+                      "Percent": 0.6
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "scopeId": {
+                  "Comparison": {
+                    "ComparisonKind": 0,
+                    "Left": {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Entity": "Chat + Agent Interactions (Audit Logs)"
+                          }
+                        },
+                        "Property": "Behavior_Enriched"
+                      }
+                    },
+                    "Right": {
+                      "Literal": {
+                        "Value": "'Agent: IT & Service Desk'"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "properties": {
+            "fill": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 1,
+                      "Percent": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "scopeId": {
+                  "Comparison": {
+                    "ComparisonKind": 0,
+                    "Left": {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Entity": "Chat + Agent Interactions (Audit Logs)"
+                          }
+                        },
+                        "Property": "Behavior_Enriched"
+                      }
+                    },
+                    "Right": {
+                      "Literal": {
+                        "Value": "'Enterprise Searching'"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "properties": {
+            "fill": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 1,
+                      "Percent": 0.6
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "scopeId": {
+                  "Comparison": {
+                    "ComparisonKind": 0,
+                    "Left": {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Entity": "Chat + Agent Interactions (Audit Logs)"
+                          }
+                        },
+                        "Property": "Behavior_Enriched"
+                      }
+                    },
+                    "Right": {
+                      "Literal": {
+                        "Value": "'Presentation Summarising'"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "properties": {
+            "fill": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 3,
+                      "Percent": -0.5
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "scopeId": {
+                  "Comparison": {
+                    "ComparisonKind": 0,
+                    "Left": {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Entity": "Chat + Agent Interactions (Audit Logs)"
+                          }
+                        },
+                        "Property": "Behavior_Enriched"
+                      }
+                    },
+                    "Right": {
+                      "Literal": {
+                        "Value": "'Agent: Data & Reporting'"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "properties": {
+            "fill": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 4,
+                      "Percent": 0.6
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "scopeId": {
+                  "Comparison": {
+                    "ComparisonKind": 0,
+                    "Left": {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Entity": "Chat + Agent Interactions (Audit Logs)"
+                          }
+                        },
+                        "Property": "Behavior_Enriched_Full"
+                      }
+                    },
+                    "Right": {
+                      "Literal": {
+                        "Value": "'General Chat'"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ],
       "layout": [
         {
           "properties": {
             "tilingMethod": {
               "expr": {
                 "Literal": {
-                  "Value": "'stableSquarified'"
+                  "Value": "'binary'"
+                }
+              }
+            },
+            "outerPadding": {
+              "expr": {
+                "Literal": {
+                  "Value": "3D"
+                }
+              }
+            },
+            "innerPadding": {
+              "expr": {
+                "Literal": {
+                  "Value": "6D"
                 }
               }
             }
@@ -1295,35 +707,7 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "fontFamily": {
-              "expr": {
-                "Literal": {
-                  "Value": "'''Segoe UI'', wf_segoe-ui_normal, helvetica, arial, sans-serif'"
-                }
-              }
-            },
-            "fontSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "8D"
-                }
-              }
-            },
-            "labelDisplayUnits": {
-              "expr": {
-                "Literal": {
-                  "Value": "1D"
-                }
-              }
-            },
-            "labelPrecision": {
-              "expr": {
-                "Literal": {
-                  "Value": "0L"
+                  "Value": "false"
                 }
               }
             }
@@ -1338,7 +722,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Studio Agents - Tasks Performed'"
+                  "Value": "'MOST ASKED TOPICS'"
                 }
               }
             },
@@ -1356,10 +740,17 @@
                 }
               }
             },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'left'"
+                }
+              }
+            },
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "12D"
+                  "Value": "10D"
                 }
               }
             },
@@ -1379,7 +770,7 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
+                  "Value": "false"
                 }
               }
             },
@@ -1387,11 +778,17 @@
               "solid": {
                 "color": {
                   "expr": {
-                    "ThemeDataColor": {
-                      "ColorId": 0,
-                      "Percent": -0.1
+                    "Literal": {
+                      "Value": "'#FFFFFF'"
                     }
                   }
+                }
+              }
+            },
+            "radius": {
+              "expr": {
+                "Literal": {
+                  "Value": "4D"
                 }
               }
             },
@@ -1399,13 +796,6 @@
               "expr": {
                 "Literal": {
                   "Value": "1D"
-                }
-              }
-            },
-            "radius": {
-              "expr": {
-                "Literal": {
-                  "Value": "5D"
                 }
               }
             }
@@ -1418,7 +808,18 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
+                  "Value": "false"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FFFFFF'"
+                    }
+                  }
                 }
               }
             },
@@ -1438,28 +839,28 @@
             "top": {
               "expr": {
                 "Literal": {
-                  "Value": "5D"
+                  "Value": "14D"
                 }
               }
             },
             "bottom": {
               "expr": {
                 "Literal": {
-                  "Value": "5D"
+                  "Value": "16D"
                 }
               }
             },
             "left": {
               "expr": {
                 "Literal": {
-                  "Value": "5D"
+                  "Value": "16D"
                 }
               }
             },
             "right": {
               "expr": {
                 "Literal": {
-                  "Value": "5D"
+                  "Value": "16D"
                 }
               }
             }
@@ -1469,10 +870,10 @@
       "visualHeader": [
         {
           "properties": {
-            "show": {
+            "transparency": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
+                  "Value": "0D"
                 }
               }
             }
@@ -1482,13 +883,6 @@
       "subTitle": [
         {
           "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "false"
-                }
-              }
-            },
             "text": {
               "expr": {
                 "Literal": {
@@ -1496,10 +890,145 @@
                 }
               }
             },
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'center'"
+                }
+              }
+            },
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "9D"
+                  "Value": "11D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "spacing": [
+        {
+          "properties": {
+            "customizeSpacing": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "verticalSpacing": {
+              "expr": {
+                "Literal": {
+                  "Value": "2D"
+                }
+              }
+            },
+            "spaceBelowSubTitle": {
+              "expr": {
+                "Literal": {
+                  "Value": "16D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "dropShadow": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "preset": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Custom'"
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "86D"
+                }
+              }
+            },
+            "shadowSpread": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "shadowBlur": {
+              "expr": {
+                "Literal": {
+                  "Value": "3D"
+                }
+              }
+            },
+            "angle": {
+              "expr": {
+                "Literal": {
+                  "Value": "90D"
+                }
+              }
+            },
+            "shadowDistance": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "visualTooltip": [
+        {
+          "properties": {
+            "titleFontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#252423'"
+                    }
+                  }
+                }
+              }
+            },
+            "valueFontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#252423'"
+                    }
+                  }
+                }
+              }
+            },
+            "background": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FFFFFF'"
+                    }
+                  }
                 }
               }
             }
@@ -1560,6 +1089,34 @@
         },
         "type": "Advanced",
         "howCreated": "User"
+      },
+      {
+        "name": "8f097f8f7a1eb3684960",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Agent Performance"
+              }
+            },
+            "Property": "Total Conversations"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "918aad7d9097c4069e1b",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Agent Performance"
+              }
+            },
+            "Property": "Topic (resolved)"
+          }
+        },
+        "type": "Categorical"
       }
     ]
   }

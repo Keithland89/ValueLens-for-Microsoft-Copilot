@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
   "name": "48e1625560bdd938c09e",
   "position": {
     "x": 1116.4206736950373,
@@ -33,23 +33,6 @@
             }
           ]
         }
-      },
-      "sortDefinition": {
-        "sort": [
-          {
-            "field": {
-              "Column": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "Chat + Agent Interactions (Audit Logs)"
-                  }
-                },
-                "Property": "AppHost"
-              }
-            },
-            "direction": "Descending"
-          }
-        ]
       }
     },
     "objects": {

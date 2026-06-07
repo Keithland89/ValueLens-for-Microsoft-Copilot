@@ -1,13 +1,13 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
   "name": "943f453587bfece498ff",
   "position": {
-    "x": 13.102253032928942,
-    "y": 446.72443674176776,
-    "z": 9000,
-    "height": 268.90814558058923,
-    "width": 597.08838821490463,
-    "tabOrder": 9000
+    "x": 13.171476806817267,
+    "y": 428.0729962215612,
+    "z": 8000,
+    "height": 292.40678511134337,
+    "width": 626.96229600450192,
+    "tabOrder": 8000
   },
   "visual": {
     "visualType": "treemap",
@@ -23,11 +23,11 @@
                       "Entity": "ProductFeedback"
                     }
                   },
-                  "Property": "AgentName"
+                  "Property": "Surface / Agent"
                 }
               },
-              "queryRef": "ProductFeedback.AgentName",
-              "nativeQueryRef": "AgentName",
+              "queryRef": "ProductFeedback.Surface / Agent",
+              "nativeQueryRef": "Surface / Agent",
               "active": true
             }
           ]
@@ -60,11 +60,11 @@
                       "Entity": "ProductFeedback"
                     }
                   },
-                  "Property": "Agent Satisfaction Rate"
+                  "Property": "Satisfaction Rate"
                 }
               },
-              "queryRef": "ProductFeedback.Agent Satisfaction Rate",
-              "nativeQueryRef": "Agent Satisfaction Rate"
+              "queryRef": "ProductFeedback.Satisfaction Rate",
+              "nativeQueryRef": "Satisfaction Rate"
             }
           ]
         }
@@ -1874,7 +1874,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'SATISFACTION RATE BY AGENT'"
+                  "Value": "'SATISFACTION RATE BY COPILOT SURFACE / AGENT'"
                 }
               }
             },
@@ -1915,7 +1915,7 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
+                  "Value": "false"
                 }
               }
             },
@@ -1954,7 +1954,7 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
+                  "Value": "false"
                 }
               }
             },

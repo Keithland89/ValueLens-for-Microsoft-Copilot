@@ -28,6 +28,7 @@ table 'Agent Sessions'
 		formatString: #,0
 		displayFolder: 🤖 Agent Performance
 		lineageTag: ag0001se-meas-0001-000000000004
+
 		annotation PBI_FormatHint = {"isDecimal":true}
 
 	/// Credit units NOT attributable to any org = Total - Mapped (Mapped uses a TREATAS virtual join on

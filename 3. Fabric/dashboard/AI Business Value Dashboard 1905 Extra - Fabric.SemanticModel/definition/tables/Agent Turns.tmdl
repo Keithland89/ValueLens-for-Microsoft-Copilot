@@ -211,3 +211,4 @@ table 'Agent Turns'
 				    Typed
 
 	annotation PBI_ResultType = Table
+

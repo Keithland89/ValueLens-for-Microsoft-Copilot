@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/report/3.2.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/report/3.3.0/schema.json",
   "themeCollection": {
     "baseTheme": {
       "name": "Fluent2-CY26SU03",
@@ -153,7 +153,8 @@
   "publicCustomVisuals": [
     "WordCloud5550983e166911eebe560242ac120002",
     "TornadoChart1452517688218",
-    "PBI_CV_73744D90_4DC9_4F18_8BA5_EE8FA5C98035"
+    "PBI_CV_73744D90_4DC9_4F18_8BA5_EE8FA5C98035",
+    "WordCloud1447959067750"
   ],
   "resourcePackages": [
     {

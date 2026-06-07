@@ -29,6 +29,12 @@ table 'Credit Consumption (User)'
 		displayFolder: 💳 Billing (Actuals)
 		lineageTag: cc0002us-meas-0001-000000000004
 
+	/// Share of billing credits used by each organization (via the User->Org relationship).
+	measure 'Billing Org Credit Share %' = DIVIDE ( [Total Credits Used (Billing)], CALCULATE ( [Total Credits Used (Billing)], ALL ( 'Chat + Agent Org Data' ) ) )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 💳 Billing (Actuals)
+		lineageTag: cc0002us-meas-orgshare0001
+
 	column User_Id
 		dataType: string
 		lineageTag: cc0002us-col0-0001-000000000001
@@ -89,15 +95,9 @@ table 'Credit Consumption (User)'
 
 	/// Lower/trim of User_Email — join key to Chat + Agent Org Data[PersonId_Normalized] (UPN) for org attribution of billing credits.
 	column User_Email_Normalized = LOWER ( TRIM ( 'Credit Consumption (User)'[User_Email] ) )
+		dataType: string
 		lineageTag: cc0002us-col0-emailnorm0001
 		summarizeBy: none
-		dataType: string
-
-	/// Share of billing credits used by each organization (via the User->Org relationship).
-	measure 'Billing Org Credit Share %' = DIVIDE ( [Total Credits Used (Billing)], CALCULATE ( [Total Credits Used (Billing)], ALL ( 'Chat + Agent Org Data' ) ) )
-		formatString: 0.0%;-0.0%;0.0%
-		displayFolder: 💳 Billing (Actuals)
-		lineageTag: cc0002us-meas-orgshare0001
 
 	partition 'Credit Consumption (User)' = m
 		mode: import

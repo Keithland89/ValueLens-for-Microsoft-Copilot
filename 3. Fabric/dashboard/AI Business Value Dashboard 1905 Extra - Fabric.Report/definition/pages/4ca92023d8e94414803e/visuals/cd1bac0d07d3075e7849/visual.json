@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
   "name": "cd1bac0d07d3075e7849",
   "position": {
     "x": 23.376623376623375,
@@ -681,6 +681,5 @@
         "howCreated": "User"
       }
     ]
-  },
-  "isHidden": true
+  }
 }

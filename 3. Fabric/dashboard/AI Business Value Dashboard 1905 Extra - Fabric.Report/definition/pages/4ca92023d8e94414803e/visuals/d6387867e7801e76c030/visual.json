@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
   "name": "d6387867e7801e76c030",
   "position": {
     "x": 559.45945945945948,
@@ -62,7 +62,7 @@
                     "Entity": "Chat + Agent Interactions (Audit Logs)"
                   }
                 },
-                "Property": "Average Agent Sessions Per User Per Week (All Licenses)"
+                "Property": "Agent AI Tasks Per User Per Week"
               }
             },
             "direction": "Descending"

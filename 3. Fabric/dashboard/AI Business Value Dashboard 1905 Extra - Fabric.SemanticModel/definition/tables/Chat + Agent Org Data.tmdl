@@ -51,46 +51,6 @@ table 'Chat + Agent Org Data'
 
 		annotation SummarizationSetBy = Automatic
 
-	column surname
-		dataType: string
-		lineageTag: 84ac9cd7-baa4-4170-9c9c-bff0c397f426
-		summarizeBy: none
-		sourceColumn: surname
-
-		annotation SummarizationSetBy = Automatic
-
-	column mail
-		dataType: string
-		lineageTag: 2525d12d-c2f6-48ce-886d-41689242f49f
-		summarizeBy: none
-		sourceColumn: mail
-
-		annotation SummarizationSetBy = Automatic
-
-	column givenName
-		dataType: string
-		lineageTag: 8d1c7c7d-25b6-41e6-b252-17118eeea4c0
-		summarizeBy: none
-		sourceColumn: givenName
-
-		annotation SummarizationSetBy = Automatic
-
-	column id
-		dataType: string
-		lineageTag: 54144e16-3ac1-4f63-a946-df2149c8f028
-		summarizeBy: none
-		sourceColumn: id
-
-		annotation SummarizationSetBy = Automatic
-
-	column userType
-		dataType: string
-		lineageTag: ad0efc54-17ec-46d2-b9f2-6cb44486c874
-		summarizeBy: none
-		sourceColumn: userType
-
-		annotation SummarizationSetBy = Automatic
-
 	column JobTitle
 		dataType: string
 		lineageTag: 8c6ccff1-e478-440d-b8e6-ca090b18a4f2
@@ -104,30 +64,6 @@ table 'Chat + Agent Org Data'
 		lineageTag: 1afbbaf6-e060-4579-a96f-93ed6eb95665
 		summarizeBy: none
 		sourceColumn: accountEnabled
-
-		annotation SummarizationSetBy = Automatic
-
-	column usageLocation
-		dataType: string
-		lineageTag: 53a29839-eec0-4b4b-8294-c72b774045ee
-		summarizeBy: none
-		sourceColumn: usageLocation
-
-		annotation SummarizationSetBy = Automatic
-
-	column streetAddress
-		dataType: string
-		lineageTag: f8a4846a-2010-4b88-bf3c-b3f15e0a590b
-		summarizeBy: none
-		sourceColumn: streetAddress
-
-		annotation SummarizationSetBy = Automatic
-
-	column state
-		dataType: string
-		lineageTag: 068c4ac9-f717-4691-8510-8c36b7422cfa
-		summarizeBy: none
-		sourceColumn: state
 
 		annotation SummarizationSetBy = Automatic
 
@@ -147,62 +83,6 @@ table 'Chat + Agent Org Data'
 
 		annotation SummarizationSetBy = Automatic
 
-	column postalCode
-		dataType: string
-		lineageTag: 670ed3c7-1c09-4675-befb-69f5e2b02453
-		summarizeBy: none
-		sourceColumn: postalCode
-
-		annotation SummarizationSetBy = Automatic
-
-	column telephoneNumber
-		dataType: string
-		lineageTag: 4cabfbd2-5745-4742-aa4a-9be3ece7cb79
-		summarizeBy: none
-		sourceColumn: telephoneNumber
-
-		annotation SummarizationSetBy = Automatic
-
-	column mobilePhone
-		dataType: string
-		lineageTag: 02b33943-2293-4a1e-8d56-b199773d58ae
-		summarizeBy: none
-		sourceColumn: mobilePhone
-
-		annotation SummarizationSetBy = Automatic
-
-	column alternateEmailAddress
-		dataType: string
-		lineageTag: e6311132-df73-4f7f-aca8-8e7e93376526
-		summarizeBy: none
-		sourceColumn: alternateEmailAddress
-
-		annotation SummarizationSetBy = Automatic
-
-	column ageGroup
-		dataType: string
-		lineageTag: e527056d-e5b6-412b-b841-2fc03bd5ea43
-		summarizeBy: none
-		sourceColumn: ageGroup
-
-		annotation SummarizationSetBy = Automatic
-
-	column consentProvidedForMinor
-		dataType: string
-		lineageTag: a0c2995b-47e8-469e-8a55-4f41c7e183e0
-		summarizeBy: none
-		sourceColumn: consentProvidedForMinor
-
-		annotation SummarizationSetBy = Automatic
-
-	column legalAgeGroupClassification
-		dataType: string
-		lineageTag: e496e432-3580-4b50-a009-63e8d51e85a2
-		summarizeBy: none
-		sourceColumn: legalAgeGroupClassification
-
-		annotation SummarizationSetBy = Automatic
-
 	column companyName
 		dataType: string
 		lineageTag: 055b1932-71e2-48e7-9f53-cf54136243ad
@@ -211,43 +91,11 @@ table 'Chat + Agent Org Data'
 
 		annotation SummarizationSetBy = Automatic
 
-	column creationType
+	column managerUPN
 		dataType: string
-		lineageTag: 169019d7-ebe4-4555-9d77-95651c8c0d32
+		lineageTag: f5d16aa7-bb87-43e7-86ea-4d14e49f28e2
 		summarizeBy: none
-		sourceColumn: creationType
-
-		annotation SummarizationSetBy = Automatic
-
-	column directorySynced
-		dataType: string
-		lineageTag: 8f63daa2-0b4e-48a2-9242-b4e9bbf9f16f
-		summarizeBy: none
-		sourceColumn: directorySynced
-
-		annotation SummarizationSetBy = Automatic
-
-	column invitationState
-		dataType: string
-		lineageTag: dd7b1813-b97e-459f-b53e-177607b731db
-		summarizeBy: none
-		sourceColumn: invitationState
-
-		annotation SummarizationSetBy = Automatic
-
-	column identityIssuer
-		dataType: string
-		lineageTag: 1d7c8c9a-c5b2-413a-a549-93dd69311713
-		summarizeBy: none
-		sourceColumn: identityIssuer
-
-		annotation SummarizationSetBy = Automatic
-
-	column createdDateTime
-		dataType: string
-		lineageTag: e84e44dd-808e-4c6b-8751-e98fe5d5bd55
-		summarizeBy: none
-		sourceColumn: createdDateTime
+		sourceColumn: managerUPN
 
 		annotation SummarizationSetBy = Automatic
 

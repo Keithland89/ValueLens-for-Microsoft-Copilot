@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
   "name": "55be7237d6008287d275",
   "position": {
     "x": 559.7932816537467,
@@ -51,6 +51,23 @@
             }
           ]
         }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Chat + Agent Interactions (Audit Logs)"
+                  }
+                },
+                "Property": "Agent AI Tasks Per User"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
       }
     },
     "objects": {
@@ -453,6 +470,5 @@
         "howCreated": "User"
       }
     ]
-  },
-  "isHidden": true
+  }
 }

@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
   "name": "c320a91649c6c52949b3",
   "position": {
     "x": 12.19309706120694,
@@ -50,23 +50,6 @@
             }
           ]
         }
-      },
-      "sortDefinition": {
-        "sort": [
-          {
-            "field": {
-              "Measure": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "Chat + Agent Interactions (Audit Logs)"
-                  }
-                },
-                "Property": "AI Tasks"
-              }
-            },
-            "direction": "Descending"
-          }
-        ]
       }
     },
     "objects": {
@@ -315,5 +298,6 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  }
+  },
+  "isHidden": true
 }

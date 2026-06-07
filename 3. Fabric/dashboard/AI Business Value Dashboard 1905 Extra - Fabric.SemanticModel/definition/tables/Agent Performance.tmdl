@@ -253,35 +253,6 @@ table 'Agent Performance'
 		displayFolder: 🗂 Topics
 		lineageTag: c0a1b2c3-0002-0001-0002-000000000001
 
-	measure '🧠 Conversation Summary' =
-			VAR Total = [Total Conversations]
-			VAR Engaged = CALCULATE([Total Conversations], 'Agent Performance'[SessionType] = "Engaged")
-			VAR EngPct = DIVIDE(Engaged, Total)
-			VAR ResEng = DIVIDE([Resolved Conversations], Engaged)
-			VAR AbnEng = DIVIDE([Abandoned Conversations], Engaged)
-			VAR T =
-			    ADDCOLUMNS(
-			        FILTER(
-			            VALUES('Agent Performance'[Topic (resolved)]),
-			            NOT (LEFT('Agent Performance'[Topic (resolved)], 1) = "🚫")
-			        ),
-			        "V", [Total Conversations],
-			        "A", [Abandonment Rate]
-			    )
-			VAR TopTopic = MAXX(TOPN(1, T, [V], DESC), 'Agent Performance'[Topic (resolved)])
-			VAR TopVol = MAXX(TOPN(1, T, [V], DESC), [V])
-			VAR WorstTopic = MAXX(TOPN(1, FILTER(T, [V] >= 5), [A], DESC), 'Agent Performance'[Topic (resolved)])
-			RETURN
-			IF(
-			    Total = 0, "No conversations in this selection.",
-			    FORMAT(Total, "#,0") & " conversations, " & FORMAT(EngPct, "0%") & " engaged. " &
-			    "Among engaged: " & FORMAT(ResEng, "0%") & " resolved, " & FORMAT(AbnEng, "0%") & " abandoned. " &
-			    "Busiest topic: " & TopTopic & " (" & FORMAT(TopVol, "#,0") & " convs). " &
-			    "Most abandoned: " & WorstTopic & "."
-			)
-		displayFolder: 🗂 Topics
-		lineageTag: ap0topic-meas-0001-000000000010
-
 	/// Conversations the agent resolved on its own.
 	measure 'Resolved Conversations' = CALCULATE([Total Conversations], 'Agent Performance'[SessionOutcome] = "Resolved")
 		formatString: #,0
@@ -317,6 +288,35 @@ table 'Agent Performance'
 		formatString: 0.0%;-0.0%;0.0%
 		displayFolder: 🗂 Topics
 		lineageTag: ap0topic-meas-0001-000000000005
+
+	measure '🧠 Conversation Summary' =
+			VAR Total = [Total Conversations]
+			VAR Engaged = CALCULATE([Total Conversations], 'Agent Performance'[SessionType] = "Engaged")
+			VAR EngPct = DIVIDE(Engaged, Total)
+			VAR ResEng = DIVIDE([Resolved Conversations], Engaged)
+			VAR AbnEng = DIVIDE([Abandoned Conversations], Engaged)
+			VAR T =
+			    ADDCOLUMNS(
+			        FILTER(
+			            VALUES('Agent Performance'[Topic (resolved)]),
+			            NOT (LEFT('Agent Performance'[Topic (resolved)], 1) = "🚫")
+			        ),
+			        "V", [Total Conversations],
+			        "A", [Abandonment Rate]
+			    )
+			VAR TopTopic = MAXX(TOPN(1, T, [V], DESC), 'Agent Performance'[Topic (resolved)])
+			VAR TopVol = MAXX(TOPN(1, T, [V], DESC), [V])
+			VAR WorstTopic = MAXX(TOPN(1, FILTER(T, [V] >= 5), [A], DESC), 'Agent Performance'[Topic (resolved)])
+			RETURN
+			IF(
+			    Total = 0, "No conversations in this selection.",
+			    FORMAT(Total, "#,0") & " conversations, " & FORMAT(EngPct, "0%") & " engaged. " &
+			    "Among engaged: " & FORMAT(ResEng, "0%") & " resolved, " & FORMAT(AbnEng, "0%") & " abandoned. " &
+			    "Busiest topic: " & TopTopic & " (" & FORMAT(TopVol, "#,0") & " convs). " &
+			    "Most abandoned: " & WorstTopic & "."
+			)
+		displayFolder: 🗂 Topics
+		lineageTag: ap0topic-meas-0001-000000000010
 
 	column ConversationTranscriptId
 		dataType: string
@@ -905,3 +905,4 @@ table 'Agent Performance'
 	annotation PBI_NavigationStepName = Navigation
 
 	annotation PBI_ResultType = Table
+

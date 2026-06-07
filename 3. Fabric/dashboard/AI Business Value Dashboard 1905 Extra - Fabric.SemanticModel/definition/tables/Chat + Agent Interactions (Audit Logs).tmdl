@@ -2510,7 +2510,7 @@ table 'Chat + Agent Interactions (Audit Logs)'
 				    #"Add Audit_UserKey"           = if Table.HasColumns(#"Add ApplicationName", "Audit_UserKey")                    then #"Add ApplicationName"      else Table.AddColumn(#"Add ApplicationName",      "Audit_UserKey",                       each null, type text),
 				    #"Add SensitivityLabelId"      = if Table.HasColumns(#"Add Audit_UserKey", "SensitivityLabelId")                 then #"Add Audit_UserKey"        else Table.AddColumn(#"Add Audit_UserKey",        "SensitivityLabelId",                  each null, type text),
 				    #"Add AR_SensLabel"            = if Table.HasColumns(#"Add SensitivityLabelId", "AccessedResource_SensitivityLabelId") then #"Add SensitivityLabelId" else Table.AddColumn(#"Add SensitivityLabelId",   "AccessedResource_SensitivityLabelId", each null, type text),
-
+				
 				    #"Add AppIdentity_AppId"       = if Table.HasColumns(#"Add AR_SensLabel", "AppIdentity_AppId")                   then #"Add AR_SensLabel"         else Table.AddColumn(#"Add AR_SensLabel",          "AppIdentity_AppId",       each null, type text),
 				    #"Add AppIdentity_DisplayName" = if Table.HasColumns(#"Add AppIdentity_AppId", "AppIdentity_DisplayName")        then #"Add AppIdentity_AppId"    else Table.AddColumn(#"Add AppIdentity_AppId",    "AppIdentity_DisplayName", each try Text.From([AppIdentity]) otherwise null, type text),
 				    #"Drop AppIdentity"            = Table.RemoveColumns(#"Add AppIdentity_DisplayName", {"AppIdentity"}, MissingField.Ignore),
@@ -2540,7 +2540,7 @@ table 'Chat + Agent Interactions (Audit Logs)'
 				                t2 = if Table.HasColumns(t1, "AccessedResource_Action")                  then t1                  else Table.AddColumn(t1,                  "AccessedResource_Action", each null, type text),
 				                t3 = if Table.HasColumns(t2, "AccessedResource_SiteUrl")                 then t2                  else Table.AddColumn(t2,                  "AccessedResource_SiteUrl", each null, type text)
 				            in t3,
-
+				
 				    // --- AI System Plugin: parse raw JSON when present; else keep flattened cols.
 				    #"Expand Plugin" =
 				        if Table.HasColumns(#"Expand AR Cols", "AISystemPlugin") then
@@ -2608,3 +2608,4 @@ table 'Chat + Agent Interactions (Audit Logs)'
 	annotation PBI_ResultType = Table
 
 	annotation PBI_NavigationStepName = Navigation
+

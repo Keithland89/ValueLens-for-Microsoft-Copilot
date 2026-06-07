@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
   "name": "7d24d3728963c51bbc53",
   "position": {
     "x": 568.24384712866,
@@ -51,23 +51,6 @@
             }
           ]
         }
-      },
-      "sortDefinition": {
-        "sort": [
-          {
-            "field": {
-              "Measure": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "Chat + Agent Interactions (Audit Logs)"
-                  }
-                },
-                "Property": "Copilot AI Tasks Per User Per Week"
-              }
-            },
-            "direction": "Descending"
-          }
-        ]
       }
     },
     "objects": {

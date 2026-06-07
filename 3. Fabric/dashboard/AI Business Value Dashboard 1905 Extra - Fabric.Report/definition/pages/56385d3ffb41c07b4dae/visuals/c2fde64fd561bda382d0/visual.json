@@ -1,12 +1,12 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
   "name": "c2fde64fd561bda382d0",
   "position": {
-    "x": 12.764299848860221,
-    "y": 63.8214992443011,
+    "x": 12.790733985323131,
+    "y": 120.93057586123687,
     "z": 6000,
-    "height": 648.42643232209912,
-    "width": 179.97662786892909,
+    "height": 586.04817532753259,
+    "width": 180.23306979318957,
     "tabOrder": 6000
   },
   "visual": {
@@ -15,56 +15,6 @@
       "queryState": {
         "Data": {
           "projections": [
-            {
-              "field": {
-                "Aggregation": {
-                  "Expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "Agent Performance"
-                        }
-                      },
-                      "Property": "BotName"
-                    }
-                  },
-                  "Function": 2
-                }
-              },
-              "queryRef": "Min(Agent Performance.BotName)",
-              "nativeQueryRef": "Studio Agents",
-              "displayName": "Studio Agents"
-            },
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Agent Performance"
-                    }
-                  },
-                  "Property": "Unique Users"
-                }
-              },
-              "queryRef": "Agent Performance.Unique Users",
-              "nativeQueryRef": "Users",
-              "displayName": "Users"
-            },
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Agent Performance"
-                    }
-                  },
-                  "Property": "Avg Bot Response Time"
-                }
-              },
-              "queryRef": "Agent Performance.Avg Bot Response Time",
-              "nativeQueryRef": "Agent Response Time",
-              "displayName": "Agent Response Time"
-            },
             {
               "field": {
                 "Measure": {
@@ -78,6 +28,35 @@
               },
               "queryRef": "Agent Performance.Resolution Rate",
               "nativeQueryRef": "Resolution Rate"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Agent Performance"
+                    }
+                  },
+                  "Property": "Escalation Rate"
+                }
+              },
+              "queryRef": "Agent Performance.Escalation Rate",
+              "nativeQueryRef": "Escalation Rate"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Agent Sessions"
+                    }
+                  },
+                  "Property": "Session Error Rate"
+                }
+              },
+              "queryRef": "Agent Sessions.Session Error Rate",
+              "nativeQueryRef": "Error Rate",
+              "displayName": "Error Rate"
             },
             {
               "field": {
@@ -101,11 +80,11 @@
                       "Entity": "Agent Performance"
                     }
                   },
-                  "Property": "Escalation Rate"
+                  "Property": "Avg Turns to Resolve"
                 }
               },
-              "queryRef": "Agent Performance.Escalation Rate",
-              "nativeQueryRef": "Escalation Rate"
+              "queryRef": "Agent Performance.Avg Turns to Resolve",
+              "nativeQueryRef": "Avg Turns to Resolve"
             },
             {
               "field": {
@@ -115,11 +94,12 @@
                       "Entity": "Agent Performance"
                     }
                   },
-                  "Property": "Avg Conversation Duration"
+                  "Property": "Avg Bot Response Time"
                 }
               },
-              "queryRef": "Agent Performance.Avg Conversation Duration",
-              "nativeQueryRef": "Avg Conversation Duration"
+              "queryRef": "Agent Performance.Avg Bot Response Time",
+              "nativeQueryRef": "Avg Agent Response Time",
+              "displayName": "Avg Agent Response Time"
             }
           ]
         }
@@ -128,18 +108,13 @@
         "sort": [
           {
             "field": {
-              "Aggregation": {
+              "Measure": {
                 "Expression": {
-                  "Column": {
-                    "Expression": {
-                      "SourceRef": {
-                        "Entity": "Agent Performance"
-                      }
-                    },
-                    "Property": "BotName"
+                  "SourceRef": {
+                    "Entity": "Agent Performance"
                   }
                 },
-                "Function": 2
+                "Property": "Resolution Rate"
               }
             },
             "direction": "Descending"

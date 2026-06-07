@@ -265,3 +265,4 @@ table Headlines
 	partition Headlines = calculated
 		mode: import
 		source = ROW("Placeholder", 1)
+
