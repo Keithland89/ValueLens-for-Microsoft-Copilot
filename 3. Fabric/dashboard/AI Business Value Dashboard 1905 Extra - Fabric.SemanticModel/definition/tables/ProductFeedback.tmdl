@@ -467,6 +467,23 @@ table ProductFeedback
 
 		annotation SummarizationSetBy = Automatic
 
+	/// One field combining Copilot surface and agent: the agent name for Copilot
+	/// Studio feedback, otherwise the surface/App (M365 Chat, Teams, Word, Outlook...).
+	column 'Surface / Agent' =
+			VAR app = ProductFeedback[App]
+			VAR agent = ProductFeedback[AgentName]
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        NOT ISBLANK(agent) && agent <> "", agent,
+			        NOT ISBLANK(app) && app <> "", app,
+			        "Unknown"
+			    )
+		lineageTag: pf0surf01-0001-0001-0001-000000000001
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
 	column UiHost
 		dataType: string
 		lineageTag: 4fcd936e-a0c0-4daa-8393-1609801cea7b
@@ -586,3 +603,4 @@ table ProductFeedback
 	annotation PBI_NavigationStepName = Navigation
 
 	annotation PBI_ResultType = Table
+
