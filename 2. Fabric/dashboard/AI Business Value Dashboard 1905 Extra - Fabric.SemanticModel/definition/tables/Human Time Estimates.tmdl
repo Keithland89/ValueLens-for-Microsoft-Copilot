@@ -1,0 +1,145 @@
+table 'Human Time Estimates'
+	lineageTag: ff060001-0001-0001-0001-000000000001
+
+	column Behavior
+		dataType: string
+		lineageTag: ff060001-0001-0001-0001-000000000002
+		summarizeBy: none
+		sourceColumn: Behavior
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Human Baseline (min)'
+		dataType: int64
+		lineageTag: ff060001-0001-0001-0001-000000000003
+		summarizeBy: none
+		sourceColumn: Human Baseline (min)
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Primary Source'
+		dataType: string
+		lineageTag: ff060001-0001-0001-0001-000000000005
+		summarizeBy: none
+		sourceColumn: Primary Source
+
+		annotation SummarizationSetBy = Automatic
+
+	column Confidence
+		dataType: string
+		isHidden
+		lineageTag: 5e47e248-fc1d-4610-8c33-59d6dc02b0d1
+		summarizeBy: none
+		sourceColumn: Confidence
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Value Outcome'
+		dataType: string
+		lineageTag: e42da065-9ada-4d14-bc83-f7fd763c6977
+		summarizeBy: none
+		sourceColumn: Value Outcome
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Source URL'
+		dataType: string
+		lineageTag: f6d74f1c-12ed-42c0-8044-72089bb215a3
+		dataCategory: WebUrl
+		summarizeBy: none
+		sourceColumn: Source URL
+
+		annotation SummarizationSetBy = Automatic
+
+	column Category
+		dataType: string
+		lineageTag: e84633cc-f2a2-42a5-84ac-d7fd745fe0e2
+		summarizeBy: none
+		sourceColumn: Category
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Human Time Estimates' = m
+		mode: import
+		source =
+				let
+				    Source = #table(
+				        {"Behavior", "Human Baseline (min)", "Confidence", "Primary Source", "Source URL", "Category", "Value Outcome"},
+				        {
+				            // COMMS
+				            {"Email Triage", 10, "Medium-High", "Microsoft Research (Iqbal & Horvitz 2007); McKinsey 2023", "https://www.microsoft.com/en-us/research/publication/disruption-and-recovery-of-computing-tasks-field-study-analysis-and-directions/", "Comms", "Time Saved (Email)"},
+				            {"Email Thread Summary", 5, "Medium", "Nielsen Norman Group 2023; Microsoft WTI 2024", "https://www.nngroup.com/articles/", "Comms", "Time Saved (Email)"},
+				            {"Email Summarising", 4, "Medium", "Dabbish & Kraut (CMU 2006); Mark et al. 2012", "https://www.ics.uci.edu/~gmark/Home_page/Welcome.html", "Comms", "Time Saved (Email)"},
+				            {"Email Drafting", 8, "High", "McKinsey 2023; Brynjolfsson et al. (NBER 2023)", "https://www.nber.org/papers/w31161", "Comms", "Content Output"},
+				            {"Teams Messaging", 8, "Medium", "Microsoft WTI (2023); Grammarly (2023)", "https://www.microsoft.com/en-us/worklab/work-trend-index", "Comms", "Communication Time Saved"},
+				            {"Meeting Scheduling", 12, "High", "Doodle (2019); HBR (2017)", "https://meetings.doodle.com/the-state-of-meetings-report-2019", "Comms", "Communication Time Saved"},
+				            // MEETINGS
+				            {"Meeting Prep", 15, "High", "Forrester TEI 2024; HBR (Rogelberg 2019)", "https://hbr.org/2019/01/why-your-meetings-stink-and-what-to-do-about-it", "Meetings", "Time Saved (Meetings)"},
+				            {"Video Summarising", 30, "Medium-High", "Microsoft WTI 2024; Kaltura 2023", "https://www.microsoft.com/en-us/worklab/work-trend-index", "Meetings", "Time Saved (Meetings)"},
+				            // CONTENT
+				            {"Document Drafting", 60, "High", "Noy & Zhang (MIT/Science 2023); BCG/Harvard 2023", "https://www.science.org/doi/10.1126/science.adh2586", "Content", "Content Output"},
+				            {"Document Summarising", 20, "Medium-High", "BCG/Harvard (Dell'Acqua et al. 2023); McKinsey 2023", "https://www.hbs.edu/ris/Publication%20Files/24-013_d9b45b68-9e74-42d6-a1c6-c72fb70c7282.pdf", "Content", "Time Saved (Documents)"},
+				            {"Presentation Creation", 90, "Medium-High", "Gartner 2024; BCG 2024", "https://www.gartner.com/en/topics/generative-ai", "Content", "Content Output"},
+				            {"Presentation Summarising", 12, "Medium", "Forrester TEI 2024; NNGroup 2020", "https://www.forrester.com/policies/total-economic-impact/", "Content", "Time Saved (Documents)"},
+				            {"Note Taking", 20, "High", "Microsoft Research (Branham & Brush 2015)", "https://www.microsoft.com/en-us/research/people/sbrush/", "Content", "Time Saved (Documents)"},
+				            {"Image Generation", 60, "Medium", "Adobe (2022); Content Marketing Institute (2023)", "https://business.adobe.com/resources/digital-trends-report.html", "Content", "Content Output"},
+				            {"Image/Media Analysis", 8, "Medium", "W3C WAI; DAM Institute (2022)", "https://www.w3.org/WAI/", "Content", "Content Output"},
+				            {"Image / Media Analysis", 8, "Medium", "W3C WAI; DAM Institute (2022)", "https://www.w3.org/WAI/", "Content", "Content Output"},
+				            {"Code Writing", 45, "High", "GitHub/NBER (Peng et al. 2023) RCT", "https://arxiv.org/abs/2302.06590", "Content", "Coding Capability"},
+				            {"Code Analysis", 30, "High", "SmartBear (2023); MS Research (Bacchelli & Bird 2013)", "https://smartbear.com/state-of-software-quality/code-review/", "Content", "Coding Capability"},
+				            {"Code Analysis (URL)", 15, "Medium", "Stack Overflow (2023); GitHub (2023)", "https://survey.stackoverflow.co/", "Content", "Coding Capability"},
+				            {"Data Querying", 30, "High", "Forrester TEI (2022); BCG (2021)", "https://www.forrester.com/policies/total-economic-impact/", "Content", "Data-Driven Decisions"},
+				            {"Spreadsheet Analysis", 40, "High", "Deloitte (2023); KPMG (2020)", "https://www2.deloitte.com/us/en/insights.html", "Content", "Data-Driven Decisions"},
+				            {"Spreadsheet Review", 25, "Medium", "Deloitte (2023); KPMG (2020)", "https://www2.deloitte.com/us/en/insights.html", "Content", "Spreadsheet Time Saved"},
+				            {"Excel Assistance", 30, "Medium", "Deloitte (2023); KPMG (2020)", "https://www2.deloitte.com/us/en/insights.html", "Content", "Spreadsheet Time Saved"},
+				            // SEARCH
+				            {"Web Searching", 22, "High", "McKinsey (2012); IDC (2018)", "https://www.mckinsey.com/industries/technology-media-and-telecommunications/our-insights/the-social-economy", "Search", "Search Time Saved"},
+				            {"Enterprise Searching", 18, "High", "IDC (2014); McKinsey (2012)", "https://www.idc.com/", "Search", "Search Time Saved"},
+				            {"PDF Analysis", 35, "Medium", "Deloitte (2018); Thomson Reuters (2019)", "https://legal.thomsonreuters.com/en/insights", "Search", "Search Time Saved"},
+				            {"SharePoint Access", 12, "Medium", "Forrester TEI (2022); AIIM (2019)", "https://www.aiim.org/", "Search", "Search Time Saved"},
+				            {"File Retrieval", 15, "Medium", "IDC (2014); McKinsey (2012)", "https://www.idc.com/", "Search", "Search Time Saved"},
+				            {"People Lookup", 10, "Medium", "Gartner (2021); Microsoft Viva (2022)", "https://www.microsoft.com/en-us/microsoft-viva", "Search", "Search Time Saved"},
+				            {"Agent: Knowledge Base", 12, "High", "HDI (2023); Gartner (2022)", "https://www.thinkhdi.com/", "Search", "Search Time Saved"},
+				            // AGENTS
+				            {"Agent: Coaching", 45, "Medium", "ICF (2020); SHRM (2023)", "https://coachingfederation.org/research/global-coaching-study", "Agents", "Skills Development"},
+				            {"Agent: Coaching (URL)", 25, "Medium", "LinkedIn Learning (2023); Deloitte (2022)", "https://learning.linkedin.com/resources/workplace-learning-report", "Agents", "Skills Development"},
+				            {"Agent: Sales & Customer", 35, "High", "Salesforce (2023); Gartner (2022)", "https://www.salesforce.com/resources/research-reports/state-of-sales/", "Agents", "Revenue Enablement"},
+				            {"Agent: IT & Service Desk", 20, "High", "HDI (2023); MetricNet (2023)", "https://www.thinkhdi.com/library/practices-and-salary-report.aspx", "Agents", "Service Desk Deflection"},
+				            {"Agent: Compliance & Policy", 25, "Medium", "Deloitte (2022); Thomson Reuters (2023)", "https://www2.deloitte.com/us/en/pages/regulatory/topics/compliance.html", "Agents", "Compliance & Risk"},
+				            {"Sensitive Content Interaction", 20, "Low", "Deloitte (2023); Gartner (2022)", "https://www2.deloitte.com/us/en/insights/topics/risk-management.html", "Agents", "Compliance & Risk"},
+				            {"Agent: HR & People", 35, "High", "SHRM (2023); Deloitte (2023)", "https://www.shrm.org/topics-tools/research", "Agents", "HR Process Automation"},
+				            {"Agent: Research & Analysis", 45, "High", "BCG (2021); McKinsey (2023)", "https://www.mckinsey.com/capabilities/mckinsey-digital/our-insights/the-economic-potential-of-generative-ai-the-next-productivity-frontier", "Agents", "Data-Driven Decisions"},
+				            {"Agent: Data & Reporting", 35, "High", "Forrester TEI (2022); IDC (2023)", "https://www.forrester.com/policies/total-economic-impact/", "Agents", "Data-Driven Decisions"},
+				            {"Agent: Content Generation", 25, "High", "Grammarly (2023); Forrester (2022)", "https://www.grammarly.com/business/learn", "Agents", "Content Output"},
+				            {"Agent: Ideation & Creative", 40, "Medium", "IDEO; HBR (2018)", "https://hbr.org/topic/innovation", "Agents", "Content Output"},
+				            {"Agent: General Purpose", 15, "Low", "Microsoft WTI (2023); IDC (2023)", "https://www.microsoft.com/en-us/worklab/work-trend-index", "Agents", "General AI Productivity"},
+				            {"Running a Workflow", 15, "High", "Forrester TEI (2022); Gartner (2023)", "https://www.gartner.com/en/topics/hyperautomation", "Agents", "Workflow Triggered"},
+				            {"Task Management", 20, "Medium", "Atlassian (2022); Scrum Alliance (2023)", "https://www.atlassian.com/blog/teamwork", "Agents", "Task Coordination"},
+				            {"Real-time Collaboration", 30, "Medium", "Microsoft WTI (2023); Gartner (2022)", "https://www.microsoft.com/en-us/worklab/work-trend-index", "Agents", "Team Collaboration"},
+				            {"Form/Survey Work", 25, "Medium", "SurveyMonkey (2022); Qualtrics (2023)", "https://www.surveymonkey.com/curiosity/", "Agents", "Team Collaboration"},
+				            {"Form / Survey Work", 25, "Medium", "SurveyMonkey (2022); Qualtrics (2023)", "https://www.surveymonkey.com/curiosity/", "Agents", "Team Collaboration"},
+				            {"M365 Chat Q&A", 10, "Medium", "Microsoft WTI (2023); IDC (2018)", "https://www.microsoft.com/en-us/worklab/work-trend-index", "Agents", "General AI Productivity"},
+				            {"Teams Q&A", 10, "Medium", "Microsoft WTI (2023); IDC (2018)", "https://www.microsoft.com/en-us/worklab/work-trend-index", "Agents", "General AI Productivity"},
+				            {"Browser Q&A", 10, "Medium", "Microsoft WTI (2023); IDC (2018)", "https://www.microsoft.com/en-us/worklab/work-trend-index", "Agents", "General AI Productivity"},
+				            {"General Q&A", 10, "Medium", "Microsoft WTI (2023); IDC (2018)", "https://www.microsoft.com/en-us/worklab/work-trend-index", "Agents", "General AI Productivity"},
+				            {"General Chat", 10, "Medium", "Microsoft WTI (2023); IDC (2018)", "https://www.microsoft.com/en-us/worklab/work-trend-index", "Agents", "General AI Productivity"},
+				            {"Domain-Specific Agent", 25, "Low", "Deloitte (2022); Gartner (2023)", "https://www2.deloitte.com/us/en/insights.html", "Agents", "Specialist Expertise"},
+				            {"Cross-Org Agent", 30, "Low", "McKinsey (2022); Forrester (2023)", "https://www.mckinsey.com/capabilities/mckinsey-digital/our-insights", "Agents", "Specialist Expertise"}
+				        }
+				    ),
+				    #"Changed Type" = Table.TransformColumnTypes(Source, {
+				        {"Behavior", type text},
+				        {"Human Baseline (min)", Int64.Type},
+				        {"Confidence", type text},
+				        {"Primary Source", type text},
+				        {"Source URL", type text},
+				        {"Category", type text},
+				        {"Value Outcome", type text}
+				    })
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

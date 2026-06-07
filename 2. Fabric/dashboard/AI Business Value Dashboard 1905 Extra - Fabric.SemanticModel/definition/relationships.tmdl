@@ -1,0 +1,105 @@
+relationship 510eb497-c851-dad9-b0cb-c93457181245
+	fromColumn: 'Chat + Agent Interactions (Audit Logs)'.Audit_UserId
+	toColumn: 'Unlicensed Chat User Rankings'.Audit_UserId
+
+relationship c8c12ef6-2d76-738c-0c5b-9eda6c130aea
+	fromColumn: 'Chat + Agent Interactions (Audit Logs)'.Audit_UserId
+	toColumn: 'Licensed Chat User Summary'.Audit_UserId
+
+relationship 7cf08c2b-c101-4125-9c84-be2d5f9f7705
+	fromColumn: 'Chat + Agent Interactions (Audit Logs)'.ActivityDate
+	toColumn: Calendar.Date
+
+relationship afbe8169-03ca-7907-c110-dffebf85e558
+	fromColumn: 'Chat + Agent Interactions (Audit Logs)'.Audit_UserId
+	toColumn: 'Licensed Chat User Rankings'.Audit_UserId
+
+relationship c082b68d-7ed8-a9a6-9ff3-7b8db68be91e
+	fromColumn: 'Chat + Agent Interactions (Audit Logs)'.Audit_UserId
+	toColumn: 'Chat + Agent Org Data'.PersonId
+
+relationship 22649f9c-c882-79bf-203a-4100984787b9
+	fromColumn: ActiveDaysSummary.Audit_UserId
+	toColumn: 'Chat + Agent Org Data'.PersonId
+
+relationship f24e5a3f-0806-a6e8-4846-d53127b75130
+	fromColumn: ActiveDaysSummary.MonthStart
+	toColumn: Calendar.Date
+
+relationship a6de69c9-feb6-269c-43ba-3f963eeb7f94
+	fromColumn: 'Chat + Agent Interactions (Audit Logs)'.Behavior_Enriched_Full
+	toColumn: 'Behavior Value Map'.Behavior
+
+relationship 6f2795c6-cabc-e5eb-a1cd-c824f130c488
+	crossFilteringBehavior: bothDirections
+	fromColumn: 'Behavior Value Map'.Behavior
+	toColumn: 'Human Time Estimates'.Behavior
+
+relationship ff070001-rel1-0001-0001-000000000001
+	crossFilteringBehavior: bothDirections
+	fromColumn: 'Behavior Value Map'.Behavior
+	toColumn: 'Augmented Skills Map'.Behavior
+
+relationship ff0c0001-rel1-0001-0001-000000000001
+	crossFilteringBehavior: bothDirections
+	toCardinality: many
+	fromColumn: 'Chat + Agent Interactions (Audit Logs)'.Behavior_Category
+	toColumn: 'Task Value Mapping'.TaskBehavior
+
+relationship a1b2c3d4-e5f6-7890-abcd-ef1234567890
+	fromColumn: 'Chat + Agent Interactions (Audit Logs)'.UserMonthKey
+	toColumn: UserMonthMetrics.UserMonthKey
+
+relationship d67e0752-bbe3-861d-3476-5dd426e3d351
+	fromColumn: 'Chat + Agent Interactions (Audit Logs)'.Audit_UserId
+	toColumn: 'Copilot Licensed'.UPN_Normalized
+
+relationship d1bd6add-bebd-69e1-783e-9719cdfb6efc
+	crossFilteringBehavior: bothDirections
+	fromColumn: 'Chat + Agent Interactions (Audit Logs)'.Agent_TitleID
+	toColumn: 'Agents 365'.'Title ID'
+
+relationship ca01rel-0001-0001-0001-000000000001
+	fromColumn: 'Agent Turns'.conversation_id
+	toColumn: 'Agent Sessions'.conversation_id
+
+relationship ca02rel-0001-0001-0001-000000000001
+	fromColumn: 'Agent Errors'.conversation_id
+	toColumn: 'Agent Sessions'.conversation_id
+
+relationship ca03rel-0001-0001-0001-000000000001
+	fromColumn: 'Agent Sub-Agent Calls'.conversation_id
+	toColumn: 'Agent Sessions'.conversation_id
+
+relationship ca04rel-0001-0001-0001-000000000001
+	fromColumn: 'Agent Sessions'.primary_agent_schema
+	toColumn: 'Agent Catalogue'.agent_schema
+
+relationship ca05rel-0001-0001-0001-000000000001
+	isActive: false
+	fromColumn: 'Agent Sub-Agent Calls'.connected_agent_schema
+	toColumn: 'Agent Catalogue'.agent_schema
+
+relationship ca06rel-0001-0001-0001-000000000001
+	fromColumn: 'Agent Sessions'.'Session Start Date'
+	toColumn: Calendar.Date
+
+relationship ca09rel-0001-0001-0001-000000000001
+	fromColumn: ProductFeedback.'Date Submitted Date'
+	toColumn: Calendar.Date
+
+relationship ca10rel-0001-0001-0001-000000000001
+	fromColumn: 'Agent Performance'.InteractionDate
+	toColumn: Calendar.Date
+
+relationship AutoDetected_249a3c50-3c04-450f-9f80-96f12bd12544
+	isActive: false
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: 'Copilot Licensed'.Display_Name
+	toColumn: 'Chat + Agent Org Data'.displayName
+
+relationship cc00-user-org-emailnorm-0001
+	fromColumn: 'Credit Consumption (User)'.User_Email_Normalized
+	toColumn: 'Chat + Agent Org Data'.PersonId_Normalized
+

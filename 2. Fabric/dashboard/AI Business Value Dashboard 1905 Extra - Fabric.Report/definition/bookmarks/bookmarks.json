@@ -1,0 +1,141 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/bookmarksMetadata/1.0.0/schema.json",
+  "items": [
+    {
+      "name": "39320b80c4bb00416d37"
+    },
+    {
+      "name": "b3e81150052f90722188",
+      "displayName": "Copilot Usage Trend",
+      "children": [
+        "64290ff7e01ede897b2a"
+      ]
+    },
+    {
+      "name": "f63c6df26efe70986589",
+      "displayName": "User Distribution",
+      "children": [
+        "42a74ba27a5a9d7255f7",
+        "be914c630de23d23777a"
+      ]
+    },
+    {
+      "name": "aa273409e41a2fcf491f",
+      "displayName": "Chat User Distribution",
+      "children": [
+        "b571c85edcc473d1966b",
+        "f8a310b5e1824f03a4fd"
+      ]
+    },
+    {
+      "name": "9918d61da58991467d4e",
+      "displayName": "Agent User Distribution",
+      "children": [
+        "bf55a7b275e9cc2b1f3b",
+        "94d87000ac65d9b7e943"
+      ]
+    },
+    {
+      "name": "2562d79cd3a4fc6e0bc0",
+      "displayName": "Copilot Overall ScatterPlot",
+      "children": [
+        "84357c17dc5436f90a4d",
+        "a4dbd89f05a0dd24a24c",
+        "957a8ee64a6eb3043df4"
+      ]
+    },
+    {
+      "name": "7f72c67b9fe980bde430",
+      "displayName": "Agent Readiness",
+      "children": [
+        "6ec7f76d7f2944cac7d0",
+        "627cdf1bedcdaab4dddc"
+      ]
+    },
+    {
+      "name": "f16fb88ec23e0f3c937f",
+      "displayName": "Activity & Value",
+      "children": [
+        "5bca4a2f703e53628139",
+        "14a420d331a634ef1cfc",
+        "5a53fb50e1de1a51d053",
+        "9a87a788cb853eadd648"
+      ]
+    },
+    {
+      "name": "61c6ef198a76659e9e29",
+      "displayName": "Copilot Value Tracker",
+      "children": [
+        "e5bb5a6e544b2e9a1bf1",
+        "c12068710f215a5eddce",
+        "0c80cf22dbc3cca406c6",
+        "0f43b504eeb102b69226",
+        "26728d761862cd170a8f"
+      ]
+    },
+    {
+      "name": "2b17192ef1fb723cebee",
+      "displayName": "AI Maturity",
+      "children": [
+        "c18cb8124ae0501d9882",
+        "44f9c421eee858ccf120",
+        "0c7a93847a2833606a49"
+      ]
+    },
+    {
+      "name": "3e6d0cfe7b53b362b029",
+      "displayName": "Chat Behaviors",
+      "children": [
+        "469470bf69b5f012e282",
+        "a9e66672800935c309e4"
+      ]
+    },
+    {
+      "name": "8fc3cfcd35533f11edaa",
+      "displayName": "Adoption & Reach",
+      "children": [
+        "28e7f8e677e70ab3f744",
+        "9c71ff329fb694f0ed35",
+        "fb15c331f7f8a29f07c2"
+      ]
+    },
+    {
+      "name": "0b6c7a5bd94ff227efe7",
+      "displayName": "Leaderboards",
+      "children": [
+        "40554a13a73134cb3c5c",
+        "8d0bf5d29a54516483b0",
+        "44017ad7777495fef799"
+      ]
+    },
+    {
+      "name": "d750c055441309a1998e",
+      "displayName": "Activation",
+      "children": [
+        "d7a30e5734db9482b310",
+        "3be2ad87bebb7c4036ed",
+        "7c0332ec33cc1b87c507",
+        "d2eab60f07f71d075dfe"
+      ]
+    },
+    {
+      "name": "25b8f786c00c59e0be8c",
+      "displayName": "Glossary",
+      "children": [
+        "f09d8eab6654a60a73bd",
+        "d5747bc35330c2212ae8",
+        "90d4a946f08ef053a060",
+        "ff5cb170d3f42e92a535",
+        "f485053f897beafac707",
+        "a7900de0e66a0ff5dc82",
+        "7d120db044d0931efaab",
+        "30ae17508052576a838e",
+        "c8cd8b2cb483a3e48902",
+        "a20a56e9e145012560d4",
+        "dcb17adeab0d006ba9c0",
+        "6e532657b149ac86d714",
+        "9ce91528cb5a14074787"
+      ]
+    }
+  ]
+}

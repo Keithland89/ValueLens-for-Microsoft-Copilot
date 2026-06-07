@@ -1,0 +1,33 @@
+table 'Activity (Legend)'
+	lineageTag: d802eca6-409f-4aeb-a9ac-9666fc55e041
+
+	column Value1
+		lineageTag: 75c68fe8-e799-4ef0-b327-9154742cebba
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Value1]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Value2
+		formatString: 0
+		lineageTag: 4ff16836-1037-4bbd-af5e-8e625b90cd5f
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Value2]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Activity (Legend)' = calculated
+		mode: import
+		source = ```
+				
+				{
+				    ("Total Active",   1),
+				    ("Total Inactive", 2)
+				}
+				
+				```
+
+	annotation PBI_Id = 6d5aa500b3824b3a85453f131df92729
+

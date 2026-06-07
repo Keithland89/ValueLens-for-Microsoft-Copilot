@@ -1,0 +1,154 @@
+/// Power Platform billing — credit consumption PER ENVIRONMENT (tenant rollup).
+/// Source: Lakehouse Delta table `credit_consumption_tenant`, landed from the
+/// EntitlementConsumptionTenantDetailsReport_MCSMessages export.
+/// Splits prepaid vs pay-as-you-go consumed quantity by environment and usage date.
+/// Gated by Enable_Consumption — loads empty when no export is supplied.
+table 'Credit Consumption (Tenant)'
+	lineageTag: cc0003tn-0001-0001-0001-000000000001
+
+	/// Prepaid credits consumed (entitlement / committed capacity).
+	measure 'Prepaid Consumed' = SUM('Credit Consumption (Tenant)'[Prepaid_Consumed_Quantity])
+		formatString: #,0
+		displayFolder: 💳 Billing (Actuals)
+		lineageTag: cc0003tn-meas-0001-000000000001
+
+	/// Pay-as-you-go credits consumed (overage billed to Azure).
+	measure 'PAYG Consumed' = SUM('Credit Consumption (Tenant)'[Pay_as_you_go_Consumed_Quantity])
+		formatString: #,0
+		displayFolder: 💳 Billing (Actuals)
+		lineageTag: cc0003tn-meas-0001-000000000002
+
+	/// Entitled (purchased) message capacity.
+	measure 'Entitled Capacity' = SUM('Credit Consumption (Tenant)'[Entitled_Quantity])
+		formatString: #,0
+		displayFolder: 💳 Billing (Actuals)
+		lineageTag: cc0003tn-meas-0001-000000000003
+
+	/// Prepaid utilisation: prepaid consumed / entitled. >100% means PAYG overage is in play.
+	measure 'Prepaid Utilisation %' = DIVIDE([Prepaid Consumed], [Entitled Capacity])
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 💳 Billing (Actuals)
+		lineageTag: cc0003tn-meas-0001-000000000004
+
+	/// Coverage window of the loaded credit-consumption export, inferred from the
+	/// tenant Usage_Date (min–max). Stands in for a date slicer: the per-agent and
+	/// per-user exports carry no date, so this states the period the figures cover.
+	measure 'Billing Period' = IF ( ISBLANK ( MIN ( 'Credit Consumption (Tenant)'[Usage_Date] ) ), "No billing export loaded", FORMAT ( MIN ( 'Credit Consumption (Tenant)'[Usage_Date] ), "d MMM" ) & " – " & FORMAT ( MAX ( 'Credit Consumption (Tenant)'[Usage_Date] ), "d MMM yyyy" ) )
+		displayFolder: 💳 Billing (Actuals)
+		lineageTag: cc0003tn-meas-period0001
+
+	column BillingPlan_Id
+		dataType: string
+		lineageTag: cc0003tn-col0-0001-000000000001
+		summarizeBy: none
+		sourceColumn: BillingPlan_Id
+
+		annotation SummarizationSetBy = Automatic
+
+	column BillingPlan_Name
+		dataType: string
+		lineageTag: cc0003tn-col0-0001-000000000002
+		summarizeBy: none
+		sourceColumn: BillingPlan_Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Environment_Id
+		dataType: string
+		lineageTag: cc0003tn-col0-0001-000000000003
+		summarizeBy: none
+		sourceColumn: Environment_Id
+
+		annotation SummarizationSetBy = Automatic
+
+	column Environment_Name
+		dataType: string
+		lineageTag: cc0003tn-col0-0001-000000000004
+		summarizeBy: none
+		sourceColumn: Environment_Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Capacity_Type
+		dataType: string
+		lineageTag: cc0003tn-col0-0001-000000000005
+		summarizeBy: none
+		sourceColumn: Capacity_Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column Entitled_Quantity
+		dataType: int64
+		formatString: 0
+		lineageTag: cc0003tn-col0-0001-000000000006
+		summarizeBy: sum
+		sourceColumn: Entitled_Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column Prepaid_Consumed_Quantity
+		dataType: int64
+		formatString: 0
+		lineageTag: cc0003tn-col0-0001-000000000007
+		summarizeBy: sum
+		sourceColumn: Prepaid_Consumed_Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column Pay_as_you_go_Consumed_Quantity
+		dataType: int64
+		formatString: 0
+		lineageTag: cc0003tn-col0-0001-000000000008
+		summarizeBy: sum
+		sourceColumn: Pay_as_you_go_Consumed_Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column Usage_Date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: cc0003tn-col0-0001-000000000009
+		summarizeBy: none
+		sourceColumn: Usage_Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column _source_file
+		dataType: string
+		lineageTag: 102b811b-a4bb-4b7e-b0d2-21ff30e3e2bf
+		summarizeBy: none
+		sourceColumn: _source_file
+
+		annotation SummarizationSetBy = Automatic
+
+	column _ingested_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 344e75e7-7ed0-42aa-85b8-7ea0ea3a5ed9
+		summarizeBy: none
+		sourceColumn: _ingested_at
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Credit Consumption (Tenant)' = m
+		mode: import
+		source =
+				let
+				    Cols = {"BillingPlan_Id", "BillingPlan_Name", "Environment_Id", "Environment_Name", "Capacity_Type", "Entitled_Quantity", "Prepaid_Consumed_Quantity", "Pay_as_you_go_Consumed_Quantity", "Usage_Date"},
+				    Promoted = if Enable_Consumption = "Include" then (try FabricTable("credit_consumption_tenant") otherwise EmptyTable(Cols)) else EmptyTable(Cols),
+				    Typed = Table.TransformColumnTypes(Promoted, {
+				        {"BillingPlan_Id", type text},
+				        {"BillingPlan_Name", type text},
+				        {"Environment_Id", type text},
+				        {"Environment_Name", type text},
+				        {"Capacity_Type", type text},
+				        {"Entitled_Quantity", Int64.Type},
+				        {"Prepaid_Consumed_Quantity", Int64.Type},
+				        {"Pay_as_you_go_Consumed_Quantity", Int64.Type},
+				        {"Usage_Date", type datetime}
+				    })
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

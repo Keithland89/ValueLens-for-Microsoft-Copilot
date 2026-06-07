@@ -1,0 +1,196 @@
+/// Power Platform billing — credit consumption PER AGENT (per AI/billable feature).
+/// Source: Lakehouse Delta table `credit_consumption_agent`, landed from the
+/// EntitlementConsumptionTenantPerAgentDetailsReport_MCSMessages export by
+/// Copilot_Credit_Consumption_Ingester.py. This is the BILLED view (prepaid + PAYG),
+/// distinct from the transcript-native displayedCost on 'Agent Sessions'.
+/// Gated by Enable_Consumption — loads empty when the customer supplies no export.
+table 'Credit Consumption (Agent)'
+	lineageTag: cc0001ag-0001-0001-0001-000000000001
+
+	/// Total billed credits (the credits the customer is charged for).
+	measure 'Total Billed Credits' = SUM('Credit Consumption (Agent)'[Billed_credit])
+		formatString: #,0
+		displayFolder: 💳 Billing (Actuals)
+		lineageTag: cc0001ag-meas-0001-000000000001
+
+	/// Total non-billed credits (consumed within entitlement, not charged).
+	measure 'Total Non-Billed Credits' = SUM('Credit Consumption (Agent)'[Non_billed_credit])
+		formatString: #,0
+		displayFolder: 💳 Billing (Actuals)
+		lineageTag: cc0001ag-meas-0001-000000000002
+
+	/// All consumed credits = billed + non-billed.
+	measure 'Total Consumed Credits' = [Total Billed Credits] + [Total Non-Billed Credits]
+		formatString: #,0
+		displayFolder: 💳 Billing (Actuals)
+		lineageTag: cc0001ag-meas-0001-000000000003
+
+	/// Reconciliation gap: billed actuals minus the transcript-native displayed credits.
+	/// Positive = billing captures cost the transcript displayedCost doesn't (classic answers,
+	/// tools, non-generative turns). Expect this to be positive and sizeable.
+	measure 'Billing vs Transcript Gap' = [Total Consumed Credits] - [Total Cost Units]
+		formatString: #,0
+		displayFolder: 💳 Billing (Actuals)
+		lineageTag: cc0001ag-meas-0001-000000000004
+
+	/// Distinct agents present in the billing actuals.
+	measure 'Billing Agents with Credits' = DISTINCTCOUNT ( 'Credit Consumption (Agent)'[Agent_Name] )
+		formatString: #,0
+		displayFolder: 💳 Billing (Actuals)
+		lineageTag: cc0001ag-meas-agentcnt0001
+
+	/// Mean consumed credits per agent (billing actuals).
+	measure 'Avg Credits per Agent (Billing)' = DIVIDE ( [Total Consumed Credits], [Billing Agents with Credits] )
+		formatString: #,0
+		displayFolder: 💳 Billing (Actuals)
+		lineageTag: cc0001ag-meas-avgagent0001
+
+	column Agent_Name
+		dataType: string
+		lineageTag: cc0001ag-col0-0001-000000000001
+		summarizeBy: none
+		sourceColumn: Agent_Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Agent_Id
+		dataType: string
+		lineageTag: cc0001ag-col0-0001-000000000002
+		summarizeBy: none
+		sourceColumn: Agent_Id
+
+		annotation SummarizationSetBy = Automatic
+
+	column Product
+		dataType: string
+		lineageTag: cc0001ag-col0-0001-000000000003
+		summarizeBy: none
+		sourceColumn: Product
+
+		annotation SummarizationSetBy = Automatic
+
+	column AI_Feature_Billable_Feature
+		dataType: string
+		lineageTag: cc0001ag-col0-0001-000000000004
+		summarizeBy: none
+		sourceColumn: AI_Feature_Billable_Feature
+
+		annotation SummarizationSetBy = Automatic
+
+	column Billed_credit
+		dataType: int64
+		formatString: 0
+		lineageTag: cc0001ag-col0-0001-000000000005
+		summarizeBy: sum
+		sourceColumn: Billed_credit
+
+		annotation SummarizationSetBy = Automatic
+
+	column Non_billed_credit
+		dataType: int64
+		formatString: 0
+		lineageTag: cc0001ag-col0-0001-000000000006
+		summarizeBy: sum
+		sourceColumn: Non_billed_credit
+
+		annotation SummarizationSetBy = Automatic
+
+	column Channel
+		dataType: string
+		lineageTag: cc0001ag-col0-0001-000000000007
+		summarizeBy: none
+		sourceColumn: Channel
+
+		annotation SummarizationSetBy = Automatic
+
+	column Knowledge_Sources
+		dataType: string
+		lineageTag: cc0001ag-col0-0001-000000000008
+		summarizeBy: none
+		sourceColumn: Knowledge_Sources
+
+		annotation SummarizationSetBy = Automatic
+
+	column Tool_Used
+		dataType: string
+		lineageTag: cc0001ag-col0-0001-000000000009
+		summarizeBy: none
+		sourceColumn: Tool_Used
+
+		annotation SummarizationSetBy = Automatic
+
+	column LLM_Model
+		dataType: string
+		lineageTag: cc0001ag-col0-0001-000000000010
+		summarizeBy: none
+		sourceColumn: LLM_Model
+
+		annotation SummarizationSetBy = Automatic
+
+	column Scenario_Name
+		dataType: string
+		lineageTag: cc0001ag-col0-0001-000000000011
+		summarizeBy: none
+		sourceColumn: Scenario_Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Environment_Id
+		dataType: string
+		lineageTag: cc0001ag-col0-0001-000000000012
+		summarizeBy: none
+		sourceColumn: Environment_Id
+
+		annotation SummarizationSetBy = Automatic
+
+	column Environment_Name
+		dataType: string
+		lineageTag: cc0001ag-col0-0001-000000000013
+		summarizeBy: none
+		sourceColumn: Environment_Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column _source_file
+		dataType: string
+		lineageTag: 59b8705d-a1ea-46d0-8542-04749fb7e097
+		summarizeBy: none
+		sourceColumn: _source_file
+
+		annotation SummarizationSetBy = Automatic
+
+	column _ingested_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 0ac7196a-d731-4331-a518-dbebff7b21ab
+		summarizeBy: none
+		sourceColumn: _ingested_at
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Credit Consumption (Agent)' = m
+		mode: import
+		source =
+				let
+				    Cols = {"Agent_Name", "Agent_Id", "Product", "AI_Feature_Billable_Feature", "Billed_credit", "Non_billed_credit", "Channel", "Knowledge_Sources", "Tool_Used", "LLM_Model", "Scenario_Name", "Environment_Id", "Environment_Name"},
+				    Promoted = if Enable_Consumption = "Include" then (try FabricTable("credit_consumption_agent") otherwise EmptyTable(Cols)) else EmptyTable(Cols),
+				    Typed = Table.TransformColumnTypes(Promoted, {
+				        {"Agent_Name", type text},
+				        {"Agent_Id", type text},
+				        {"Product", type text},
+				        {"AI_Feature_Billable_Feature", type text},
+				        {"Billed_credit", Int64.Type},
+				        {"Non_billed_credit", Int64.Type},
+				        {"Channel", type text},
+				        {"Knowledge_Sources", type text},
+				        {"Tool_Used", type text},
+				        {"LLM_Model", type text},
+				        {"Scenario_Name", type text},
+				        {"Environment_Id", type text},
+				        {"Environment_Name", type text}
+				    })
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+
