@@ -1,0 +1,43 @@
+/// Disconnected legend table — feeds the "License Status" legend bucket on
+/// stacked bar / column visuals so a single switching measure can return
+/// the Licensed share or the Unlicensed share based on which row of the
+/// legend is being evaluated. Has no relationships to other tables.
+table 'License Status (Legend)'
+	lineageTag: ff0d0001-0001-0001-0001-000000000001
+
+	column 'License Status'
+		lineageTag: dc0260af-7890-4420-ae78-c537eeed1235
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [License Status]
+		sortByColumn: 'Sort Order'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sort Order'
+		formatString: 0
+		lineageTag: a07ed6d3-c5cb-4141-8c2e-a529755400b8
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Sort Order]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'License Status (Legend)' = calculated
+		mode: import
+		source = ```
+				
+				    DATATABLE(
+				        "License Status", STRING,
+				        "Sort Order",     INTEGER,
+				        {
+				            {"Active Licensed",   1},
+				            {"Active Unlicensed", 2},
+				            {"Total Inactive",    3}
+				        }
+				    )
+				
+				```
+
+	annotation PBI_Id = a1b2c3d4e5f64a7b8c9d0e1f2a3b4c5d
+

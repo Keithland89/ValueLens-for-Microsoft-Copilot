@@ -1,0 +1,621 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
+  "name": "4400dd45615b9caba83b",
+  "position": {
+    "x": 10.544863726858738,
+    "y": 581.02199134991645,
+    "z": 4000,
+    "height": 136.02874207647773,
+    "width": 814.06347971349464,
+    "tabOrder": 4000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "User Maturity Stages - ",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "10pt",
+                      "color": "#808080"
+                    }
+                  },
+                  {
+                    "value": "based on",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "10pt",
+                      "color": "#808080"
+                    }
+                  },
+                  {
+                    "value": " rolling last 4 weeks ",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "10pt",
+                      "color": "#808080"
+                    }
+                  },
+                  {
+                    "value": "of activity",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "10pt",
+                      "color": "#808080"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "0: Inactive",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontFamily": "Segoe WPC, Segoe UI, sans-serif",
+                      "fontSize": "13px",
+                      "color": "#333333"
+                    }
+                  },
+                  {
+                    "value": " — licensed but ",
+                    "textStyle": {
+                      "fontFamily": "Segoe WPC, Segoe UI, sans-serif",
+                      "fontSize": "13px",
+                      "color": "#333333"
+                    }
+                  },
+                  {
+                    "value": "0 active days",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontFamily": "Segoe WPC, Segoe UI, sans-serif",
+                      "fontSize": "13px",
+                      "color": "#333333"
+                    }
+                  },
+                  {
+                    "value": ". Reclamation candidate.",
+                    "textStyle": {
+                      "fontFamily": "Segoe WPC, Segoe UI, sans-serif",
+                      "fontSize": "13px",
+                      "color": "#333333"
+                    }
+                  }
+                ],
+                "listType": "bullet"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "1: Beginner",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontFamily": "Segoe WPC, Segoe UI, sans-serif",
+                      "fontSize": "13px",
+                      "color": "#333333"
+                    }
+                  },
+                  {
+                    "value": " — ",
+                    "textStyle": {
+                      "fontFamily": "Segoe WPC, Segoe UI, sans-serif",
+                      "fontSize": "13px",
+                      "color": "#333333"
+                    }
+                  },
+                  {
+                    "value": "1–2 active days",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontFamily": "Segoe WPC, Segoe UI, sans-serif",
+                      "fontSize": "13px",
+                      "color": "#333333"
+                    }
+                  },
+                  {
+                    "value": ". General chat / web search — curiosity stage.",
+                    "textStyle": {
+                      "fontFamily": "Segoe WPC, Segoe UI, sans-serif",
+                      "fontSize": "13px",
+                      "color": "#333333"
+                    }
+                  }
+                ],
+                "listType": "bullet"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "2: Developing",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontFamily": "Segoe WPC, Segoe UI, sans-serif",
+                      "fontSize": "13px",
+                      "color": "#333333"
+                    }
+                  },
+                  {
+                    "value": " — ",
+                    "textStyle": {
+                      "fontFamily": "Segoe WPC, Segoe UI, sans-serif",
+                      "fontSize": "13px",
+                      "color": "#333333"
+                    }
+                  },
+                  {
+                    "value": "3–7 active days",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontFamily": "Segoe WPC, Segoe UI, sans-serif",
+                      "fontSize": "13px",
+                      "color": "#333333"
+                    }
+                  },
+                  {
+                    "value": " AND ",
+                    "textStyle": {
+                      "fontFamily": "Segoe WPC, Segoe UI, sans-serif",
+                      "fontSize": "13px",
+                      "color": "#333333"
+                    }
+                  },
+                  {
+                    "value": "3+ behaviour types",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontFamily": "Segoe WPC, Segoe UI, sans-serif",
+                      "fontSize": "13px",
+                      "color": "#333333"
+                    }
+                  },
+                  {
+                    "value": ". Multi-workflow learner.",
+                    "textStyle": {
+                      "fontFamily": "Segoe WPC, Segoe UI, sans-serif",
+                      "fontSize": "13px",
+                      "color": "#333333"
+                    }
+                  }
+                ],
+                "listType": "bullet"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "3: Habitual",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontFamily": "Segoe WPC, Segoe UI, sans-serif",
+                      "fontSize": "13px",
+                      "color": "#333333"
+                    }
+                  },
+                  {
+                    "value": " — ",
+                    "textStyle": {
+                      "fontFamily": "Segoe WPC, Segoe UI, sans-serif",
+                      "fontSize": "13px",
+                      "color": "#333333"
+                    }
+                  },
+                  {
+                    "value": "8–14 active days",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontFamily": "Segoe WPC, Segoe UI, sans-serif",
+                      "fontSize": "13px",
+                      "color": "#333333"
+                    }
+                  },
+                  {
+                    "value": " AND ",
+                    "textStyle": {
+                      "fontFamily": "Segoe WPC, Segoe UI, sans-serif",
+                      "fontSize": "13px",
+                      "color": "#333333"
+                    }
+                  },
+                  {
+                    "value": "5+ behaviour types",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontFamily": "Segoe WPC, Segoe UI, sans-serif",
+                      "fontSize": "13px",
+                      "color": "#333333"
+                    }
+                  },
+                  {
+                    "value": ". Embedded across the week.",
+                    "textStyle": {
+                      "fontFamily": "Segoe WPC, Segoe UI, sans-serif",
+                      "fontSize": "13px",
+                      "color": "#333333"
+                    }
+                  }
+                ],
+                "listType": "bullet"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "4: Power",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontFamily": "Segoe WPC, Segoe UI, sans-serif",
+                      "fontSize": "13px",
+                      "color": "#333333"
+                    }
+                  },
+                  {
+                    "value": " — ",
+                    "textStyle": {
+                      "fontFamily": "Segoe WPC, Segoe UI, sans-serif",
+                      "fontSize": "13px",
+                      "color": "#333333"
+                    }
+                  },
+                  {
+                    "value": "15+ active days",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontFamily": "Segoe WPC, Segoe UI, sans-serif",
+                      "fontSize": "13px",
+                      "color": "#333333"
+                    }
+                  },
+                  {
+                    "value": ", OR (10+ days AND 30%+ Producing/Delegating AND uses an Agent). Champion cohort.",
+                    "textStyle": {
+                      "fontFamily": "Segoe WPC, Segoe UI, sans-serif",
+                      "fontSize": "13px",
+                      "color": "#333333"
+                    }
+                  }
+                ],
+                "listType": "bullet"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#E6E6E6'"
+                    }
+                  }
+                }
+              }
+            },
+            "radius": {
+              "expr": {
+                "Literal": {
+                  "Value": "5D"
+                }
+              }
+            },
+            "width": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": -0.1
+                    }
+                  }
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "100D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "titleWrap": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "'15'"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'''Segoe UI Semibold'', wf_segoe-ui_semibold, helvetica, arial, sans-serif'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "'12'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "spacing": [
+        {
+          "properties": {
+            "customizeSpacing": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "verticalSpacing": {
+              "expr": {
+                "Literal": {
+                  "Value": "2D"
+                }
+              }
+            },
+            "spaceBelowSubTitle": {
+              "expr": {
+                "Literal": {
+                  "Value": "16D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "padding": [
+        {
+          "properties": {
+            "top": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "bottom": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "left": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "right": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {
+            "keepLayerOrder": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "dropShadow": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "preset": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Custom'"
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "86D"
+                }
+              }
+            },
+            "shadowSpread": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "shadowBlur": {
+              "expr": {
+                "Literal": {
+                  "Value": "3D"
+                }
+              }
+            },
+            "angle": {
+              "expr": {
+                "Literal": {
+                  "Value": "90D"
+                }
+              }
+            },
+            "shadowDistance": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "visualTooltip": [
+        {
+          "properties": {
+            "titleFontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#252423'"
+                    }
+                  }
+                }
+              }
+            },
+            "valueFontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#252423'"
+                    }
+                  }
+                }
+              }
+            },
+            "background": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FFFFFF'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "visualHeader": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

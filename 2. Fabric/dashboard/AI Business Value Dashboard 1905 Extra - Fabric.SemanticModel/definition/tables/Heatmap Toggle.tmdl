@@ -1,0 +1,51 @@
+table 'Heatmap Toggle'
+	lineageTag: ce4f0437-8490-4e73-97e0-47a1a27b8c22
+
+	column 'Heatmap Toggle'
+		lineageTag: 58d7dcef-1ca1-4558-bb7d-dc48e69cfbb1
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Heatmap Toggle Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Heatmap Toggle Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Heatmap Toggle Fields'
+		isHidden
+		lineageTag: 6e19da56-a992-4708-a404-8516681fa6ad
+		summarizeBy: none
+		sourceColumn: [Value2]
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Heatmap Toggle Order'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 36ecc480-b994-46af-9afe-8f518b7973f3
+		summarizeBy: none
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Heatmap Toggle' = calculated
+		mode: import
+		source =
+				{
+				    ("Active Users", NAMEOF('Chat + Agent Interactions (Audit Logs)'[All Active Users]), 0),
+				    ("Active Days Per User", NAMEOF('Chat + Agent Interactions (Audit Logs)'[Average Active Days Per User (Chat + Agents)]), 1),
+				    ("AI Tasks Per User", NAMEOF('Chat + Agent Interactions (Audit Logs)'[AI Tasks per Active User]), 2),
+				    ("Hours Saved Per User", NAMEOF('Chat + Agent Interactions (Audit Logs)'[Productive Capacity - Hours Per User]), 3)
+				
+				}
+
+	annotation PBI_Id = f6677633ab0448aba5cd9af4019717ee
+

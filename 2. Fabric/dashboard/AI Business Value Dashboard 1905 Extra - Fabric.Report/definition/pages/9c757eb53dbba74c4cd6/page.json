@@ -1,0 +1,107 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "9c757eb53dbba74c4cd6",
+  "displayName": "🤖 Copilot Studio: Topic Analysis",
+  "displayOption": "FitToPage",
+  "height": 720,
+  "width": 1280,
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "a69e88c3e4aee470076a",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Agent Performance"
+              }
+            },
+            "Property": "Topic (resolved)"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "a",
+              "Entity": "Agent Performance",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "Not": {
+                  "Expression": {
+                    "In": {
+                      "Expressions": [
+                        {
+                          "Column": {
+                            "Expression": {
+                              "SourceRef": {
+                                "Source": "a"
+                              }
+                            },
+                            "Property": "Topic (resolved)"
+                          }
+                        }
+                      ],
+                      "Values": [
+                        [
+                          {
+                            "Literal": {
+                              "Value": "'🚫 No message'"
+                            }
+                          }
+                        ]
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User",
+        "objects": {
+          "general": [
+            {
+              "properties": {
+                "isInvertedSelectionMode": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "true"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "visualInteractions": [
+    {
+      "source": "8116a18d036d6d460a3d",
+      "target": "b399f7e42e07aa30b063",
+      "type": "DataFilter"
+    },
+    {
+      "source": "8116a18d036d6d460a3d",
+      "target": "ff677fec1e6376386771",
+      "type": "DataFilter"
+    },
+    {
+      "source": "ff677fec1e6376386771",
+      "target": "8116a18d036d6d460a3d",
+      "type": "DataFilter"
+    },
+    {
+      "source": "ff677fec1e6376386771",
+      "target": "b399f7e42e07aa30b063",
+      "type": "DataFilter"
+    }
+  ]
+}
