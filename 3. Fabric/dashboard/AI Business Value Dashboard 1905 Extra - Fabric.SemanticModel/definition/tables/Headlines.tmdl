@@ -39,41 +39,6 @@ table Headlines
 		displayFolder: Headlines
 		lineageTag: ff0a0001-0001-0001-0001-000000000010
 
-	/// Usage Mode headline. Pattern C: plain-English insight then metrics with bold digits.
-	measure 'Usage Mode Headline' =
-			VAR ProdRate = [Productive AI Rate]
-			VAR DelRate  = [Delegating AI Rate]
-			VAR ExpUsers = [New Expertise - Users]
-			VAR LF       = UNICHAR(10)
-			VAR Insight  =
-			    SWITCH(
-			        TRUE(),
-			        ProdRate = 0 && DelRate = 0, "No usage data in this view",
-			        ProdRate > DelRate * 2,      "Most AI use is producing deliverables — value is showing up in outputs",
-			        DelRate > ProdRate * 2,      "Most AI use is delegating to agents — value is showing up in autonomous work",
-			        "AI use is balanced between producing deliverables and delegating to agents"
-			    )
-			VAR RawMetrics =
-			    FORMAT(ProdRate, "0%") & " producing  ·  " &
-			    FORMAT(DelRate,  "0%") & " delegating  ·  " &
-			    FORMAT(ExpUsers, "#,##0") & " users tapping specialist AI expertise"
-			VAR Metrics =
-			    SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(
-			        RawMetrics,
-			        "0", UNICHAR(120812)),
-			        "1", UNICHAR(120813)),
-			        "2", UNICHAR(120814)),
-			        "3", UNICHAR(120815)),
-			        "4", UNICHAR(120816)),
-			        "5", UNICHAR(120817)),
-			        "6", UNICHAR(120818)),
-			        "7", UNICHAR(120819)),
-			        "8", UNICHAR(120820)),
-			        "9", UNICHAR(120821))
-			RETURN Insight & LF & Metrics
-		displayFolder: Headlines
-		lineageTag: ff0a0001-0001-0001-0001-000000000018
-
 	/// User Maturity - By Organisation. Pattern C: plain-English insight then metrics with bold digits.
 	/// 16 May 2026 — upgraded for 5-stage Maturity ladder. "Power" is the new top stage.
 	measure 'Maturity By Org Headline' =
@@ -191,20 +156,6 @@ table Headlines
 		displayFolder: Headlines\Maturity
 		lineageTag: ff0a0001-0001-0001-0001-000000000026
 
-	/// DEPRECATED 17 May 2026 — superseded by [Skills Headline] (dynamic to License + Agent filters).
-	/// Kept as a shim so legacy bookmarks / visuals that reference this name don't break.
-	/// Safe to delete once nothing in the report references it.
-	measure 'Copilot Skills Headline' = [Skills Headline]
-		displayFolder: Headlines\Copilot Value
-		lineageTag: ff0a0001-0001-0001-0001-000000000031
-
-	/// DEPRECATED 17 May 2026 — superseded by [Skills Headline] (dynamic to License + Agent filters).
-	/// Kept as a shim so legacy bookmarks / visuals that reference this name don't break.
-	/// Safe to delete once nothing in the report references it.
-	measure 'Agent Skills Headline' = [Skills Headline]
-		displayFolder: Headlines\Agent Value
-		lineageTag: ff0a0001-0001-0001-0001-000000000035
-
 	/// License Readiness / Priority Ranking page headline. Pattern C: plain-English insight then metrics with bold digits.
 	measure 'License Priority Headline' =
 			VAR UnlUsers     = [NoOfActiveChatUsers (Unlicensed)]
@@ -314,4 +265,3 @@ table Headlines
 	partition Headlines = calculated
 		mode: import
 		source = ROW("Placeholder", 1)
-

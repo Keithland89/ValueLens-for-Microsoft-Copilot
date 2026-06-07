@@ -861,17 +861,6 @@ table 'Chat + Agent Interactions (Audit Logs)'
 		displayFolder: AI Fluency\4 - New Expertise
 		lineageTag: ff030001-0001-0001-0001-000000000115
 
-	/// Expert hours delivered per week (org total)
-	measure 'New Expertise - Hours Per Week' =
-			isHidden
-				VAR TotalHrs = CALCULATE([Human Equivalent Hours], NOT(ISBLANK('Chat + Agent Interactions (Audit Logs)'[Expertise_Role])))
-				VAR Weeks = DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[WeekStart])
-				RETURN DIVIDE(TotalHrs, Weeks, 0)
-			formatString: #,##0.0
-			displayFolder: AI Fluency\4 - New Expertise
-			lineageTag: ff030001-0001-0001-0001-000000000116
-		lineageTag: 21a2a7b3-7c0e-43a3-bf8f-9cd40a9ada61
-
 	/// ════════════════════════════════════════════
 	/// VALUE STORY 1: TIME SAVED (all interactions — everything saves time)
 	/// "How much faster are we?" — universal metric across every interaction
@@ -897,15 +886,6 @@ table 'Chat + Agent Interactions (Audit Logs)'
 		formatString: 0.00
 		displayFolder: AI Fluency\1 - Efficiency
 		lineageTag: ff030001-0001-0001-0001-000000000102
-
-	/// Hours saved label "Xh Ym"
-	measure 'Efficiency - Label' =
-			VAR Hrs = [Efficiency - Hours Per User Per Week]
-			VAR WholeHours = INT(Hrs)
-			VAR Mins = ROUND((Hrs - WholeHours) * 60, 0)
-			RETURN IF(WholeHours > 0, FORMAT(WholeHours, "0") & "h " & FORMAT(Mins, "0") & "m", FORMAT(Mins, "0") & "m")
-		displayFolder: AI Fluency\1 - Efficiency
-		lineageTag: ff030001-0001-0001-0001-000000000103
 
 	/// Work items created per week (org total)
 	measure 'Work Created - Per Week' =
@@ -1429,15 +1409,6 @@ table 'Chat + Agent Interactions (Audit Logs)'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Productive Capacity - Hours Saved' = ```
-			isHidden
-				
-				    [Efficiency - Hours Saved] * [Reinvestment Rate (Forrester TEI)]
-			```
-		lineageTag: 9b63cda7-048a-4c22-89d9-72b3863e6331
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
 	measure 'Productive Capacity - Hours Per User' = ```
 			
 			    DIVIDE(
@@ -1543,105 +1514,6 @@ table 'Chat + Agent Interactions (Audit Logs)'
 		displayFolder: AI Fluency\User Stages
 		lineageTag: ff020001-0001-0001-0001-000000000305
 
-	/// =============================================================================
-	/// (Latest) FAMILY — Each user is classified using THEIR OWN latest week of
-	/// activity within the current filter context, then their personal 4-week
-	/// look-back ending at that week is used to derive their stage.
-	/// 
-	/// Use this when you want to ask "where is each user RIGHT NOW?" while still
-	/// measuring something across a wider time period.
-	/// 
-	/// Example: filter to the past year, then [Power Users (Latest)] counts users
-	/// who are CURRENTLY in the Power stage (based on their last 4 weeks of
-	/// activity within that year) — even if they were Beginners 10 months ago.
-	/// =============================================================================
-	measure 'Beginner Users (Latest)' =
-			VAR Classified =
-			    ADDCOLUMNS(
-			        VALUES('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
-			        "Stage",
-			            VAR LatestWk    = CALCULATE(MAX('Chat + Agent Interactions (Audit Logs)'[WeekStart]))
-			            VAR WindowStart = LatestWk - 21
-			            VAR Days        = CALCULATE(DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[InteractionDate]),         'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= LatestWk)
-			            VAR Behaviors   = CALCULATE(DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[Behavior_Enriched_Full]), 'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= LatestWk)
-			            VAR ValueShare  = DIVIDE(
-			                CALCULATE(COUNTROWS('Chat + Agent Interactions (Audit Logs)'), 'Chat + Agent Interactions (Audit Logs)'[Usage_Mode] IN {"4 - Producing","5 - Delegating"}, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= LatestWk),
-			                CALCULATE(COUNTROWS('Chat + Agent Interactions (Audit Logs)'),                                                                                          'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= LatestWk),
-			                0
-			            )
-			            VAR HasAgentFlag = CALCULATE(COUNTROWS(FILTER('Chat + Agent Interactions (Audit Logs)', NOT(ISBLANK('Chat + Agent Interactions (Audit Logs)'[AgentName])) && 'Chat + Agent Interactions (Audit Logs)'[AgentName] <> "")), 'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= LatestWk) > 0
-			            RETURN
-			                SWITCH(TRUE(),
-			                    Days >= 15 || (Days >= 10 && ValueShare >= 0.30 && HasAgentFlag), "4 - Power",
-			                    Days >= 8  && Behaviors >= 5, "3 - Habitual",
-			                    Days >= 3  && Behaviors >= 3, "2 - Developing",
-			                    Days >= 1, "1 - Beginner",
-			                    BLANK()
-			                )
-			    )
-			RETURN COUNTROWS(FILTER(Classified, [Stage] = "1 - Beginner"))
-		formatString: #,##0
-		displayFolder: AI Fluency\User Stages (Latest)
-		lineageTag: ff020001-0001-0001-0001-000000000601
-
-	measure 'Developing Users (Latest)' =
-			VAR Classified =
-			    ADDCOLUMNS(
-			        VALUES('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
-			        "Stage",
-			            VAR LatestWk    = CALCULATE(MAX('Chat + Agent Interactions (Audit Logs)'[WeekStart]))
-			            VAR WindowStart = LatestWk - 21
-			            VAR Days        = CALCULATE(DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[InteractionDate]),         'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= LatestWk)
-			            VAR Behaviors   = CALCULATE(DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[Behavior_Enriched_Full]), 'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= LatestWk)
-			            VAR ValueShare  = DIVIDE(
-			                CALCULATE(COUNTROWS('Chat + Agent Interactions (Audit Logs)'), 'Chat + Agent Interactions (Audit Logs)'[Usage_Mode] IN {"4 - Producing","5 - Delegating"}, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= LatestWk),
-			                CALCULATE(COUNTROWS('Chat + Agent Interactions (Audit Logs)'),                                                                                          'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= LatestWk),
-			                0
-			            )
-			            VAR HasAgentFlag = CALCULATE(COUNTROWS(FILTER('Chat + Agent Interactions (Audit Logs)', NOT(ISBLANK('Chat + Agent Interactions (Audit Logs)'[AgentName])) && 'Chat + Agent Interactions (Audit Logs)'[AgentName] <> "")), 'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= LatestWk) > 0
-			            RETURN
-			                SWITCH(TRUE(),
-			                    Days >= 15 || (Days >= 10 && ValueShare >= 0.30 && HasAgentFlag), "4 - Power",
-			                    Days >= 8  && Behaviors >= 5, "3 - Habitual",
-			                    Days >= 3  && Behaviors >= 3, "2 - Developing",
-			                    Days >= 1, "1 - Beginner",
-			                    BLANK()
-			                )
-			    )
-			RETURN COUNTROWS(FILTER(Classified, [Stage] = "2 - Developing"))
-		formatString: #,##0
-		displayFolder: AI Fluency\User Stages (Latest)
-		lineageTag: ff020001-0001-0001-0001-000000000603
-
-	measure 'Habitual Users (Latest)' =
-			VAR Classified =
-			    ADDCOLUMNS(
-			        VALUES('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
-			        "Stage",
-			            VAR LatestWk    = CALCULATE(MAX('Chat + Agent Interactions (Audit Logs)'[WeekStart]))
-			            VAR WindowStart = LatestWk - 21
-			            VAR Days        = CALCULATE(DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[InteractionDate]),         'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= LatestWk)
-			            VAR Behaviors   = CALCULATE(DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[Behavior_Enriched_Full]), 'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= LatestWk)
-			            VAR ValueShare  = DIVIDE(
-			                CALCULATE(COUNTROWS('Chat + Agent Interactions (Audit Logs)'), 'Chat + Agent Interactions (Audit Logs)'[Usage_Mode] IN {"4 - Producing","5 - Delegating"}, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= LatestWk),
-			                CALCULATE(COUNTROWS('Chat + Agent Interactions (Audit Logs)'),                                                                                          'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= LatestWk),
-			                0
-			            )
-			            VAR HasAgentFlag = CALCULATE(COUNTROWS(FILTER('Chat + Agent Interactions (Audit Logs)', NOT(ISBLANK('Chat + Agent Interactions (Audit Logs)'[AgentName])) && 'Chat + Agent Interactions (Audit Logs)'[AgentName] <> "")), 'Chat + Agent Interactions (Audit Logs)'[WeekStart] >= WindowStart, 'Chat + Agent Interactions (Audit Logs)'[WeekStart] <= LatestWk) > 0
-			            RETURN
-			                SWITCH(TRUE(),
-			                    Days >= 15 || (Days >= 10 && ValueShare >= 0.30 && HasAgentFlag), "4 - Power",
-			                    Days >= 8  && Behaviors >= 5, "3 - Habitual",
-			                    Days >= 3  && Behaviors >= 3, "2 - Developing",
-			                    Days >= 1, "1 - Beginner",
-			                    BLANK()
-			                )
-			    )
-			RETURN COUNTROWS(FILTER(Classified, [Stage] = "3 - Habitual"))
-		formatString: #,##0
-		displayFolder: AI Fluency\User Stages (Latest)
-		lineageTag: ff020001-0001-0001-0001-000000000604
-
 	measure 'Power Users (Latest)' =
 			VAR Classified =
 			    ADDCOLUMNS(
@@ -1710,150 +1582,12 @@ table 'Chat + Agent Interactions (Audit Logs)'
 		displayFolder: License Readiness
 		lineageTag: ce411199-5b7e-4555-bdaf-dd5d6c00ab04
 
-	measure 'Agent Review Status' =
-			
-			VAR _A365HasData = COUNTROWS('Agents 365') > 0
-			
-			// Resolve agent name from whichever table is in filter context
-			VAR _AgentFromA365  = IF(_A365HasData, SELECTEDVALUE('Agents 365'[Agent name]), BLANK())
-			VAR _AgentFromAudit = SELECTEDVALUE('Chat + Agent Interactions (Audit Logs)'[AgentName])
-			VAR _Agent          = COALESCE(_AgentFromA365, _AgentFromAudit)
-			VAR _NotASingleAgent = ISBLANK(_Agent)
-			
-			// === Activity inputs (always computable from audit) ===
-			VAR _LastUsedDate =
-			    CALCULATE(
-			        MAX('Chat + Agent Interactions (Audit Logs)'[CreationDate]),
-			        'Chat + Agent Interactions (Audit Logs)'[AgentName] = _Agent
-			    )
-			VAR _MaxDateInData =
-			    CALCULATE(
-			        MAX('Chat + Agent Interactions (Audit Logs)'[CreationDate]),
-			        ALL('Chat + Agent Interactions (Audit Logs)')
-			    )
-			VAR _DaysSinceUsed =
-			    IF(NOT(ISBLANK(_LastUsedDate)),
-			       DATEDIFF(_LastUsedDate, _MaxDateInData, DAY),
-			       BLANK()
-			    )
-			
-			// === A365 enrichments (used only if A365 has data) ===
-			VAR _AgentCreatedDate =
-			    IF(_A365HasData,
-			       CALCULATE(MAX('Agents 365'[Date created]), 'Agents 365'[Agent name] = _Agent),
-			       BLANK()
-			    )
-			VAR _DaysSinceCreated =
-			    IF(NOT(ISBLANK(_AgentCreatedDate)),
-			       DATEDIFF(_AgentCreatedDate, _MaxDateInData, DAY),
-			       BLANK()
-			    )
-			
-			// === Agent type: prefer A365, default to "Unknown" ===
-			VAR _AgentTypeFromA365 =
-			    IF(_A365HasData,
-			       CALCULATE(MAX('Agents 365'[Agent Type Combined]), 'Agents 365'[Agent name] = _Agent),
-			       BLANK()
-			    )
-			VAR _AgentType = COALESCE(_AgentTypeFromA365, "Unknown")
-			
-			// === Total Users (distinct audit users for this agent) ===
-			VAR _TotalUsers =
-			    CALCULATE(
-			        DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
-			        'Chat + Agent Interactions (Audit Logs)'[AgentName] = _Agent
-			    )
-			
-			// === Org Count (distinct organizations across those users) ===
-			VAR _AgentUsers =
-			    CALCULATETABLE(
-			        VALUES('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
-			        'Chat + Agent Interactions (Audit Logs)'[AgentName] = _Agent
-			    )
-			VAR _OrgCount =
-			    CALCULATE(
-			        DISTINCTCOUNT('Chat + Agent Org Data'[Organization]),
-			        FILTER(
-			            ALL('Chat + Agent Org Data'),
-			            'Chat + Agent Org Data'[PersonId] IN _AgentUsers
-			        )
-			    )
-			
-			// === Activity bucket (mirrors Agents 365[Agent Last Activity Date]) ===
-			VAR _InactivityStatus =
-			    SWITCH(
-			        TRUE(),
-			        NOT(ISBLANK(_DaysSinceUsed)) && _DaysSinceUsed <= 7,  "1. Active (Last 7 days)",
-			        NOT(ISBLANK(_DaysSinceUsed)) && _DaysSinceUsed <= 30, "2. Recent (Last 30 days)",
-			        NOT(ISBLANK(_DaysSinceUsed)) && _DaysSinceUsed <= 60, "3. Inactive (30-60 days)",
-			        NOT(ISBLANK(_DaysSinceUsed)) && _DaysSinceUsed <= 90, "4. Dormant (60-90 days)",
-			        NOT(ISBLANK(_DaysSinceUsed)), "5. Redundant (90+ days)",
-			        ISBLANK(_LastUsedDate) && NOT(ISBLANK(_DaysSinceCreated)) && _DaysSinceCreated <= 14, "6. New (Not Yet Used)",
-			        ISBLANK(_LastUsedDate) && NOT(ISBLANK(_DaysSinceCreated)) && _DaysSinceCreated <= 90, "7. Never Used (Recent)",
-			        ISBLANK(_LastUsedDate), "8. Never Used (Stale)",
-			        "Unknown"
-			    )
-			
-			// === Type-specific thresholds (defaults 10/5/50/5 for Unknown) ===
-			VAR LowUserThreshold = SWITCH(_AgentType, "FirstParty", 20, "Agent Builder", 5,  10)
-			VAR MinUserThreshold = SWITCH(_AgentType, "FirstParty", 10, "Agent Builder", 2,  5)
-			VAR HighImpactUsers  = SWITCH(_AgentType, "FirstParty", 100,"Agent Builder", 30, 50)
-			VAR HighImpactOrgs   = SWITCH(_AgentType, "FirstParty", 10, "Agent Builder", 3,  5)
-			
-			// === Verdict ===
-			RETURN
-			    IF(_NotASingleAgent, BLANK(),
-			       SWITCH(
-			           TRUE(),
-			           _InactivityStatus = "6. New (Not Yet Used)",
-			               "🆕 New",
-			           _InactivityStatus IN {"7. Never Used (Recent)", "8. Never Used (Stale)"},
-			               "❌ Never Used",
-			           _InactivityStatus IN {"1. Active (Last 7 days)", "2. Recent (Last 30 days)"},
-			               IF(_TotalUsers >= HighImpactUsers && _OrgCount >= HighImpactOrgs,
-			                  "🔥 High Impact",
-			                  "✅ Keep"
-			               ),
-			           _InactivityStatus = "3. Inactive (30-60 days)" && _TotalUsers < LowUserThreshold,
-			               "⚠️ Review",
-			           _InactivityStatus = "4. Dormant (60-90 days)",
-			               SWITCH(TRUE(),
-			                   _TotalUsers < MinUserThreshold, "💤 Dormant",
-			                   _TotalUsers < LowUserThreshold, "⚠️ Review",
-			                   "✅ Keep"
-			               ),
-			           _InactivityStatus = "5. Redundant (90+ days)",
-			               IF(_TotalUsers < LowUserThreshold, "💤 Dormant", "⚠️ Review"),
-			           "✅ Keep"
-			       )
-			    )
-		lineageTag: ecf48715-d1ac-46d7-8c43-e9478f08dc6a
-
 	measure '% Power Users (Latest)' = ```
 			DIVIDE([Power Users (Latest)],    [All Active Users], 0)
 			
 			```
 		formatString: 0.0%;-0.0%;0.0%
 		lineageTag: 03a561f0-5c95-4f70-8acd-f44bdb992472
-
-	measure 'Tasks per Active User (by Behavior)' =
-			
-			VAR TaskCount =
-			    CALCULATE(
-			        DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[ThreadId]),
-			        'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE"
-			    )
-			VAR ActiveUsers =
-			    CALCULATE(
-			        DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
-			        'Chat + Agent Interactions (Audit Logs)'[Message_isPrompt] = "TRUE",
-			        REMOVEFILTERS('Chat + Agent Interactions (Audit Logs)'[Behavior_Enriched_Full])
-			    )
-			RETURN
-			    DIVIDE(TaskCount, ActiveUsers, 0)
-		lineageTag: 959f4fb8-7f57-4c08-9a3c-64514ddb3bac
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'AI Tasks per Active User' =
 			
@@ -1867,19 +1601,6 @@ table 'Chat + Agent Interactions (Audit Logs)'
 			)
 		formatString: 0.0
 		lineageTag: a0ebd5be-5714-4c36-918c-474bf2a1a63f
-
-	/// 29 May 2026 — Behavioural delegation count.
-	/// DISTINCTCOUNT of [Delegation_Event_Key] filtered to Usage_Mode = "5 - Delegating".
-	/// Use this for "real" delegation volume (collapses repeated workflow triggers
-	/// per user per day to one event). Compare against raw delegation row count
-	/// to surface tenant-plumbing noise.
-	measure 'Delegation Events' =
-			CALCULATE(
-			    DISTINCTCOUNT('Chat + Agent Interactions (Audit Logs)'[Delegation_Event_Key]),
-			    'Chat + Agent Interactions (Audit Logs)'[Usage_Mode] = "5 - Delegating"
-			)
-		formatString: #,0
-		lineageTag: 7b9c1d2e-3a4f-4b5c-9d6e-1f2a3b4c5d6e
 
 	column CreationDate
 		dataType: dateTime
@@ -2572,21 +2293,6 @@ table 'Chat + Agent Interactions (Audit Logs)'
 
 		annotation SummarizationSetBy = Automatic
 
-	/// Frontier Firm Autonomy Pattern. Mutually-exclusive partition of activity for autonomy mix charts.
-	/// Cowork wins, then Agent (Is_Agent_Activity flag), then Licensed chat-only, else BLANK (unlicensed).
-	column Autonomy_Pattern =
-			SWITCH(TRUE(),
-			    'Chat + Agent Interactions (Audit Logs)'[Environment] = "Cowork",            "3 - Cowork",
-			    'Chat + Agent Interactions (Audit Logs)'[Is_Agent_Activity] = TRUE(),        "2 - Agent-Assisted",
-			    'Chat + Agent Interactions (Audit Logs)'[Environment] = "Licensed",          "1 - Copilot",
-			    BLANK()
-			)
-		dataType: string
-		lineageTag: ff0d0001-0001-0001-0001-000000000010
-		summarizeBy: none
-
-		annotation SummarizationSetBy = Automatic
-
 	/// Composite key (UserId|YYYY-MM) for joining to UserMonthMetrics — computed in DAX, not M
 	column UserMonthKey =
 			'Chat + Agent Interactions (Audit Logs)'[Audit_UserId] & "|" &
@@ -2719,50 +2425,6 @@ table 'Chat + Agent Interactions (Audit Logs)'
 	column 'Agent Filter' = IF('Chat + Agent Interactions (Audit Logs)'[Is_Agent_Activity] = TRUE(), "Agents", BLANK())
 		dataType: string
 		lineageTag: ff030001-0001-0001-0001-000000000a07
-		summarizeBy: none
-
-		annotation SummarizationSetBy = Automatic
-
-	/// Agent Publish Status — strict published-agent classification using AUDIT LOGS ONLY.
-	/// Use in the filter pane to include / exclude unpublished agents on agent-focused pages.
-	/// 17 May 2026 — rebuilt from scratch. No A365 dependency. No activity gate.
-	/// 
-	/// Rule (intentionally simple and audit-log only):
-	/// 1. AgentId must be populated  (the row IS an agent invocation, not chat / workflow / autonomous flow)
-	/// 2. AgentName must NOT contain "draft as 1p"  (excludes Copilot Studio "Draft as 1P Agent" preview runs)
-	/// 
-	/// Why this works:
-	/// • AgentId is the strongest "this row is an agent" signal in the audit log — chat rows,
-	/// workflow rows, and autonomous flow rows leave it blank.
-	/// • "Draft as 1P Agent" is Copilot Studio's preview-as-1P feature. The preview session
-	/// gets an AgentId AND a populated Agent_TitleID, so the old Title-ID-based rule
-	/// couldn't see it. The agent's NAME is the only unique tell, so we exclude by name.
-	/// 
-	/// Returns one of three values per audit row:
-	/// "Published"        — AgentId populated AND AgentName <> "Draft as 1P Agent" (live, real agent)
-	/// "Unpublished"      — AgentId populated AND AgentName CONTAINS "draft as 1p" (preview / draft)
-	/// "Not an Agent Row" — AgentId blank (chat, workflow trigger, autonomous flow, or other non-agent row)
-	/// 
-	/// Default behaviour: all three are visible. To hide unpublished agents on a page,
-	/// add this column to the filter pane → untick "Unpublished" (leave "Published" and
-	/// "Not an Agent Row" ticked so chat activity is not accidentally hidden).
-	/// 
-	/// If you discover other draft / preview agent name patterns in your tenant, extend the
-	/// `isDraft` CONTAINSSTRING check below (one substring per OR clause).
-	column 'Agent Publish Status' =
-			VAR agentId   = 'Chat + Agent Interactions (Audit Logs)'[AgentId]
-			VAR agentName = LOWER(TRIM('Chat + Agent Interactions (Audit Logs)'[AgentName]))
-			VAR hasAgentId = NOT(ISBLANK(agentId)) && TRIM(agentId) <> ""
-			VAR isDraft   = CONTAINSSTRING(agentName, "draft as 1p")
-			RETURN
-			    SWITCH(
-			        TRUE(),
-			        NOT(hasAgentId),  "Not an Agent Row",
-			        isDraft,          "Unpublished",
-			        "Published"
-			    )
-		dataType: string
-		lineageTag: ff030001-0001-0001-0001-000000000a08
 		summarizeBy: none
 
 		annotation SummarizationSetBy = Automatic
@@ -2946,4 +2608,3 @@ table 'Chat + Agent Interactions (Audit Logs)'
 	annotation PBI_ResultType = Table
 
 	annotation PBI_NavigationStepName = Navigation
-

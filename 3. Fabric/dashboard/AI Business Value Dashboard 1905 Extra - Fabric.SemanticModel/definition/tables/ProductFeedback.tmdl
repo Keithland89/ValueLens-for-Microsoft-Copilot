@@ -6,68 +6,6 @@ table ProductFeedback
 		displayFolder: 📊 Product Feedback
 		lineageTag: 90516dc6-9385-4933-8b70-473b4a05ac15
 
-	/// Compatibility alias for the prior page binding (= Satisfaction Rate / thumbs-up share).
-	measure 'Positive Feedback %' =
-			DIVIDE(
-			    CALCULATE(COUNTROWS('ProductFeedback'), 'ProductFeedback'[FeedbackType] = "Thumbs Up"),
-			    COUNTROWS('ProductFeedback')
-			)
-		formatString: 0.0%;-0.0%;0.0%
-		displayFolder: 💬 Compat
-		lineageTag: ae4ffe2b-c0a1-0001-0001-000000000001
-
-	/// Compatibility alias for the prior page binding (thumbs-down share).
-	measure 'Negative Feedback %' =
-			DIVIDE(
-			    CALCULATE(COUNTROWS('ProductFeedback'), 'ProductFeedback'[FeedbackType] = "Thumbs Down"),
-			    COUNTROWS('ProductFeedback')
-			)
-		formatString: 0.0%;-0.0%;0.0%
-		displayFolder: 💬 Compat
-		lineageTag: ae4ffe2b-c0a1-0001-0001-000000000002
-
-	/// CSAT = thumbs up / (thumbs up + thumbs down).
-	measure 'CSAT Score' =
-			DIVIDE(
-			    CALCULATE(COUNTROWS('ProductFeedback'), 'ProductFeedback'[FeedbackType] = "Thumbs Up"),
-			    CALCULATE(COUNTROWS('ProductFeedback'), 'ProductFeedback'[FeedbackType] IN {"Thumbs Up", "Thumbs Down"})
-			)
-		formatString: 0.0%;-0.0%;0.0%
-		displayFolder: 💬 Compat
-		lineageTag: ae4ffe2b-c0a1-0001-0001-000000000003
-
-	/// Compatibility alias for the prior page binding (= Comment Rate).
-	measure 'Feedback with Comment %' =
-			DIVIDE(
-			    SUM('ProductFeedback'[HasComment]),
-			    COUNTROWS('ProductFeedback')
-			)
-		formatString: 0.0%;-0.0%;0.0%
-		displayFolder: 💬 Compat
-		lineageTag: ae4ffe2b-c0a1-0001-0001-000000000004
-
-	/// Compatibility alias (= Thumbs Up Count).
-	measure 'Thumbs Up' = CALCULATE(COUNTROWS('ProductFeedback'), 'ProductFeedback'[FeedbackType] = "Thumbs Up")
-		formatString: #,0
-		displayFolder: 💬 Compat
-		lineageTag: ae4ffe2b-c0a1-0001-0001-000000000005
-
-	/// Compatibility alias (= Thumbs Down Count).
-	measure 'Thumbs Down' = CALCULATE(COUNTROWS('ProductFeedback'), 'ProductFeedback'[FeedbackType] = "Thumbs Down")
-		formatString: #,0
-		displayFolder: 💬 Compat
-		lineageTag: ae4ffe2b-c0a1-0001-0001-000000000006
-
-	/// Compatibility alias (= Distinct Agents with Feedback).
-	measure 'Agents with Feedback' =
-			CALCULATE(
-			    DISTINCTCOUNT('ProductFeedback'[AgentName]),
-			    'ProductFeedback'[IsAgentInteraction] = TRUE
-			)
-		formatString: #,0
-		displayFolder: 💬 Compat
-		lineageTag: ae4ffe2b-c0a1-0001-0001-000000000007
-
 	measure 'Thumbs Up Count' =
 			CALCULATE(
 			    COUNTROWS('ProductFeedback'),
@@ -648,4 +586,3 @@ table ProductFeedback
 	annotation PBI_NavigationStepName = Navigation
 
 	annotation PBI_ResultType = Table
-

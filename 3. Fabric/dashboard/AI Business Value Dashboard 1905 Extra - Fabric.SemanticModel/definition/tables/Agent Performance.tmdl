@@ -675,19 +675,6 @@ table 'Agent Performance'
 
 		annotation SummarizationSetBy = Automatic
 
-	column MalformedBotName =
-			IF(
-			    ISBLANK('Agent Performance'[BotName]) || 'Agent Performance'[BotName] = "",
-			    1,
-			    0
-			)
-		dataType: int64
-		formatString: 0
-		lineageTag: 7cbe9c15-31f0-4b00-88b7-9a1c509c5515
-		summarizeBy: sum
-
-		annotation SummarizationSetBy = Automatic
-
 	column ConversationType =
 			VAR FirstUser = LOWER('Agent Performance'[FirstUserMessage])
 			VAR TopicCount = 'Agent Performance'[TopicCount]
@@ -918,4 +905,3 @@ table 'Agent Performance'
 	annotation PBI_NavigationStepName = Navigation
 
 	annotation PBI_ResultType = Table
-

@@ -167,21 +167,6 @@ table 'Agent Turns'
 
 		annotation SummarizationSetBy = Automatic
 
-	/// Bucketed intent confidence for slicers.
-	column 'Intent Confidence Bucket' =
-			SWITCH(
-			    TRUE(),
-			    ISBLANK('Agent Turns'[intent_id]), "-",
-			    'Agent Turns'[intent_score] > 0.8, "High (>0.8)",
-			    'Agent Turns'[intent_score] >= 0.5, "Medium (0.5–0.8)",
-			    "Low (<0.5)"
-			)
-		dataType: string
-		lineageTag: ag0002tu-col0-0001-000000000016
-		summarizeBy: none
-
-		annotation SummarizationSetBy = Automatic
-
 	column feedback_verdict
 		dataType: string
 		lineageTag: ag0002tu-col0-0001-000000000017
@@ -226,4 +211,3 @@ table 'Agent Turns'
 				    Typed
 
 	annotation PBI_ResultType = Table
-

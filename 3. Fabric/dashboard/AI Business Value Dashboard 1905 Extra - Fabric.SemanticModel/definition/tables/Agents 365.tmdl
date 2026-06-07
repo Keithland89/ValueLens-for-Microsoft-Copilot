@@ -317,29 +317,6 @@ table 'Agents 365'
 
 		annotation SummarizationSetBy = Automatic
 
-	/// Pre-calculated organization spread
-	column 'Org Count' = ```
-			VAR AgentName = 'Agents 365'[Agent name]
-			VAR AgentUsers = 
-			    CALCULATETABLE(
-			        VALUES('Chat + Agent Interactions (Audit Logs)'[Audit_UserId]),
-			        'Chat + Agent Interactions (Audit Logs)'[AgentName] = AgentName
-			    )
-			RETURN
-			    CALCULATE(
-			        DISTINCTCOUNT('Chat + Agent Org Data'[Organization]),
-			        FILTER(
-			            ALL('Chat + Agent Org Data'),
-			            'Chat + Agent Org Data'[PersonId] IN AgentUsers
-			        )
-			    )
-			```
-		dataType: int64
-		lineageTag: e7eb4d3b-876a-4bdc-987c-9838379290d1
-		summarizeBy: none
-
-		annotation SummarizationSetBy = Automatic
-
 	/// TRUE if this is the primary version of the agent (most users when duplicates exist)
 	column 'Is Primary Agent' = ```
 			VAR CurrentAgentName = 'Agents 365'[Agent name]
@@ -407,25 +384,6 @@ table 'Agents 365'
 		summarizeBy: none
 
 		annotation SummarizationSetBy = Automatic
-
-	/// Categorized return rate: High (≥50%), Medium (20-49%), Low (<20%). Pre-computed at refresh.
-	column 'Return Rate Category' =
-			isHidden
-			
-				VAR Rate = 'Agents 365'[Return Rate Value]
-				RETURN
-				    SWITCH(
-				        TRUE(),
-				        ISBLANK(Rate), "No Usage",
-				        Rate >= 0.50, "High",
-				        Rate >= 0.20, "Medium",
-				        "Low"
-				    )
-			lineageTag: 48a35637-aa39-474f-848e-13ae8b3fef81
-			summarizeBy: none
-			
-			annotation SummarizationSetBy = Automatic
-		lineageTag: 9797fe5c-5e4c-41e4-87fd-83c7032fcd70
 
 	column Version
 		dataType: string
@@ -531,21 +489,6 @@ table 'Agents 365'
 		lineageTag: daad18e8-f8d0-4862-89c1-8a67e6934e05
 		summarizeBy: none
 		sourceColumn: Uploaded files
-
-		annotation SummarizationSetBy = Automatic
-
-	column 'Is Published' =
-			-- TRUE when admin publication status is Available, OR when Status is blank
-			-- (older exports don't carry Status — treat as published rather than hide everything).
-			IF(
-			    ISBLANK('Agents 365'[Status]) || 'Agents 365'[Status] = "",
-			    TRUE(),
-			    'Agents 365'[Status] = "Available"
-			)
-		dataType: boolean
-		formatString: """TRUE"";""TRUE"";""FALSE"""
-		lineageTag: cf02b2b2-2345-5ff6-a987-101122334455
-		summarizeBy: none
 
 		annotation SummarizationSetBy = Automatic
 
@@ -739,4 +682,3 @@ table 'Agents 365'
 	annotation PBI_ResultType = Table
 
 	annotation PBI_NavigationStepName = Navigation
-
