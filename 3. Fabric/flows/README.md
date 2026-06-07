@@ -15,6 +15,7 @@ Power Platform export ─┤                          ├─▶ OneLake  Files/c
 | --- | --- |
 | `Copilot_Consumption_Email_to_OneLake.json` | The reports arrive by **email** (e.g. the customer mails the export, or a scheduled PPAC export is mailed). |
 | `Copilot_Consumption_SharePoint_to_OneLake.json` | The customer prefers a **governed SharePoint document library** drop folder. |
+| `Copilot_ProductFeedback_Email_to_OneLake.json` | **Same pattern, different source.** Lands the **Microsoft 365 Copilot user product feedback** export (Admin Center → Health → Product Feedback → Export) into `Files/product_feedback/`. See [Generalising to other export-only sources](#generalising-to-other-export-only-sources) below. |
 
 Both write to OneLake with the **DFS (ADLS Gen2) three-step pattern**: `PUT ?resource=file` →
 `PATCH ?action=append` → `PATCH ?action=flush`.
@@ -57,5 +58,39 @@ re-landing is safe: the ingester runs with `WRITE_MODE='overwrite'` (full snapsh
 ## Not all customers will send consumption data
 
 That's expected. If `Files/credit_consumption/` is empty, the ingester writes **empty, correctly-named**
-tables and the PBIP's **`Enable_Consumption = false`** toggle keeps the billing visuals dormant —
+tables and the PBIP's **`Enable_Consumption = "Exclude"`** toggle keeps the billing visuals dormant —
 the transcript-native `Total Cost Units` (displayedCost) view keeps working regardless.
+
+> The optional-source toggles are **list parameters** with the values `"Include"` / `"Exclude"`
+> (not `true`/`false`). Set `Enable_Consumption` to `"Include"` once the data is landing.
+
+## Generalising to other export-only sources
+
+This flow pattern works for **any Microsoft report that has no API** — i.e. anything you can only
+get by clicking "Export" / "Download" in an admin portal. The OneLake landing mechanism
+(`PUT → append → flush`) is identical; only the **trigger filter** and the **target folder** change.
+
+The clearest example is **Microsoft 365 Copilot user product feedback** (the thumbs up/down +
+verbatim comments users leave on Copilot responses). As of 2026 this is **export-only** — there is
+**no Graph or REST API** for the raw feedback. It lives in the **Microsoft 365 Admin Center →
+Health → Product Feedback**, where an admin can *view / export / delete* it, and nothing else.
+(The only programmatic feedback signal anywhere is an **aggregate** satisfaction % in the Viva
+Insights Copilot Dashboard — no verbatims, no per-user rows.)
+
+So feedback is landed exactly like credit consumption:
+
+| | Credit consumption | Product feedback |
+| --- | --- | --- |
+| Source portal | Power Platform Admin Center | M365 Admin Center → Health → Product Feedback |
+| API available? | ❌ export-only | ❌ export-only |
+| Flow | `Copilot_Consumption_Email_to_OneLake.json` | `Copilot_ProductFeedback_Email_to_OneLake.json` |
+| Lands in | `Files/credit_consumption/` | `Files/product_feedback/` |
+| Model table | `Credit Consumption (Agent/User/Tenant)` | `ProductFeedback` (`user_feedback` Delta) |
+| Toggle | `Enable_Consumption` | `Enable_ProductFeedback` |
+
+**To finish the feedback path** you also need an **ingester notebook** that reads
+`Files/product_feedback/*.csv` and writes the `user_feedback` Delta table (the 23-column contract
+the `ProductFeedback` model table expects). Clone `../notebooks/Copilot_Credit_Consumption_Ingester.ipynb`,
+point `SOURCE_DIR` at `Files/product_feedback`, and map the export's columns to the
+`user_feedback` schema in [`../../shared/docs/DATA-DICTIONARY.md`](../../shared/docs/DATA-DICTIONARY.md).
+The same case-preserving column sanitiser (`[^0-9A-Za-z]+ → _`) keeps the names matching the model.

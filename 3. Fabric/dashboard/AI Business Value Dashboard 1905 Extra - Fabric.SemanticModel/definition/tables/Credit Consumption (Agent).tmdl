@@ -151,6 +151,23 @@ table 'Credit Consumption (Agent)'
 
 		annotation SummarizationSetBy = Automatic
 
+	column _source_file
+		dataType: string
+		lineageTag: 59b8705d-a1ea-46d0-8542-04749fb7e097
+		summarizeBy: none
+		sourceColumn: _source_file
+
+		annotation SummarizationSetBy = Automatic
+
+	column _ingested_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 0ac7196a-d731-4331-a518-dbebff7b21ab
+		summarizeBy: none
+		sourceColumn: _ingested_at
+
+		annotation SummarizationSetBy = Automatic
+
 	partition 'Credit Consumption (Agent)' = m
 		mode: import
 		source =

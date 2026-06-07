@@ -30,6 +30,13 @@ table 'Credit Consumption (Tenant)'
 		displayFolder: 💳 Billing (Actuals)
 		lineageTag: cc0003tn-meas-0001-000000000004
 
+	/// Coverage window of the loaded credit-consumption export, inferred from the
+	/// tenant Usage_Date (min–max). Stands in for a date slicer: the per-agent and
+	/// per-user exports carry no date, so this states the period the figures cover.
+	measure 'Billing Period' = IF ( ISBLANK ( MIN ( 'Credit Consumption (Tenant)'[Usage_Date] ) ), "No billing export loaded", FORMAT ( MIN ( 'Credit Consumption (Tenant)'[Usage_Date] ), "d MMM" ) & " – " & FORMAT ( MAX ( 'Credit Consumption (Tenant)'[Usage_Date] ), "d MMM yyyy" ) )
+		displayFolder: 💳 Billing (Actuals)
+		lineageTag: cc0003tn-meas-period0001
+
 	column BillingPlan_Id
 		dataType: string
 		lineageTag: cc0003tn-col0-0001-000000000001
@@ -103,6 +110,23 @@ table 'Credit Consumption (Tenant)'
 		lineageTag: cc0003tn-col0-0001-000000000009
 		summarizeBy: none
 		sourceColumn: Usage_Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column _source_file
+		dataType: string
+		lineageTag: 102b811b-a4bb-4b7e-b0d2-21ff30e3e2bf
+		summarizeBy: none
+		sourceColumn: _source_file
+
+		annotation SummarizationSetBy = Automatic
+
+	column _ingested_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 344e75e7-7ed0-42aa-85b8-7ea0ea3a5ed9
+		summarizeBy: none
+		sourceColumn: _ingested_at
 
 		annotation SummarizationSetBy = Automatic
 

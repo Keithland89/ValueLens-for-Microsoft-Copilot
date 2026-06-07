@@ -19,13 +19,16 @@ and the measures simply return `0`/blank.
 
 | Parameter | Default | Controls |
 | --- | --- | --- |
-| `Enable_Dataverse` | `true` | the 6 agent tables (`agent_sessions`, `agent_turns`, `agent_errors`, `agent_subagents`, `agent_catalogue`, `agent_performance`) |
-| `Enable_ProductFeedback` | `true` | `user_feedback` (ProductFeedback) |
-| `Enable_Agent365` | `true` | `agents_365` (Agents 365) |
-| `Enable_Consumption` | `true` | the 3 billing tables (`credit_consumption_tenant/agent/user`) |
+| `Enable_Dataverse` | `"Include"` | the 6 agent tables (`agent_sessions`, `agent_turns`, `agent_errors`, `agent_subagents`, `agent_catalogue`, `agent_performance`) |
+| `Enable_ProductFeedback` | `"Include"` | `user_feedback` (ProductFeedback) |
+| `Enable_Agent365` | `"Include"` | `agents_365` (Agents 365) |
+| `Enable_Consumption` | `"Include"` | the 3 billing tables (`credit_consumption_tenant/agent/user`) |
 
-Set a toggle to `false` to skip that source entirely (no fetch attempt) — useful when a customer
+Set a toggle to `"Exclude"` to skip that source entirely (no fetch attempt) — useful when a customer
 hasn't licensed/exported it, or to speed up refresh.
+
+> These are **list parameters** offering `"Include"` / `"Exclude"` (they render as a dropdown in
+> *Edit Parameters*), not boolean `true`/`false`.
 
 ## 3. The per-table wrapper
 
@@ -33,7 +36,7 @@ Each optional table's M entry point is wrapped like this (Agent Sessions shown):
 
 ```m
 Promoted =
-    if Enable_Dataverse
+    if Enable_Dataverse = "Include"
     then (try FabricTable("agent_sessions") otherwise EmptyTable({ ...contract columns... }))
     else EmptyTable({ ...contract columns... }),
 ```
@@ -55,7 +58,7 @@ The SharePoint model uses the identical pattern, swapping the source call:
 
 ```m
 Promoted =
-    if Enable_ProductFeedback
+    if Enable_ProductFeedback = "Include"
     then (try SharePointCsv(#"Product Feedback File") otherwise EmptyTable({ ... }))
     else EmptyTable({ ... }),
 ```

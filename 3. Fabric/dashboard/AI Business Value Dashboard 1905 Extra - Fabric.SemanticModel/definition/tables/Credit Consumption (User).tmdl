@@ -99,6 +99,23 @@ table 'Credit Consumption (User)'
 		lineageTag: cc0002us-col0-emailnorm0001
 		summarizeBy: none
 
+	column _source_file
+		dataType: string
+		lineageTag: a13cf23a-e607-4bbb-947d-3e0fbf481250
+		summarizeBy: none
+		sourceColumn: _source_file
+
+		annotation SummarizationSetBy = Automatic
+
+	column _ingested_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 054d17cd-e6bb-4e5a-b4a7-c95b83ea4a25
+		summarizeBy: none
+		sourceColumn: _ingested_at
+
+		annotation SummarizationSetBy = Automatic
+
 	partition 'Credit Consumption (User)' = m
 		mode: import
 		source =

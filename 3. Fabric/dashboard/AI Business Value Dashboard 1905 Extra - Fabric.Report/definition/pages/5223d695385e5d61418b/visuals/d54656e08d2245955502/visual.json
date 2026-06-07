@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
   "name": "d54656e08d2245955502",
   "position": {
-    "x": 229.07041773715062,
-    "y": 63.95366992661566,
+    "x": 275.06715506715506,
+    "y": 70.329670329670321,
     "z": 4000,
-    "height": 79.069991909270271,
-    "width": 631.39714127549644,
+    "height": 79.706959706959708,
+    "width": 811.1355311355311,
     "tabOrder": 4000
   },
   "visual": {
@@ -23,11 +23,25 @@
                       "Entity": "Credit Consumption (Agent)"
                     }
                   },
-                  "Property": "Total Consumed Credits"
+                  "Property": "Total Billed Credits"
                 }
               },
-              "queryRef": "Credit Consumption (Agent).Total Consumed Credits",
-              "nativeQueryRef": "Total Consumed Credits"
+              "queryRef": "Credit Consumption (Agent).Total Billed Credits",
+              "nativeQueryRef": "Total Billed Credits"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Credit Consumption (Agent)"
+                    }
+                  },
+                  "Property": "Total Non-Billed Credits"
+                }
+              },
+              "queryRef": "Credit Consumption (Agent).Total Non-Billed Credits",
+              "nativeQueryRef": "Total Non-Billed Credits"
             },
             {
               "field": {
@@ -70,7 +84,7 @@
                     "Entity": "Credit Consumption (Agent)"
                   }
                 },
-                "Property": "Total Consumed Credits"
+                "Property": "Total Billed Credits"
               }
             },
             "direction": "Descending"
@@ -316,6 +330,34 @@
           },
           "selector": {
             "metadata": "Agent Sessions.Avg Credits per Agent"
+          }
+        },
+        {
+          "properties": {
+            "labelDisplayUnits": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Credit Consumption (Agent).Total Billed Credits"
+          }
+        },
+        {
+          "properties": {
+            "labelDisplayUnits": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Credit Consumption (Agent).Total Non-Billed Credits"
           }
         }
       ],

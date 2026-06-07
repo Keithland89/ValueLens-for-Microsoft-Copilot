@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
   "name": "1dc65c5770aac98559c3",
   "position": {
     "x": 218.18550773653504,
@@ -77,12 +77,12 @@
                       "Entity": "Chat + Agent Interactions (Audit Logs)"
                     }
                   },
-                  "Property": "All Active Users"
+                  "Property": "Productive Capacity - Hours Per User"
                 }
               },
-              "queryRef": "Chat + Agent Interactions (Audit Logs).All Active Users",
-              "nativeQueryRef": "Active Users",
-              "displayName": "Active Users"
+              "queryRef": "Chat + Agent Interactions (Audit Logs).Productive Capacity - Hours Per User",
+              "nativeQueryRef": "Hours Saved Per User",
+              "displayName": "Hours Saved Per User"
             }
           ],
           "fieldParameters": [
@@ -114,7 +114,7 @@
                     "Entity": "Chat + Agent Interactions (Audit Logs)"
                   }
                 },
-                "Property": "All Active Users"
+                "Property": "Productive Capacity - Hours Per User"
               }
             },
             "direction": "Descending"
@@ -8021,7 +8021,8 @@
               }
             }
           ]
-        }
+        },
+        "howCreated": "User"
       },
       {
         "name": "256c6c1ed85722d55ce5",

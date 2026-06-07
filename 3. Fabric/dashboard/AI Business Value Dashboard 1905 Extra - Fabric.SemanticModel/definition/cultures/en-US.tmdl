@@ -11598,32 +11598,6 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "agents_365.org_count": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "Agents 365",
-			          "ConceptualProperty": "Org Count"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "org count": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "org amount": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.727
-			          }
-			        }
-			      ]
-			    },
 			    "agents_365.agent_return_rate": {
 			      "Definition": {
 			        "Binding": {
@@ -12084,128 +12058,6 @@ cultureInfo en-US
 			              "Agent": "Thesaurus"
 			            },
 			            "Weight": 0.485
-			          }
-			        }
-			      ]
-			    },
-			    "agents_365.return_rate_category": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "Agents 365",
-			          "ConceptualProperty": "Return Rate Category"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "return rate category": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "rate category": {
-			            "State": "Generated",
-			            "Weight": 0.97
-			          }
-			        },
-			        {
-			          "return rate classification": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.762
-			          }
-			        },
-			        {
-			          "rate classification": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.75
-			          }
-			        },
-			        {
-			          "return rate class": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.739
-			          }
-			        },
-			        {
-			          "return rate group": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.739
-			          }
-			        },
-			        {
-			          "return rate type": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.739
-			          }
-			        },
-			        {
-			          "return rate grouping": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.739
-			          }
-			        },
-			        {
-			          "return rate kind": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.739
-			          }
-			        },
-			        {
-			          "rate class": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.727
-			          }
-			        },
-			        {
-			          "rate group": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.727
-			          }
-			        },
-			        {
-			          "rate type": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.727
 			          }
 			        }
 			      ]
@@ -13812,16 +13664,6 @@ cultureInfo en-US
 			            },
 			            "Weight": 0.482
 			          }
-			        },
-			        {
-			          "Active Users": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
 			        }
 			      ]
 			    },
@@ -15212,16 +15054,6 @@ cultureInfo en-US
 			          }
 			        },
 			        {
-			          "Breakdown": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
-			        },
-			        {
 			          "Activity Breakdown": {
 			            "State": "Suggested",
 			            "Source": {
@@ -15233,6 +15065,16 @@ cultureInfo en-US
 			        },
 			        {
 			          "Agent Task Breakdown": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        },
+			        {
+			          "Breakdown": {
 			            "State": "Suggested",
 			            "Source": {
 			              "Type": "External",
@@ -18069,7 +17911,7 @@ cultureInfo en-US
 			          }
 			        },
 			        {
-			          "AI Activity Type": {
+			          "Task Category": {
 			            "State": "Suggested",
 			            "Source": {
 			              "Type": "External",
@@ -18089,7 +17931,7 @@ cultureInfo en-US
 			          }
 			        },
 			        {
-			          "Task Category": {
+			          "AI Activity Type": {
 			            "State": "Suggested",
 			            "Source": {
 			              "Type": "External",
@@ -18355,7 +18197,7 @@ cultureInfo en-US
 			          }
 			        },
 			        {
-			          "% of Users": {
+			          "% of Activity": {
 			            "State": "Suggested",
 			            "Source": {
 			              "Type": "External",
@@ -18365,7 +18207,7 @@ cultureInfo en-US
 			          }
 			        },
 			        {
-			          "% of Activity": {
+			          "% of Users": {
 			            "State": "Suggested",
 			            "Source": {
 			              "Type": "External",
@@ -18418,128 +18260,6 @@ cultureInfo en-US
 			              "Agent": "PowerBI.VisualColumnRename"
 			            },
 			            "Weight": 0.9
-			          }
-			        }
-			      ]
-			    },
-			    "headline.usage_mode_headline": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "Headlines",
-			          "ConceptualProperty": "Usage Mode Headline"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "usage mode headline": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "mode headline": {
-			            "State": "Generated",
-			            "Weight": 0.97
-			          }
-			        },
-			        {
-			          "usage mode header": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.482
-			          }
-			        },
-			        {
-			          "usage mode legend": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.482
-			          }
-			        },
-			        {
-			          "mode header": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.475
-			          }
-			        },
-			        {
-			          "mode legend": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.475
-			          }
-			        },
-			        {
-			          "usage mode caption": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.468
-			          }
-			        },
-			        {
-			          "usage mode banner": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.468
-			          }
-			        },
-			        {
-			          "usage mode title": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.468
-			          }
-			        },
-			        {
-			          "usage mode heading": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.468
-			          }
-			        },
-			        {
-			          "mode caption": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.461
-			          }
-			        },
-			        {
-			          "mode banner": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.461
 			          }
 			        }
 			      ]
@@ -18879,6 +18599,16 @@ cultureInfo en-US
 			            },
 			            "Weight": 0.461
 			          }
+			        },
+			        {
+			          "Headline": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
 			        }
 			      ]
 			    },
@@ -19133,134 +18863,6 @@ cultureInfo en-US
 			              "Agent": "Thesaurus"
 			            },
 			            "Weight": 0.5
-			          }
-			        }
-			      ]
-			    },
-			    "chat__agent_interactions_audit_logs.efficiency__label": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "Chat + Agent Interactions (Audit Logs)",
-			          "ConceptualProperty": "Efficiency - Label"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "efficiency - label": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "efficiency label": {
-			            "State": "Generated",
-			            "Weight": 0.97
-			          }
-			        },
-			        {
-			          "label": {
-			            "State": "Generated",
-			            "Weight": 0.97
-			          }
-			        },
-			        {
-			          "efficiency - sticker": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.762
-			          }
-			        },
-			        {
-			          "efficiency sticker": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.75
-			          }
-			        },
-			        {
-			          "efficiency - tag": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.739
-			          }
-			        },
-			        {
-			          "efficiency - decal": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.739
-			          }
-			        },
-			        {
-			          "sticker": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.736
-			          }
-			        },
-			        {
-			          "efficiency tag": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.727
-			          }
-			        },
-			        {
-			          "efficiency decal": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.727
-			          }
-			        },
-			        {
-			          "tag": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.714
-			          }
-			        },
-			        {
-			          "decal": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.714
-			          }
-			        },
-			        {
-			          "efficiency - name tag": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.604
 			          }
 			        }
 			      ]
@@ -19675,114 +19277,6 @@ cultureInfo en-US
 			              "Agent": "PowerBI.VisualColumnRename"
 			            },
 			            "Weight": 0.9
-			          }
-			        }
-			      ]
-			    },
-			    "chat__agent_interactions_audit_logs.new_expertise__hours_per_week": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "Chat + Agent Interactions (Audit Logs)",
-			          "ConceptualProperty": "New Expertise - Hours Per Week"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "new expertise - hours per week": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "new expertise hours per week": {
-			            "State": "Generated",
-			            "Weight": 0.97
-			          }
-			        },
-			        {
-			          "expertise hours": {
-			            "State": "Generated",
-			            "Weight": 0.97
-			          }
-			        },
-			        {
-			          "new expertise period per week": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.504
-			          }
-			        },
-			        {
-			          "new expertise eras per week": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.494
-			          }
-			        },
-			        {
-			          "new expertise epoch per week": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.494
-			          }
-			        },
-			        {
-			          "expertise period": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.485
-			          }
-			        },
-			        {
-			          "new expertise age per week": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.479
-			          }
-			        },
-			        {
-			          "expertise eras": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.475
-			          }
-			        },
-			        {
-			          "expertise epoch": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.475
-			          }
-			        },
-			        {
-			          "expertise age": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.461
 			          }
 			        }
 			      ]
@@ -23378,158 +22872,6 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "headline.copilot_skills_headline": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "Headlines",
-			          "ConceptualProperty": "Copilot Skills Headline"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "copilot skills headline": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "copilot skill header": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.482
-			          }
-			        },
-			        {
-			          "copilot skill legend": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.482
-			          }
-			        },
-			        {
-			          "copilot skill caption": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.468
-			          }
-			        },
-			        {
-			          "copilot skill banner": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.468
-			          }
-			        },
-			        {
-			          "copilot skill title": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.468
-			          }
-			        },
-			        {
-			          "copilot skill heading": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.468
-			          }
-			        }
-			      ]
-			    },
-			    "headline.agent_skills_headline": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "Headlines",
-			          "ConceptualProperty": "Agent Skills Headline"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "agent skills headline": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "agent skill header": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.482
-			          }
-			        },
-			        {
-			          "agent skill legend": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.482
-			          }
-			        },
-			        {
-			          "agent skill caption": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.468
-			          }
-			        },
-			        {
-			          "agent skill banner": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.468
-			          }
-			        },
-			        {
-			          "agent skill title": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.468
-			          }
-			        },
-			        {
-			          "agent skill heading": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.468
-			          }
-			        }
-			      ]
-			    },
 			    "chat__agent_interactions_audit_logs.AI_assisted_value_per_week": {
 			      "Definition": {
 			        "Binding": {
@@ -24058,135 +23400,6 @@ cultureInfo en-US
 			              "Agent": "PowerBI.VisualColumnRename"
 			            },
 			            "Weight": 0.9
-			          }
-			        }
-			      ]
-			    },
-			    "chat__agent_interactions_audit_logs.autonomy_pattern": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "Chat + Agent Interactions (Audit Logs)",
-			          "ConceptualProperty": "Autonomy_Pattern"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "autonomy pattern": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "Autonomy_Pattern": {
-			            "Type": "Noun",
-			            "State": "Generated",
-			            "Weight": 0.99
-			          }
-			        },
-			        {
-			          "pattern": {
-			            "State": "Generated",
-			            "Weight": 0.97
-			          }
-			        },
-			        {
-			          "autonomy arrangement": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.5
-			          }
-			        },
-			        {
-			          "autonomy configuration": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.5
-			          }
-			        },
-			        {
-			          "autonomy repetition": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.5
-			          }
-			        },
-			        {
-			          "autonomy tessellation": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.5
-			          }
-			        },
-			        {
-			          "autonomy relationship": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.5
-			          }
-			        },
-			        {
-			          "arrangement": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.491
-			          }
-			        },
-			        {
-			          "configuration": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.491
-			          }
-			        },
-			        {
-			          "repetition": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.491
-			          }
-			        },
-			        {
-			          "tessellation": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.491
-			          }
-			        },
-			        {
-			          "relationship": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.491
 			          }
 			        }
 			      ]
@@ -25293,22 +24506,6 @@ cultureInfo en-US
 			      "Terms": [
 			        {
 			          "cowork AI tasks per user per week": {
-			            "State": "Generated"
-			          }
-			        }
-			      ]
-			    },
-			    "agents_365.is_published": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "Agents 365",
-			          "ConceptualProperty": "Is Published"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "is published": {
 			            "State": "Generated"
 			          }
 			        }
@@ -27151,6 +26348,16 @@ cultureInfo en-US
 			            },
 			            "Weight": 0.468
 			          }
+			        },
+			        {
+			          "Headline": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
 			        }
 			      ]
 			    },
@@ -27273,6 +26480,16 @@ cultureInfo en-US
 			            },
 			            "Weight": 0.461
 			          }
+			        },
+			        {
+			          "Headline": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
 			        }
 			      ]
 			    },
@@ -27348,6 +26565,16 @@ cultureInfo en-US
 			              "Agent": "Thesaurus"
 			            },
 			            "Weight": 0.468
+			          }
+			        },
+			        {
+			          "Headline": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
 			          }
 			        }
 			      ]
@@ -27470,6 +26697,16 @@ cultureInfo en-US
 			              "Agent": "Thesaurus"
 			            },
 			            "Weight": 0.461
+			          }
+			        },
+			        {
+			          "Headline": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
 			          }
 			        }
 			      ]
@@ -27974,108 +27211,6 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "chat__agent_interactions_audit_logs.productive_capacity__hours_saved": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "Chat + Agent Interactions (Audit Logs)",
-			          "ConceptualProperty": "Productive Capacity - Hours Saved"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "productive capacity - hours saved": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "productive capacity hours saved": {
-			            "State": "Generated",
-			            "Weight": 0.97
-			          }
-			        },
-			        {
-			          "productive capacity - period saved": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.504
-			          }
-			        },
-			        {
-			          "productive capacity period saved": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.499
-			          }
-			        },
-			        {
-			          "productive capacity - eras saved": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.494
-			          }
-			        },
-			        {
-			          "productive capacity - epoch saved": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.494
-			          }
-			        },
-			        {
-			          "productive capacity eras saved": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.489
-			          }
-			        },
-			        {
-			          "productive capacity epoch saved": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.489
-			          }
-			        },
-			        {
-			          "productive capacity - age saved": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.479
-			          }
-			        },
-			        {
-			          "productive capacity age saved": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.474
-			          }
-			        }
-			      ]
-			    },
 			    "chat__agent_interactions_audit_logs.productive_capacity__hours_per_user": {
 			      "Definition": {
 			        "Binding": {
@@ -28180,6 +27315,16 @@ cultureInfo en-US
 			              "Agent": "Thesaurus"
 			            },
 			            "Weight": 0.461
+			          }
+			        },
+			        {
+			          "Hours Saved Per User": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
 			          }
 			        }
 			      ]
@@ -28736,72 +27881,6 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "chat__agent_interactions_audit_logs.beginner_users_latest": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "Chat + Agent Interactions (Audit Logs)",
-			          "ConceptualProperty": "Beginner Users (Latest)"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "beginner users (latest)": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "beginner users": {
-			            "State": "Generated",
-			            "Weight": 0.75
-			          }
-			        }
-			      ]
-			    },
-			    "chat__agent_interactions_audit_logs.developing_users_latest": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "Chat + Agent Interactions (Audit Logs)",
-			          "ConceptualProperty": "Developing Users (Latest)"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "developing users (latest)": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "developing users": {
-			            "State": "Generated",
-			            "Weight": 0.75
-			          }
-			        }
-			      ]
-			    },
-			    "chat__agent_interactions_audit_logs.habitual_users_latest": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "Chat + Agent Interactions (Audit Logs)",
-			          "ConceptualProperty": "Habitual Users (Latest)"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "habitual users (latest)": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "habitual users": {
-			            "State": "Generated",
-			            "Weight": 0.75
-			          }
-			        }
-			      ]
-			    },
 			    "chat__agent_interactions_audit_logs.power_users_latest": {
 			      "Definition": {
 			        "Binding": {
@@ -29229,122 +28308,6 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "chat__agent_interactions_audit_logs.agent_publish_status": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "Chat + Agent Interactions (Audit Logs)",
-			          "ConceptualProperty": "Agent Publish Status"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "agent publish status": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "agent publish category": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.609
-			          }
-			        },
-			        {
-			          "agent publish importance": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.609
-			          }
-			        },
-			        {
-			          "agent publish prestige": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.609
-			          }
-			        },
-			        {
-			          "agent publish prominence": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.609
-			          }
-			        },
-			        {
-			          "agent publish condition": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.591
-			          }
-			        },
-			        {
-			          "agent publish class": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.591
-			          }
-			        },
-			        {
-			          "agent publish grade": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.591
-			          }
-			        },
-			        {
-			          "agent publish level": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.591
-			          }
-			        },
-			        {
-			          "agent publish position": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.591
-			          }
-			        },
-			        {
-			          "agent publish rank": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.591
-			          }
-			        }
-			      ]
-			    },
 			    "headline.skills_headline": {
 			      "Definition": {
 			        "Binding": {
@@ -29417,6 +28380,16 @@ cultureInfo en-US
 			              "Agent": "Thesaurus"
 			            },
 			            "Weight": 0.461
+			          }
+			        },
+			        {
+			          "Headline": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
 			          }
 			        }
 			      ]
@@ -29581,128 +28554,6 @@ cultureInfo en-US
 			              "Agent": "Thesaurus"
 			            },
 			            "Weight": 0.491
-			          }
-			        }
-			      ]
-			    },
-			    "chat__agent_interactions_audit_logs.agent_review_status": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "Chat + Agent Interactions (Audit Logs)",
-			          "ConceptualProperty": "Agent Review Status"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "agent review status": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "review status": {
-			            "State": "Generated",
-			            "Weight": 0.97
-			          }
-			        },
-			        {
-			          "agent review category": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.762
-			          }
-			        },
-			        {
-			          "agent review importance": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.762
-			          }
-			        },
-			        {
-			          "agent review prestige": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.762
-			          }
-			        },
-			        {
-			          "agent review prominence": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.762
-			          }
-			        },
-			        {
-			          "review category": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.75
-			          }
-			        },
-			        {
-			          "review importance": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.75
-			          }
-			        },
-			        {
-			          "review prestige": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.75
-			          }
-			        },
-			        {
-			          "review prominence": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.75
-			          }
-			        },
-			        {
-			          "agent review condition": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.739
-			          }
-			        },
-			        {
-			          "agent review class": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.739
 			          }
 			        }
 			      ]
@@ -31137,28 +29988,6 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "chat__agent_interactions_audit_logs.tasks_per_active_user_by_behavior": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "Chat + Agent Interactions (Audit Logs)",
-			          "ConceptualProperty": "Tasks per Active User (by Behavior)"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "tasks per active user (by behavior)": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "tasks per active user": {
-			            "State": "Generated",
-			            "Weight": 0.75
-			          }
-			        }
-			      ]
-			    },
 			    "chat__agent_interactions_audit_logs.power_users_latest1": {
 			      "Definition": {
 			        "Binding": {
@@ -31296,128 +30125,6 @@ cultureInfo en-US
 			              "Agent": "Thesaurus"
 			            },
 			            "Weight": 0.482
-			          }
-			        }
-			      ]
-			    },
-			    "chat__agent_interactions_audit_logs.delegation_events": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "Chat + Agent Interactions (Audit Logs)",
-			          "ConceptualProperty": "Delegation Events"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "delegation events": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "events": {
-			            "State": "Generated",
-			            "Weight": 0.97
-			          }
-			        },
-			        {
-			          "delegation procedure": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.5
-			          }
-			        },
-			        {
-			          "procedure": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.491
-			          }
-			        },
-			        {
-			          "delegation proceeding": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.485
-			          }
-			        },
-			        {
-			          "delegation action": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.485
-			          }
-			        },
-			        {
-			          "delegation measure": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.485
-			          }
-			        },
-			        {
-			          "delegation trial": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.485
-			          }
-			        },
-			        {
-			          "delegation dealing": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.485
-			          }
-			        },
-			        {
-			          "proceeding": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.476
-			          }
-			        },
-			        {
-			          "measure": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.476
-			          }
-			        },
-			        {
-			          "trial": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.476
 			          }
 			        }
 			      ]
@@ -34810,58 +33517,6 @@ cultureInfo en-US
 			              "Agent": "Thesaurus"
 			            },
 			            "Weight": 0.748
-			          }
-			        }
-			      ]
-			    },
-			    "product_feedback.thumbs_up": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "ProductFeedback",
-			          "ConceptualProperty": "Thumbs Up"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "thumbs up": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "up": {
-			            "State": "Generated",
-			            "Weight": 0.97
-			          }
-			        },
-			        {
-			          "active": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.476
-			          }
-			        },
-			        {
-			          "winning": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.452
-			          }
-			        },
-			        {
-			          "leading": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.452
 			          }
 			        }
 			      ]
@@ -38591,124 +37246,6 @@ cultureInfo en-US
 			              "Agent": "Thesaurus"
 			            },
 			            "Weight": 0.485
-			          }
-			        }
-			      ]
-			    },
-			    "agent_turn.intent_confidence_bucket": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "Agent Turns",
-			          "ConceptualProperty": "Intent Confidence Bucket"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "intent confidence bucket": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "bucket": {
-			            "State": "Generated",
-			            "Weight": 0.97
-			          }
-			        },
-			        {
-			          "confidence bucket": {
-			            "State": "Generated",
-			            "Weight": 0.97
-			          }
-			        },
-			        {
-			          "intent confidence pail": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.508
-			          }
-			        },
-			        {
-			          "intent confidence container": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.508
-			          }
-			        },
-			        {
-			          "intent confidence vessel": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.508
-			          }
-			        },
-			        {
-			          "confidence pail": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.5
-			          }
-			        },
-			        {
-			          "confidence container": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.5
-			          }
-			        },
-			        {
-			          "confidence vessel": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.5
-			          }
-			        },
-			        {
-			          "pail": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.491
-			          }
-			        },
-			        {
-			          "container": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.491
-			          }
-			        },
-			        {
-			          "vessel": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.491
 			          }
 			        }
 			      ]
@@ -43364,6 +41901,12 @@ cultureInfo en-US
 			          }
 			        },
 			        {
+			          "CSAT score": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
 			          "transcript csat notch": {
 			            "Type": "Noun",
 			            "State": "Suggested",
@@ -43424,43 +41967,43 @@ cultureInfo en-US
 			          }
 			        },
 			        {
-			          "notch": {
+			          "csat notch": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.476
+			            "Weight": 0.485
 			          }
 			        },
 			        {
-			          "slash": {
+			          "csat slash": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.476
+			            "Weight": 0.485
 			          }
 			        },
 			        {
-			          "groove": {
+			          "csat groove": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.476
+			            "Weight": 0.485
 			          }
 			        },
 			        {
-			          "nick": {
+			          "csat nick": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
 			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.476
+			            "Weight": 0.485
 			          }
 			        }
 			      ]
@@ -43481,6 +42024,12 @@ cultureInfo en-US
 			        },
 			        {
 			          "down": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "thumbs down": {
 			            "State": "Generated",
 			            "Weight": 0.97
 			          }
@@ -43524,6 +42073,16 @@ cultureInfo en-US
 			            },
 			            "Weight": 0.452
 			          }
+			        },
+			        {
+			          "disapproval": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.45
+			          }
 			        }
 			      ]
 			    },
@@ -43543,6 +42102,12 @@ cultureInfo en-US
 			        },
 			        {
 			          "up": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "thumbs up": {
 			            "State": "Generated",
 			            "Weight": 0.97
 			          }
@@ -46129,500 +44694,6 @@ cultureInfo en-US
 			        {
 			          "app": {
 			            "State": "Generated"
-			          }
-			        }
-			      ]
-			    },
-			    "product_feedback.positive_feedback_": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "ProductFeedback",
-			          "ConceptualProperty": "Positive Feedback %"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "positive feedback %": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "positive feedback percentage": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.762
-			          }
-			        },
-			        {
-			          "positive feedback pct": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.739
-			          }
-			        }
-			      ]
-			    },
-			    "product_feedback.negative_feedback_": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "ProductFeedback",
-			          "ConceptualProperty": "Negative Feedback %"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "negative feedback %": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "negative feedback percentage": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.762
-			          }
-			        },
-			        {
-			          "negative feedback pct": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.739
-			          }
-			        }
-			      ]
-			    },
-			    "product_feedback.CSAT_score": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "ProductFeedback",
-			          "ConceptualProperty": "CSAT Score"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "CSAT score": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "score": {
-			            "State": "Generated",
-			            "Weight": 0.97
-			          }
-			        },
-			        {
-			          "csat notch": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.485
-			          }
-			        },
-			        {
-			          "csat slash": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.485
-			          }
-			        },
-			        {
-			          "csat groove": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.485
-			          }
-			        },
-			        {
-			          "csat nick": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.485
-			          }
-			        },
-			        {
-			          "csat cut": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.485
-			          }
-			        },
-			        {
-			          "csat mark": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.485
-			          }
-			        },
-			        {
-			          "notch": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.476
-			          }
-			        },
-			        {
-			          "slash": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.476
-			          }
-			        },
-			        {
-			          "groove": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.476
-			          }
-			        },
-			        {
-			          "nick": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.476
-			          }
-			        }
-			      ]
-			    },
-			    "product_feedback.feedback_with_comment_": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "ProductFeedback",
-			          "ConceptualProperty": "Feedback with Comment %"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "feedback with comment %": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "feedback with clarification %": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.617
-			          }
-			        },
-			        {
-			          "feedback with commentary %": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.617
-			          }
-			        },
-			        {
-			          "feedback with explanation %": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.617
-			          }
-			        },
-			        {
-			          "feedback with feedback %": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.617
-			          }
-			        },
-			        {
-			          "feedback with observation %": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.617
-			          }
-			        },
-			        {
-			          "feedback with comment percentage": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.617
-			          }
-			        },
-			        {
-			          "feedback with note %": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.599
-			          }
-			        },
-			        {
-			          "feedback with comment pct": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.599
-			          }
-			        },
-			        {
-			          "response with comment %": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.514
-			          }
-			        },
-			        {
-			          "reaction with comment %": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.514
-			          }
-			        }
-			      ]
-			    },
-			    "product_feedback.thumbs_down": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "ProductFeedback",
-			          "ConceptualProperty": "Thumbs Down"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "thumbs down": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "down": {
-			            "State": "Generated",
-			            "Weight": 0.97
-			          }
-			        },
-			        {
-			          "blue": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.476
-			          }
-			        },
-			        {
-			          "behind": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.452
-			          }
-			        },
-			        {
-			          "losing": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.452
-			          }
-			        },
-			        {
-			          "disapproval": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.45
-			          }
-			        }
-			      ]
-			    },
-			    "product_feedback.agents_with_feedback": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "ProductFeedback",
-			          "ConceptualProperty": "Agents with Feedback"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "agents with feedback": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "agents": {
-			            "State": "Generated",
-			            "Weight": 0.97
-			          }
-			        },
-			        {
-			          "manager with feedback": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.508
-			          }
-			        },
-			        {
-			          "mediator with feedback": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.508
-			          }
-			        },
-			        {
-			          "negotiator with feedback": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.508
-			          }
-			        },
-			        {
-			          "go-between with feedback": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.492
-			          }
-			        },
-			        {
-			          "representative with feedback": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.492
-			          }
-			        },
-			        {
-			          "proxy with feedback": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.492
-			          }
-			        },
-			        {
-			          "manager": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.491
-			          }
-			        },
-			        {
-			          "mediator": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.491
-			          }
-			        },
-			        {
-			          "negotiator": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.491
-			          }
-			        },
-			        {
-			          "vehicle with feedback": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.482
 			          }
 			        }
 			      ]
@@ -51122,75 +49193,6 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "agent_performance.malformed_bot_name": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "Agent Performance",
-			          "ConceptualProperty": "MalformedBotName"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "malformed bot name": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "MalformedBotName": {
-			            "Type": "Noun",
-			            "State": "Generated",
-			            "Weight": 0.99
-			          }
-			        },
-			        {
-			          "bot": {
-			            "State": "Generated",
-			            "Weight": 0.97
-			          }
-			        },
-			        {
-			          "malformed bot nickname": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.739
-			          }
-			        },
-			        {
-			          "malformed bot title": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.739
-			          }
-			        },
-			        {
-			          "malformed bot label": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.739
-			          }
-			        },
-			        {
-			          "malformed bot tag": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.739
-			          }
-			        }
-			      ]
-			    },
 			    "agent_performance.conversation_type": {
 			      "Definition": {
 			        "Binding": {
@@ -53263,159 +51265,6 @@ cultureInfo en-US
 			              "Agent": "Thesaurus"
 			            },
 			            "Weight": 0.727
-			          }
-			        }
-			      ]
-			    },
-			    "chat__agent_interactions_audit_logs.app_identity_publisher_id": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "Chat + Agent Interactions (Audit Logs)",
-			          "ConceptualProperty": "AppIdentity_PublisherId"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "app identity publisher id": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "AppIdentity_PublisherId": {
-			            "Type": "Noun",
-			            "State": "Generated",
-			            "Weight": 0.99
-			          }
-			        },
-			        {
-			          "publisher": {
-			            "State": "Generated",
-			            "Weight": 0.97
-			          }
-			        },
-			        {
-			          "identity publisher": {
-			            "State": "Generated",
-			            "Weight": 0.97
-			          }
-			        },
-			        {
-			          "app identity publisher": {
-			            "State": "Generated",
-			            "Weight": 0.97
-			          }
-			        },
-			        {
-			          "publisher id": {
-			            "State": "Generated",
-			            "Weight": 0.97
-			          }
-			        },
-			        {
-			          "identity publisher id": {
-			            "State": "Generated",
-			            "Weight": 0.97
-			          }
-			        },
-			        {
-			          "app identity publisher identification": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.771
-			          }
-			        },
-			        {
-			          "app identity publisher identity": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.771
-			          }
-			        },
-			        {
-			          "app identity publisher identifier": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.771
-			          }
-			        },
-			        {
-			          "identity publisher identification": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.762
-			          }
-			        },
-			        {
-			          "identity publisher identity": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.762
-			          }
-			        },
-			        {
-			          "identity publisher identifier": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.762
-			          }
-			        },
-			        {
-			          "publisher identification": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.75
-			          }
-			        },
-			        {
-			          "publisher identity": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.75
-			          }
-			        },
-			        {
-			          "publisher identifier": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.75
-			          }
-			        },
-			        {
-			          "app identity publisher credential": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.748
 			          }
 			        }
 			      ]
@@ -60544,23 +58393,393 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "chat__agent_interactions_audit_logs.column4w_proficient_users": {
+			    "agent_performance.conversation_summary": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "Chat + Agent Interactions (Audit Logs)",
-			          "ConceptualProperty": "4W Proficient Users"
+			          "ConceptualEntity": "Agent Performance",
+			          "ConceptualProperty": "🧠 Conversation Summary"
 			        }
 			      },
 			      "State": "Generated",
 			      "Terms": [
 			        {
-			          "Proficient Users": {
+			          "🧠 conversation summary": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "🧠 conversation synopsis": {
+			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
+			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.9
+			            "Weight": 0.762
+			          }
+			        },
+			        {
+			          "🧠 conversation explanation": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.762
+			          }
+			        },
+			        {
+			          "🧠 conversation extraction": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.762
+			          }
+			        },
+			        {
+			          "🧠 conversation summarisation": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.762
+			          }
+			        },
+			        {
+			          "🧠 conversation review": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.739
+			          }
+			        },
+			        {
+			          "🧠 conversation abstract": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.739
+			          }
+			        },
+			        {
+			          "🧠 conversation outline": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.739
+			          }
+			        },
+			        {
+			          "🧠 conversation overview": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.739
+			          }
+			        },
+			        {
+			          "🧠 conversation paraphrase": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.739
+			          }
+			        },
+			        {
+			          "🧠 conversation recap": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.739
+			          }
+			        }
+			      ]
+			    },
+			    "chat__agent_interactions_audit_logs.grounding_source": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Chat + Agent Interactions (Audit Logs)",
+			          "ConceptualProperty": "Grounding Source"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "grounding source": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "source": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "grounding basis": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.5
+			          }
+			        },
+			        {
+			          "grounding font": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.5
+			          }
+			        },
+			        {
+			          "grounding birthplace": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.5
+			          }
+			        },
+			        {
+			          "basis": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.491
+			          }
+			        },
+			        {
+			          "font": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.491
+			          }
+			        },
+			        {
+			          "birthplace": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.491
+			          }
+			        },
+			        {
+			          "grounding foundation": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.485
+			          }
+			        },
+			        {
+			          "grounding cause": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.485
+			          }
+			        },
+			        {
+			          "grounding spring": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.485
+			          }
+			        },
+			        {
+			          "grounding cradle": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.485
+			          }
+			        }
+			      ]
+			    },
+			    "chat__agent_interactions_audit_logs.app_identity_publisher_id": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Chat + Agent Interactions (Audit Logs)",
+			          "ConceptualProperty": "AppIdentity_PublisherId"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "app identity publisher id": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "AppIdentity_PublisherId": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        },
+			        {
+			          "publisher": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "identity publisher": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "app identity publisher": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "publisher id": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "identity publisher id": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "app identity publisher identification": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.771
+			          }
+			        },
+			        {
+			          "app identity publisher identity": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.771
+			          }
+			        },
+			        {
+			          "app identity publisher identifier": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.771
+			          }
+			        },
+			        {
+			          "identity publisher identification": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.762
+			          }
+			        },
+			        {
+			          "identity publisher identity": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.762
+			          }
+			        },
+			        {
+			          "identity publisher identifier": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.762
+			          }
+			        },
+			        {
+			          "publisher identification": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "publisher identity": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "publisher identifier": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "app identity publisher credential": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.748
 			          }
 			        }
 			      ]
@@ -60606,9 +58825,117 @@ cultureInfo en-US
 			          }
 			        }
 			      ]
+			    },
+			    "chat__agent_interactions_audit_logs.column4w_proficient_users": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Chat + Agent Interactions (Audit Logs)",
+			          "ConceptualProperty": "4W Proficient Users"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Proficient Users": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "credit_consumption_tenant.billing_period": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Credit Consumption (Tenant)",
+			          "ConceptualProperty": "Billing Period"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Billing Period": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
 			    }
 			  },
 			  "Relationships": {
+			    "credit_consumption_user_has_billing_org_credit_share_": {
+			      "Binding": {
+			        "ConceptualEntity": "Credit Consumption (User)"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "credit_consumption_user": {
+			          "Target": {
+			            "Entity": "credit_consumption_user"
+			          }
+			        },
+			        "credit_consumption_user.billing_org_credit_share_": {
+			          "Target": {
+			            "Entity": "credit_consumption_user.billing_org_credit_share_"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "credit_consumption_user"
+			            },
+			            "Object": {
+			              "Role": "credit_consumption_user.billing_org_credit_share_"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "credit_consumption_user_have_billing_org_credit_share_"
+			        }
+			      ]
+			    },
+			    "credit_consumption_agent_has_billing_agents_with_credits": {
+			      "Binding": {
+			        "ConceptualEntity": "Credit Consumption (Agent)"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "credit_consumption_agent": {
+			          "Target": {
+			            "Entity": "credit_consumption_agent"
+			          }
+			        },
+			        "credit_consumption_agent.billing_agents_with_credits": {
+			          "Target": {
+			            "Entity": "credit_consumption_agent.billing_agents_with_credits"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "credit_consumption_agent"
+			            },
+			            "Object": {
+			              "Role": "credit_consumption_agent.billing_agents_with_credits"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "credit_consumption_agent_have_billing_agents_with_credits"
+			        }
+			      ]
+			    },
 			    "credit_consumption_agent_has_avg_credits_per_agent_billing": {
 			      "Binding": {
 			        "ConceptualEntity": "Credit Consumption (Agent)"
@@ -63010,72 +61337,6 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "chat__agent_interactions_audit_logs_has_app_identity_publisher_id": {
-			      "Binding": {
-			        "ConceptualEntity": "Chat + Agent Interactions (Audit Logs)"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "chat__agent_interactions_audit_logs": {
-			          "Target": {
-			            "Entity": "chat__agent_interactions_audit_logs"
-			          }
-			        },
-			        "chat__agent_interactions_audit_logs.app_identity_publisher_id": {
-			          "Target": {
-			            "Entity": "chat__agent_interactions_audit_logs.app_identity_publisher_id"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "chat__agent_interactions_audit_logs"
-			            },
-			            "Object": {
-			              "Role": "chat__agent_interactions_audit_logs.app_identity_publisher_id"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "chat__agent_interactions_audit_logs_have_app_identity_publisher_ids"
-			        },
-			        {
-			          "Verb": {
-			            "Subject": {
-			              "Role": "chat__agent_interactions_audit_logs.app_identity_publisher_id"
-			            },
-			            "Verbs": [
-			              {
-			                "publish": {
-			                  "State": "Generated"
-			                }
-			              }
-			            ],
-			            "Object": {
-			              "Role": "chat__agent_interactions_audit_logs"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.75,
-			          "ID": "app_identity_publisher_ids_publish_chat__agent_interactions_audit_logs"
-			        },
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "chat__agent_interactions_audit_logs.app_identity_publisher_id"
-			            },
-			            "Object": {
-			              "Role": "chat__agent_interactions_audit_logs"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "app_identity_publisher_ids_have_chat__agent_interactions_audit_logs"
-			        }
-			      ]
-			    },
 			    "copilot_licensed_has_assigned_product": {
 			      "Binding": {
 			        "ConceptualEntity": "Copilot Licensed"
@@ -63826,39 +62087,6 @@ cultureInfo en-US
 			          "State": "Generated",
 			          "Weight": 0.99,
 			          "ID": "agent_performances_have_conversation_types"
-			        }
-			      ]
-			    },
-			    "agent_performance_has_malformed_bot_name": {
-			      "Binding": {
-			        "ConceptualEntity": "Agent Performance"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "agent_performance": {
-			          "Target": {
-			            "Entity": "agent_performance"
-			          }
-			        },
-			        "agent_performance.malformed_bot_name": {
-			          "Target": {
-			            "Entity": "agent_performance.malformed_bot_name"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "agent_performance"
-			            },
-			            "Object": {
-			              "Role": "agent_performance.malformed_bot_name"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "agent_performances_have_malformed_bot_names"
 			        }
 			      ]
 			    },
@@ -65324,204 +63552,6 @@ cultureInfo en-US
 			          "State": "Generated",
 			          "Weight": 0.99,
 			          "ID": "product_feedbacks_have_satisfaction_rate"
-			        }
-			      ]
-			    },
-			    "product_feedback_has_agents_with_feedback": {
-			      "Binding": {
-			        "ConceptualEntity": "ProductFeedback"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "product_feedback": {
-			          "Target": {
-			            "Entity": "product_feedback"
-			          }
-			        },
-			        "product_feedback.agents_with_feedback": {
-			          "Target": {
-			            "Entity": "product_feedback.agents_with_feedback"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "product_feedback"
-			            },
-			            "Object": {
-			              "Role": "product_feedback.agents_with_feedback"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "product_feedbacks_have_agents_with_feedback"
-			        }
-			      ]
-			    },
-			    "product_feedback_has_thumbs_down": {
-			      "Binding": {
-			        "ConceptualEntity": "ProductFeedback"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "product_feedback": {
-			          "Target": {
-			            "Entity": "product_feedback"
-			          }
-			        },
-			        "product_feedback.thumbs_down": {
-			          "Target": {
-			            "Entity": "product_feedback.thumbs_down"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "product_feedback"
-			            },
-			            "Object": {
-			              "Role": "product_feedback.thumbs_down"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "product_feedbacks_have_thumbs_down"
-			        }
-			      ]
-			    },
-			    "product_feedback_has_feedback_with_comment_": {
-			      "Binding": {
-			        "ConceptualEntity": "ProductFeedback"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "product_feedback": {
-			          "Target": {
-			            "Entity": "product_feedback"
-			          }
-			        },
-			        "product_feedback.feedback_with_comment_": {
-			          "Target": {
-			            "Entity": "product_feedback.feedback_with_comment_"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "product_feedback"
-			            },
-			            "Object": {
-			              "Role": "product_feedback.feedback_with_comment_"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "product_feedbacks_have_feedback_with_comment_"
-			        }
-			      ]
-			    },
-			    "product_feedback_has_CSAT_score": {
-			      "Binding": {
-			        "ConceptualEntity": "ProductFeedback"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "product_feedback": {
-			          "Target": {
-			            "Entity": "product_feedback"
-			          }
-			        },
-			        "product_feedback.CSAT_score": {
-			          "Target": {
-			            "Entity": "product_feedback.CSAT_score"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "product_feedback"
-			            },
-			            "Object": {
-			              "Role": "product_feedback.CSAT_score"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "product_feedbacks_have_CSAT_score"
-			        }
-			      ]
-			    },
-			    "product_feedback_has_negative_feedback_": {
-			      "Binding": {
-			        "ConceptualEntity": "ProductFeedback"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "product_feedback": {
-			          "Target": {
-			            "Entity": "product_feedback"
-			          }
-			        },
-			        "product_feedback.negative_feedback_": {
-			          "Target": {
-			            "Entity": "product_feedback.negative_feedback_"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "product_feedback"
-			            },
-			            "Object": {
-			              "Role": "product_feedback.negative_feedback_"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "product_feedbacks_have_negative_feedback_"
-			        }
-			      ]
-			    },
-			    "product_feedback_has_positive_feedback_": {
-			      "Binding": {
-			        "ConceptualEntity": "ProductFeedback"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "product_feedback": {
-			          "Target": {
-			            "Entity": "product_feedback"
-			          }
-			        },
-			        "product_feedback.positive_feedback_": {
-			          "Target": {
-			            "Entity": "product_feedback.positive_feedback_"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "product_feedback"
-			            },
-			            "Object": {
-			              "Role": "product_feedback.positive_feedback_"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "product_feedbacks_have_positive_feedback_"
 			        }
 			      ]
 			    },
@@ -67907,39 +65937,6 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "agent_turn_has_intent_confidence_bucket": {
-			      "Binding": {
-			        "ConceptualEntity": "Agent Turns"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "agent_turn": {
-			          "Target": {
-			            "Entity": "agent_turn"
-			          }
-			        },
-			        "agent_turn.intent_confidence_bucket": {
-			          "Target": {
-			            "Entity": "agent_turn.intent_confidence_bucket"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "agent_turn"
-			            },
-			            "Object": {
-			              "Role": "agent_turn.intent_confidence_bucket"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "agent_turns_have_intent_confidence_buckets"
-			        }
-			      ]
-			    },
 			    "agent_turn_has_feedback_offered": {
 			      "Binding": {
 			        "ConceptualEntity": "Agent Turns"
@@ -69083,39 +67080,6 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "product_feedback_has_thumbs_up": {
-			      "Binding": {
-			        "ConceptualEntity": "ProductFeedback"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "product_feedback": {
-			          "Target": {
-			            "Entity": "product_feedback"
-			          }
-			        },
-			        "product_feedback.thumbs_up": {
-			          "Target": {
-			            "Entity": "product_feedback.thumbs_up"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "product_feedback"
-			            },
-			            "Object": {
-			              "Role": "product_feedback.thumbs_up"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "product_feedbacks_have_thumbs_up"
-			        }
-			      ]
-			    },
 			    "agent_turn_has_highconfidence_intent_": {
 			      "Binding": {
 			        "ConceptualEntity": "Agent Turns"
@@ -70139,39 +68103,6 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "chat__agent_interactions_audit_logs_has_delegation_events": {
-			      "Binding": {
-			        "ConceptualEntity": "Chat + Agent Interactions (Audit Logs)"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "chat__agent_interactions_audit_logs": {
-			          "Target": {
-			            "Entity": "chat__agent_interactions_audit_logs"
-			          }
-			        },
-			        "chat__agent_interactions_audit_logs.delegation_events": {
-			          "Target": {
-			            "Entity": "chat__agent_interactions_audit_logs.delegation_events"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "chat__agent_interactions_audit_logs"
-			            },
-			            "Object": {
-			              "Role": "chat__agent_interactions_audit_logs.delegation_events"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "chat__agent_interactions_audit_logs_have_delegation_events"
-			        }
-			      ]
-			    },
 			    "chat__agent_interactions_audit_logs_has_power_users_latest1": {
 			      "Binding": {
 			        "ConceptualEntity": "Chat + Agent Interactions (Audit Logs)"
@@ -70202,39 +68133,6 @@ cultureInfo en-US
 			          "State": "Generated",
 			          "Weight": 0.99,
 			          "ID": "chat__agent_interactions_audit_logs_have__power_users_latest"
-			        }
-			      ]
-			    },
-			    "chat__agent_interactions_audit_logs_has_tasks_per_active_user_by_behavior": {
-			      "Binding": {
-			        "ConceptualEntity": "Chat + Agent Interactions (Audit Logs)"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "chat__agent_interactions_audit_logs": {
-			          "Target": {
-			            "Entity": "chat__agent_interactions_audit_logs"
-			          }
-			        },
-			        "chat__agent_interactions_audit_logs.tasks_per_active_user_by_behavior": {
-			          "Target": {
-			            "Entity": "chat__agent_interactions_audit_logs.tasks_per_active_user_by_behavior"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "chat__agent_interactions_audit_logs"
-			            },
-			            "Object": {
-			              "Role": "chat__agent_interactions_audit_logs.tasks_per_active_user_by_behavior"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "chat__agent_interactions_audit_logs_have_tasks_per_active_user_by_behavior"
 			        }
 			      ]
 			    },
@@ -70779,39 +68677,6 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "chat__agent_interactions_audit_logs_has_agent_review_status": {
-			      "Binding": {
-			        "ConceptualEntity": "Chat + Agent Interactions (Audit Logs)"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "chat__agent_interactions_audit_logs": {
-			          "Target": {
-			            "Entity": "chat__agent_interactions_audit_logs"
-			          }
-			        },
-			        "chat__agent_interactions_audit_logs.agent_review_status": {
-			          "Target": {
-			            "Entity": "chat__agent_interactions_audit_logs.agent_review_status"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "chat__agent_interactions_audit_logs"
-			            },
-			            "Object": {
-			              "Role": "chat__agent_interactions_audit_logs.agent_review_status"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "chat__agent_interactions_audit_logs_have_agent_review_status"
-			        }
-			      ]
-			    },
 			    "agents_365_has_agent_review": {
 			      "Binding": {
 			        "ConceptualEntity": "Agents 365"
@@ -70908,39 +68773,6 @@ cultureInfo en-US
 			          "State": "Generated",
 			          "Weight": 0.99,
 			          "ID": "chat__agent_interactions_audit_logs_have_skills_headline"
-			        }
-			      ]
-			    },
-			    "chat__agent_interactions_audit_logs_has_agent_publish_status": {
-			      "Binding": {
-			        "ConceptualEntity": "Chat + Agent Interactions (Audit Logs)"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "chat__agent_interactions_audit_logs": {
-			          "Target": {
-			            "Entity": "chat__agent_interactions_audit_logs"
-			          }
-			        },
-			        "chat__agent_interactions_audit_logs.agent_publish_status": {
-			          "Target": {
-			            "Entity": "chat__agent_interactions_audit_logs.agent_publish_status"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "chat__agent_interactions_audit_logs"
-			            },
-			            "Object": {
-			              "Role": "chat__agent_interactions_audit_logs.agent_publish_status"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "chat__agent_interactions_audit_logs_have_agent_publish_status"
 			        }
 			      ]
 			    },
@@ -71073,105 +68905,6 @@ cultureInfo en-US
 			          "State": "Generated",
 			          "Weight": 0.99,
 			          "ID": "chat__agent_interactions_audit_logs_have_power_users_latest"
-			        }
-			      ]
-			    },
-			    "chat__agent_interactions_audit_logs_has_habitual_users_latest": {
-			      "Binding": {
-			        "ConceptualEntity": "Chat + Agent Interactions (Audit Logs)"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "chat__agent_interactions_audit_logs": {
-			          "Target": {
-			            "Entity": "chat__agent_interactions_audit_logs"
-			          }
-			        },
-			        "chat__agent_interactions_audit_logs.habitual_users_latest": {
-			          "Target": {
-			            "Entity": "chat__agent_interactions_audit_logs.habitual_users_latest"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "chat__agent_interactions_audit_logs"
-			            },
-			            "Object": {
-			              "Role": "chat__agent_interactions_audit_logs.habitual_users_latest"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "chat__agent_interactions_audit_logs_have_habitual_users_latest"
-			        }
-			      ]
-			    },
-			    "chat__agent_interactions_audit_logs_has_developing_users_latest": {
-			      "Binding": {
-			        "ConceptualEntity": "Chat + Agent Interactions (Audit Logs)"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "chat__agent_interactions_audit_logs": {
-			          "Target": {
-			            "Entity": "chat__agent_interactions_audit_logs"
-			          }
-			        },
-			        "chat__agent_interactions_audit_logs.developing_users_latest": {
-			          "Target": {
-			            "Entity": "chat__agent_interactions_audit_logs.developing_users_latest"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "chat__agent_interactions_audit_logs"
-			            },
-			            "Object": {
-			              "Role": "chat__agent_interactions_audit_logs.developing_users_latest"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "chat__agent_interactions_audit_logs_have_developing_users_latest"
-			        }
-			      ]
-			    },
-			    "chat__agent_interactions_audit_logs_has_beginner_users_latest": {
-			      "Binding": {
-			        "ConceptualEntity": "Chat + Agent Interactions (Audit Logs)"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "chat__agent_interactions_audit_logs": {
-			          "Target": {
-			            "Entity": "chat__agent_interactions_audit_logs"
-			          }
-			        },
-			        "chat__agent_interactions_audit_logs.beginner_users_latest": {
-			          "Target": {
-			            "Entity": "chat__agent_interactions_audit_logs.beginner_users_latest"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "chat__agent_interactions_audit_logs"
-			            },
-			            "Object": {
-			              "Role": "chat__agent_interactions_audit_logs.beginner_users_latest"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "chat__agent_interactions_audit_logs_have_beginner_users_latest"
 			        }
 			      ]
 			    },
@@ -71502,39 +69235,6 @@ cultureInfo en-US
 			          "State": "Generated",
 			          "Weight": 0.99,
 			          "ID": "chat__agent_interactions_audit_logs_have_productive_capacity__hours_per_user"
-			        }
-			      ]
-			    },
-			    "chat__agent_interactions_audit_logs_has_productive_capacity__hours_saved": {
-			      "Binding": {
-			        "ConceptualEntity": "Chat + Agent Interactions (Audit Logs)"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "chat__agent_interactions_audit_logs": {
-			          "Target": {
-			            "Entity": "chat__agent_interactions_audit_logs"
-			          }
-			        },
-			        "chat__agent_interactions_audit_logs.productive_capacity__hours_saved": {
-			          "Target": {
-			            "Entity": "chat__agent_interactions_audit_logs.productive_capacity__hours_saved"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "chat__agent_interactions_audit_logs"
-			            },
-			            "Object": {
-			              "Role": "chat__agent_interactions_audit_logs.productive_capacity__hours_saved"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "chat__agent_interactions_audit_logs_have_productive_capacity__hours_saved"
 			        }
 			      ]
 			    },
@@ -73155,39 +70855,6 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "agents_365_has_is_published": {
-			      "Binding": {
-			        "ConceptualEntity": "Agents 365"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "agents_365": {
-			          "Target": {
-			            "Entity": "agents_365"
-			          }
-			        },
-			        "agents_365.is_published": {
-			          "Target": {
-			            "Entity": "agents_365.is_published"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "agents_365"
-			            },
-			            "Object": {
-			              "Role": "agents_365.is_published"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "agents_365_have_is_published"
-			        }
-			      ]
-			    },
 			    "chat__agent_interactions_audit_logs_has_cowork_AI_tasks_per_user_per_week": {
 			      "Binding": {
 			        "ConceptualEntity": "Chat + Agent Interactions (Audit Logs)"
@@ -73617,39 +71284,6 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "chat__agent_interactions_audit_logs_has_autonomy_pattern": {
-			      "Binding": {
-			        "ConceptualEntity": "Chat + Agent Interactions (Audit Logs)"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "chat__agent_interactions_audit_logs": {
-			          "Target": {
-			            "Entity": "chat__agent_interactions_audit_logs"
-			          }
-			        },
-			        "chat__agent_interactions_audit_logs.autonomy_pattern": {
-			          "Target": {
-			            "Entity": "chat__agent_interactions_audit_logs.autonomy_pattern"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "chat__agent_interactions_audit_logs"
-			            },
-			            "Object": {
-			              "Role": "chat__agent_interactions_audit_logs.autonomy_pattern"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "chat__agent_interactions_audit_logs_have_autonomy_patterns"
-			        }
-			      ]
-			    },
 			    "human_time_estimate_has_chat__agent_interactions_audit_logs_agentassisted_mix_": {
 			      "Binding": {
 			        "ConceptualEntity": "Human Time Estimates"
@@ -73977,72 +71611,6 @@ cultureInfo en-US
 			          "State": "Generated",
 			          "Weight": 0.99,
 			          "ID": "chat__agent_interactions_audit_logs_have_AI_assisted_value_per_week"
-			        }
-			      ]
-			    },
-			    "chat__agent_interactions_audit_logs_has_headline_agent_skills_headline": {
-			      "Binding": {
-			        "ConceptualEntity": "Chat + Agent Interactions (Audit Logs)"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "chat__agent_interactions_audit_logs": {
-			          "Target": {
-			            "Entity": "chat__agent_interactions_audit_logs"
-			          }
-			        },
-			        "headline.agent_skills_headline": {
-			          "Target": {
-			            "Entity": "headline.agent_skills_headline"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "chat__agent_interactions_audit_logs"
-			            },
-			            "Object": {
-			              "Role": "headline.agent_skills_headline"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "chat__agent_interactions_audit_logs_have_agent_skills_headline"
-			        }
-			      ]
-			    },
-			    "chat__agent_interactions_audit_logs_has_headline_copilot_skills_headline": {
-			      "Binding": {
-			        "ConceptualEntity": "Chat + Agent Interactions (Audit Logs)"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "chat__agent_interactions_audit_logs": {
-			          "Target": {
-			            "Entity": "chat__agent_interactions_audit_logs"
-			          }
-			        },
-			        "headline.copilot_skills_headline": {
-			          "Target": {
-			            "Entity": "headline.copilot_skills_headline"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "chat__agent_interactions_audit_logs"
-			            },
-			            "Object": {
-			              "Role": "headline.copilot_skills_headline"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "chat__agent_interactions_audit_logs_have_copilot_skills_headline"
 			        }
 			      ]
 			    },
@@ -75135,39 +72703,6 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "chat__agent_interactions_audit_logs_has_new_expertise__hours_per_week": {
-			      "Binding": {
-			        "ConceptualEntity": "Chat + Agent Interactions (Audit Logs)"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "chat__agent_interactions_audit_logs": {
-			          "Target": {
-			            "Entity": "chat__agent_interactions_audit_logs"
-			          }
-			        },
-			        "chat__agent_interactions_audit_logs.new_expertise__hours_per_week": {
-			          "Target": {
-			            "Entity": "chat__agent_interactions_audit_logs.new_expertise__hours_per_week"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "chat__agent_interactions_audit_logs"
-			            },
-			            "Object": {
-			              "Role": "chat__agent_interactions_audit_logs.new_expertise__hours_per_week"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "chat__agent_interactions_audit_logs_have_new_expertise__hours_per_week"
-			        }
-			      ]
-			    },
 			    "human_time_estimate_has_chat__agent_interactions_audit_logs_efficiency__hours_saved": {
 			      "Binding": {
 			        "ConceptualEntity": "Human Time Estimates"
@@ -75399,72 +72934,6 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "human_time_estimate_has_chat__agent_interactions_audit_logs_efficiency__label": {
-			      "Binding": {
-			        "ConceptualEntity": "Human Time Estimates"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "human_time_estimate": {
-			          "Target": {
-			            "Entity": "human_time_estimate"
-			          }
-			        },
-			        "chat__agent_interactions_audit_logs.efficiency__label": {
-			          "Target": {
-			            "Entity": "chat__agent_interactions_audit_logs.efficiency__label"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "human_time_estimate"
-			            },
-			            "Object": {
-			              "Role": "chat__agent_interactions_audit_logs.efficiency__label"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "human_time_estimates_have_efficiency__label"
-			        }
-			      ]
-			    },
-			    "chat__agent_interactions_audit_logs_has_efficiency__label": {
-			      "Binding": {
-			        "ConceptualEntity": "Chat + Agent Interactions (Audit Logs)"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "chat__agent_interactions_audit_logs": {
-			          "Target": {
-			            "Entity": "chat__agent_interactions_audit_logs"
-			          }
-			        },
-			        "chat__agent_interactions_audit_logs.efficiency__label": {
-			          "Target": {
-			            "Entity": "chat__agent_interactions_audit_logs.efficiency__label"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "chat__agent_interactions_audit_logs"
-			            },
-			            "Object": {
-			              "Role": "chat__agent_interactions_audit_logs.efficiency__label"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "chat__agent_interactions_audit_logs_have_efficiency__label"
-			        }
-			      ]
-			    },
 			    "chat__agent_interactions_audit_logs_has_new_expertise__roles": {
 			      "Binding": {
 			        "ConceptualEntity": "Chat + Agent Interactions (Audit Logs)"
@@ -75660,39 +73129,6 @@ cultureInfo en-US
 			          "State": "Generated",
 			          "Weight": 0.99,
 			          "ID": "chat__agent_interactions_audit_logs_have_new_expertise__jobs"
-			        }
-			      ]
-			    },
-			    "chat__agent_interactions_audit_logs_has_headline_usage_mode_headline": {
-			      "Binding": {
-			        "ConceptualEntity": "Chat + Agent Interactions (Audit Logs)"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "chat__agent_interactions_audit_logs": {
-			          "Target": {
-			            "Entity": "chat__agent_interactions_audit_logs"
-			          }
-			        },
-			        "headline.usage_mode_headline": {
-			          "Target": {
-			            "Entity": "headline.usage_mode_headline"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "chat__agent_interactions_audit_logs"
-			            },
-			            "Object": {
-			              "Role": "headline.usage_mode_headline"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "chat__agent_interactions_audit_logs_have_usage_mode_headline"
 			        }
 			      ]
 			    },
@@ -77194,39 +74630,6 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "agents_365_has_return_rate_category": {
-			      "Binding": {
-			        "ConceptualEntity": "Agents 365"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "agents_365": {
-			          "Target": {
-			            "Entity": "agents_365"
-			          }
-			        },
-			        "agents_365.return_rate_category": {
-			          "Target": {
-			            "Entity": "agents_365.return_rate_category"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "agents_365"
-			            },
-			            "Object": {
-			              "Role": "agents_365.return_rate_category"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "agents_365_have_return_rate_categories"
-			        }
-			      ]
-			    },
 			    "agents_365_has_return_rate_value": {
 			      "Binding": {
 			        "ConceptualEntity": "Agents 365"
@@ -77389,39 +74792,6 @@ cultureInfo en-US
 			          "State": "Generated",
 			          "Weight": 0.99,
 			          "ID": "chat__agent_interactions_audit_logs_have_agent_return_rate"
-			        }
-			      ]
-			    },
-			    "agents_365_has_org_count": {
-			      "Binding": {
-			        "ConceptualEntity": "Agents 365"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "agents_365": {
-			          "Target": {
-			            "Entity": "agents_365"
-			          }
-			        },
-			        "agents_365.org_count": {
-			          "Target": {
-			            "Entity": "agents_365.org_count"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "agents_365"
-			            },
-			            "Object": {
-			              "Role": "agents_365.org_count"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "agents_365_have_org_counts"
 			        }
 			      ]
 			    },
@@ -81458,6 +78828,52 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
+			    "chat__agent_interactions_audit_logs_is_grounding_source": {
+			      "Binding": {
+			        "ConceptualEntity": "Chat + Agent Interactions (Audit Logs)"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "chat__agent_interactions_audit_logs": {
+			          "Target": {
+			            "Entity": "chat__agent_interactions_audit_logs"
+			          }
+			        },
+			        "chat__agent_interactions_audit_logs.grounding_source": {
+			          "Target": {
+			            "Entity": "chat__agent_interactions_audit_logs.grounding_source"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "DynamicAdjective": {
+			            "Subject": {
+			              "Role": "chat__agent_interactions_audit_logs"
+			            },
+			            "Adjective": {
+			              "Role": "chat__agent_interactions_audit_logs.grounding_source"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "grounding_sources_describe_chat__agent_interactions_audit_logs"
+			        },
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "chat__agent_interactions_audit_logs"
+			            },
+			            "Object": {
+			              "Role": "chat__agent_interactions_audit_logs.grounding_source"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "chat__agent_interactions_audit_logs_have_grounding_sources"
+			        }
+			      ]
+			    },
 			    "agent_turn_is_feedback_offered": {
 			      "Binding": {
 			        "ConceptualEntity": "Agent Turns"
@@ -81730,56 +79146,6 @@ cultureInfo en-US
 			          "State": "Generated",
 			          "Weight": 0.99,
 			          "ID": "some_agent_sessions_are_knowledge_answered_agent_sessions"
-			        }
-			      ]
-			    },
-			    "agents_365_is_published": {
-			      "Binding": {
-			        "ConceptualEntity": "Agents 365"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "agents_365": {
-			          "Target": {
-			            "Entity": "agents_365"
-			          }
-			        },
-			        "agents_365.is_published": {
-			          "Target": {
-			            "Entity": "agents_365.is_published"
-			          }
-			        }
-			      },
-			      "Conditions": [
-			        {
-			          "Target": {
-			            "Role": "agents_365.is_published"
-			          },
-			          "Operator": "Equals",
-			          "Value": {
-			            "Boolean": [
-			              true
-			            ]
-			          }
-			        }
-			      ],
-			      "Phrasings": [
-			        {
-			          "Adjective": {
-			            "Subject": {
-			              "Role": "agents_365"
-			            },
-			            "Adjectives": [
-			              {
-			                "published": {
-			                  "State": "Generated"
-			                }
-			              }
-			            ]
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "some_agents_365_are_published_agents_365"
 			        }
 			      ]
 			    },
@@ -82227,69 +79593,69 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "credit_consumption_agent_has_billing_agents_with_credits": {
+			    "chat__agent_interactions_audit_logs_app_identity_publisher_id_publish_chat__agent_interactions_audit_logs": {
 			      "Binding": {
-			        "ConceptualEntity": "Credit Consumption (Agent)"
+			        "ConceptualEntity": "Chat + Agent Interactions (Audit Logs)"
 			      },
 			      "State": "Generated",
 			      "Roles": {
-			        "credit_consumption_agent": {
+			        "chat__agent_interactions_audit_logs.app_identity_publisher_id": {
 			          "Target": {
-			            "Entity": "credit_consumption_agent"
+			            "Entity": "chat__agent_interactions_audit_logs.app_identity_publisher_id"
 			          }
 			        },
-			        "credit_consumption_agent.billing_agents_with_credits": {
+			        "chat__agent_interactions_audit_logs": {
 			          "Target": {
-			            "Entity": "credit_consumption_agent.billing_agents_with_credits"
+			            "Entity": "chat__agent_interactions_audit_logs"
 			          }
 			        }
 			      },
 			      "Phrasings": [
 			        {
-			          "Attribute": {
+			          "Verb": {
 			            "Subject": {
-			              "Role": "credit_consumption_agent"
+			              "Role": "chat__agent_interactions_audit_logs.app_identity_publisher_id"
 			            },
+			            "Verbs": [
+			              {
+			                "publish": {
+			                  "State": "Generated"
+			                }
+			              }
+			            ],
 			            "Object": {
-			              "Role": "credit_consumption_agent.billing_agents_with_credits"
+			              "Role": "chat__agent_interactions_audit_logs"
 			            }
 			          },
 			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "credit_consumption_agent_have_billing_agents_with_credits"
-			        }
-			      ]
-			    },
-			    "credit_consumption_user_has_billing_org_credit_share_": {
-			      "Binding": {
-			        "ConceptualEntity": "Credit Consumption (User)"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "credit_consumption_user": {
-			          "Target": {
-			            "Entity": "credit_consumption_user"
-			          }
+			          "Weight": 0.75,
+			          "ID": "app_identity_publisher_ids_publish_chat__agent_interactions_audit_logs"
 			        },
-			        "credit_consumption_user.billing_org_credit_share_": {
-			          "Target": {
-			            "Entity": "credit_consumption_user.billing_org_credit_share_"
-			          }
-			        }
-			      },
-			      "Phrasings": [
 			        {
 			          "Attribute": {
 			            "Subject": {
-			              "Role": "credit_consumption_user"
+			              "Role": "chat__agent_interactions_audit_logs.app_identity_publisher_id"
 			            },
 			            "Object": {
-			              "Role": "credit_consumption_user.billing_org_credit_share_"
+			              "Role": "chat__agent_interactions_audit_logs"
 			            }
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "credit_consumption_user_have_billing_org_credit_share_"
+			          "ID": "app_identity_publisher_ids_have_chat__agent_interactions_audit_logs"
+			        },
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "chat__agent_interactions_audit_logs"
+			            },
+			            "Object": {
+			              "Role": "chat__agent_interactions_audit_logs.app_identity_publisher_id"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "chat__agent_interactions_audit_logs_have_app_identity_publisher_ids"
 			        }
 			      ]
 			    },
@@ -82557,6 +79923,39 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
+			    "agent_performance_has_conversation_summary": {
+			      "Binding": {
+			        "ConceptualEntity": "Agent Performance"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "agent_performance": {
+			          "Target": {
+			            "Entity": "agent_performance"
+			          }
+			        },
+			        "agent_performance.conversation_summary": {
+			          "Target": {
+			            "Entity": "agent_performance.conversation_summary"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "agent_performance"
+			            },
+			            "Object": {
+			              "Role": "agent_performance.conversation_summary"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "agent_performances_have__conversation_summary"
+			        }
+			      ]
+			    },
 			    "chat__agent_interactions_audit_logs_has_calendar": {
 			      "Binding": {
 			        "ConceptualEntity": "Chat + Agent Interactions (Audit Logs)"
@@ -82678,17 +80077,17 @@ cultureInfo en-US
 			          },
 			          "Nouns": [
 			            {
-			              "Breakdown": {
-			                "State": "Generated"
-			              }
-			            },
-			            {
 			              "Activity Breakdown": {
 			                "State": "Generated"
 			              }
 			            },
 			            {
 			              "Agent Task Breakdown": {
+			                "State": "Generated"
+			              }
+			            },
+			            {
+			              "Breakdown": {
 			                "State": "Generated"
 			              }
 			            }

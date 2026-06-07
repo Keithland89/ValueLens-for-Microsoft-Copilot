@@ -12,7 +12,17 @@ The recommended path for tenants with Fabric capacity (or Premium / PPU). All th
 | [`notebooks/Copilot_Audit_Log_Direct_Ingester.ipynb`](notebooks/Copilot_Audit_Log_Direct_Ingester.ipynb) | Calls the Graph audit-log API → `dbo.copilot_interactions_parsed` |
 | [`notebooks/Copilot_Licensed_Users_Direct_Ingester.ipynb`](notebooks/Copilot_Licensed_Users_Direct_Ingester.ipynb) | Calls the Graph M365 active-user report → `dbo.copilot_licensed_users` |
 | [`notebooks/Copilot_Org_Data_Direct_Ingester.ipynb`](notebooks/Copilot_Org_Data_Direct_Ingester.ipynb) | Calls Graph `/users` (with manager expand) → `dbo.copilot_org_data` |
+| [`notebooks/Copilot_Agent_Transcript_Parser.ipynb`](notebooks/Copilot_Agent_Transcript_Parser.ipynb) | *(Optional)* Parses Dataverse conversation transcripts → the 6 agent tables (sessions, turns, errors, sub-agents, catalogue, performance) |
+| [`notebooks/Copilot_Credit_Consumption_Ingester.ipynb`](notebooks/Copilot_Credit_Consumption_Ingester.ipynb) | *(Optional)* Lands the Power Platform message-credit CSV exports → 3 billing tables. **See the plain-language [`CREDIT-CONSUMPTION-SETUP.md`](CREDIT-CONSUMPTION-SETUP.md).** |
+| [`notebooks/Copilot_Agent365_Lander.ipynb`](notebooks/Copilot_Agent365_Lander.ipynb) | *(Optional)* Lands the Agents 365 export → `agents_365` |
+| [`flows/`](flows/) | *(Optional)* Power Automate flows that auto-land **export-only** sources (credit consumption, product feedback) into the Lakehouse. See [`flows/README.md`](flows/README.md). |
+| [`CREDIT-CONSUMPTION-SETUP.md`](CREDIT-CONSUMPTION-SETUP.md) | **Non-technical, step-by-step** guide to switching on the optional credit-consumption billing pages. |
 | [`archive/`](archive/) | The legacy two-stage flow (PowerShell → CSVs → Parser/Loader notebooks). Kept for migration reference only. See [`archive/README.md`](archive/README.md). |
+
+> **Optional sources (Dataverse agents, credit consumption, product feedback, Agents 365)** are all
+> gated by `Enable_*` toggle parameters and degrade to empty tables when absent — the core
+> dashboard works without any of them. See [`../shared/docs/OPTIONAL-SOURCES.md`](../shared/docs/OPTIONAL-SOURCES.md).
+> For the billing pages specifically, follow [`CREDIT-CONSUMPTION-SETUP.md`](CREDIT-CONSUMPTION-SETUP.md).
 
 ## When to use this path
 

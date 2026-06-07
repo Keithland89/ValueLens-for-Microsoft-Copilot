@@ -1089,34 +1089,6 @@
         },
         "type": "Advanced",
         "howCreated": "User"
-      },
-      {
-        "name": "8f097f8f7a1eb3684960",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "Agent Performance"
-              }
-            },
-            "Property": "Total Conversations"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "918aad7d9097c4069e1b",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "Agent Performance"
-              }
-            },
-            "Property": "Topic (resolved)"
-          }
-        },
-        "type": "Categorical"
       }
     ]
   }

@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
   "name": "f589981645025ebe7546",
   "position": {
     "x": 351.52109579775089,
@@ -466,7 +466,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Sized by % of users accessing each'"
+                  "Value": "'Sized by % of users accessing each from AI'"
                 }
               }
             },

@@ -1717,36 +1717,6 @@ table 'Chat + Agent Interactions (Audit Logs)'
 
 		annotation SummarizationSetBy = Automatic
 
-	/// Internal vs external answer grounding for every Copilot interaction (Chat and
-	/// agents): External (Web) when the BingWebSearch plugin fired, Internal when
-	/// enterprise resources/contexts were accessed, Mixed when both, else Ungrounded.
-	/// Respects the page's Licensed/Unlicensed and Agent slicers (column on this table).
-	column 'Grounding Source' =
-			VAR plugin =
-			    LOWER(
-			        COALESCE('Chat + Agent Interactions (Audit Logs)'[AISystemPlugin_Id], "") & " " &
-			        COALESCE('Chat + Agent Interactions (Audit Logs)'[AISystemPlugin_Name], "")
-			    )
-			VAR usedWeb = CONTAINSSTRING(plugin, "bing") || CONTAINSSTRING(plugin, "web")
-			VAR usedInternal =
-			    'Chat + Agent Interactions (Audit Logs)'[Resource_Count] > 0
-			        || (
-			            NOT ISBLANK('Chat + Agent Interactions (Audit Logs)'[Context_Type])
-			                && 'Chat + Agent Interactions (Audit Logs)'[Context_Type] <> ""
-			        )
-			RETURN
-			    SWITCH(
-			        TRUE(),
-			        usedWeb && usedInternal, "Mixed (Internal+Web)",
-			        usedWeb, "External (Web)",
-			        usedInternal, "Internal",
-			        "Ungrounded"
-			    )
-		lineageTag: a1b2c3d4-grnd-0001-0001-000000000001
-		summarizeBy: none
-
-		annotation SummarizationSetBy = Automatic
-
 	column 'Agent Last Used Date' =
 			LOOKUPVALUE(
 			    AgentMetrics[AgentLastUsedDate],
@@ -2511,6 +2481,44 @@ table 'Chat + Agent Interactions (Audit Logs)'
 		isHidden
 		lineageTag: 79b4407c-bb2b-4fee-a270-ce9d1e72b60f
 		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Internal vs external answer grounding for every Copilot interaction (Chat and
+	/// agents): External (Web) when the BingWebSearch plugin fired, Internal when
+	/// enterprise resources/contexts were accessed, Mixed when both, else Ungrounded.
+	/// Respects the page's Licensed/Unlicensed and Agent slicers (column on this table).
+	column 'Grounding Source' =
+			VAR plugin =
+			    LOWER(
+			        COALESCE('Chat + Agent Interactions (Audit Logs)'[AISystemPlugin_Id], "") & " " &
+			        COALESCE('Chat + Agent Interactions (Audit Logs)'[AISystemPlugin_Name], "")
+			    )
+			VAR usedWeb = CONTAINSSTRING(plugin, "bing") || CONTAINSSTRING(plugin, "web")
+			VAR usedInternal =
+			    'Chat + Agent Interactions (Audit Logs)'[Resource_Count] > 0
+			        || (
+			            NOT ISBLANK('Chat + Agent Interactions (Audit Logs)'[Context_Type])
+			                && 'Chat + Agent Interactions (Audit Logs)'[Context_Type] <> ""
+			        )
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        usedWeb && usedInternal, "Mixed (Internal+Web)",
+			        usedWeb, "External (Web)",
+			        usedInternal, "Internal",
+			        "Ungrounded"
+			    )
+		lineageTag: a1b2c3d4-grnd-0001-0001-000000000001
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column AppIdentity_PublisherId
+		dataType: string
+		lineageTag: 929b2ee7-53ac-4655-81c5-588f117f6953
+		summarizeBy: none
+		sourceColumn: AppIdentity_PublisherId
 
 		annotation SummarizationSetBy = Automatic
 

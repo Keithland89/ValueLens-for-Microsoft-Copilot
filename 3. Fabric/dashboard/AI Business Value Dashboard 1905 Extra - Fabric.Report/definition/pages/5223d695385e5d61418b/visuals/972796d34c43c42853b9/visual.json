@@ -20,13 +20,13 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Credit Consumption (User)"
+                      "Entity": "Credit Consumption (Agent)"
                     }
                   },
                   "Property": "Agent_Name"
                 }
               },
-              "queryRef": "Credit Consumption (User).Agent_Name",
+              "queryRef": "Credit Consumption (Agent).Agent_Name",
               "nativeQueryRef": "Agent_Name1",
               "active": true
             }
@@ -36,23 +36,18 @@
           "projections": [
             {
               "field": {
-                "Aggregation": {
+                "Measure": {
                   "Expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "Credit Consumption (User)"
-                        }
-                      },
-                      "Property": "Billable_credit_used"
+                    "SourceRef": {
+                      "Entity": "Credit Consumption (Agent)"
                     }
                   },
-                  "Function": 0
+                  "Property": "Total Consumed Credits"
                 }
               },
-              "queryRef": "Sum(Credit Consumption (User).Billable_credit_used)",
-              "nativeQueryRef": "Billable Credits Used",
-              "displayName": "Billable Credits Used"
+              "queryRef": "Credit Consumption (Agent).Total Consumed Credits",
+              "nativeQueryRef": "Total Consumed Credits",
+              "displayName": "Total Consumed Credits"
             }
           ]
         }

@@ -189,7 +189,7 @@
             "filters": {
               "byExpr": [
                 {
-                  "name": "5c7626410db5d2a75e37",
+                  "name": "16a1dcf3d00626cc24a1",
                   "type": "Categorical",
                   "expression": {
                     "Column": {
@@ -204,7 +204,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "fc28ca9447b26ca5156e",
+                  "name": "8c873690316a1514b9b9",
                   "type": "Categorical",
                   "expression": {
                     "Column": {
@@ -219,7 +219,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "f0eb9b4a7a00178ae797",
+                  "name": "0e90f420669e9281e3ae",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -234,7 +234,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "de852393a00131e82710",
+                  "name": "bad113c00c1d7d7100c6",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -249,7 +249,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "895b4b2fd50ad150a2c8",
+                  "name": "eeeb1ebf28e9404cb022",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -347,11 +347,54 @@
               }
             }
           },
+          "026e0bf908a4207b4816": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "8f50d58f1c3950e4000d",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Chat + Agent Interactions (Audit Logs)"
+                        }
+                      },
+                      "Property": "AI Tasks"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "59812d7c705aeaab97d8",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Chat + Agent Interactions (Audit Logs)"
+                        }
+                      },
+                      "Property": "AppHost"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "advancedSlicerVisual",
+              "objects": {},
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
           "05ec0ae12ddaa00e2430": {
             "filters": {
               "byExpr": [
                 {
-                  "name": "6d6185394ba68a3071b9",
+                  "name": "f2ab802e12914d8e0a33",
                   "type": "Categorical",
                   "expression": {
                     "Column": {
@@ -406,7 +449,7 @@
             "filters": {
               "byExpr": [
                 {
-                  "name": "fbf3434f4493ce13e287",
+                  "name": "96b3fcd0aa6caa578a67",
                   "type": "Advanced",
                   "expression": {
                     "Column": {
@@ -464,7 +507,7 @@
             "filters": {
               "byExpr": [
                 {
-                  "name": "bcd8b1343dad56a7a40d",
+                  "name": "d2b502d9a10b36673a2d",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -601,7 +644,7 @@
             "filters": {
               "byExpr": [
                 {
-                  "name": "c7b3f3b9097008893deb",
+                  "name": "58e5d072346360a6d71b",
                   "type": "Categorical",
                   "expression": {
                     "Column": {
@@ -616,7 +659,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "36d76e931379971da727",
+                  "name": "bbe7b5807d5844951dc2",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -780,7 +823,7 @@
                   "howCreated": 1
                 },
                 {
-                  "name": "820f791cb6270b12b2d9",
+                  "name": "2455b018a7c0a09173a4",
                   "type": "Categorical",
                   "expression": {
                     "Column": {
@@ -835,7 +878,7 @@
             "filters": {
               "byExpr": [
                 {
-                  "name": "666ab1544e85ed5aba03",
+                  "name": "c7b620609d070e798c08",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -866,7 +909,7 @@
             "filters": {
               "byExpr": [
                 {
-                  "name": "7890651629d280745653",
+                  "name": "095e17a8438a5a53e933",
                   "type": "Categorical",
                   "expression": {
                     "Column": {
@@ -881,7 +924,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "bfee4ab33c2109a9326d",
+                  "name": "d8349d28013de5adda78",
                   "type": "Categorical",
                   "expression": {
                     "Column": {
@@ -896,7 +939,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "198d164ca60ad423e13e",
+                  "name": "5f7d2fec7144cea7ae7a",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -1081,7 +1124,7 @@
                   "howCreated": 1
                 },
                 {
-                  "name": "51c8c6a28c593941a630",
+                  "name": "5c51cc8f7301009db7b8",
                   "type": "Categorical",
                   "expression": {
                     "Column": {
@@ -1096,7 +1139,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "8285bb033070a931ad2d",
+                  "name": "d5383f60aa8c51c50154",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -1160,7 +1203,7 @@
             "filters": {
               "byExpr": [
                 {
-                  "name": "bfe8803398e422265452",
+                  "name": "687a9fd57082964c2153",
                   "type": "Advanced",
                   "expression": {
                     "Column": {
@@ -1218,7 +1261,7 @@
             "filters": {
               "byExpr": [
                 {
-                  "name": "862a78a524935ca3e1de",
+                  "name": "78ebaf5417b50de03a47",
                   "type": "Categorical",
                   "expression": {
                     "Column": {
@@ -1285,7 +1328,7 @@
             "filters": {
               "byExpr": [
                 {
-                  "name": "5474510b25e9ba24e705",
+                  "name": "2c2d9967a1b212d3b7ac",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -1319,7 +1362,7 @@
             "filters": {
               "byExpr": [
                 {
-                  "name": "f7469710c100bdb0a6ee",
+                  "name": "2e0bed35644d50000809",
                   "type": "Categorical",
                   "expression": {
                     "Column": {
@@ -1380,7 +1423,7 @@
             "filters": {
               "byExpr": [
                 {
-                  "name": "76b6405a50cdadd5e586",
+                  "name": "e432d15c9082bda41db2",
                   "type": "Categorical",
                   "expression": {
                     "Column": {
@@ -1395,7 +1438,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "d9109b665319beeeb00e",
+                  "name": "c99ae9fd38000bbee373",
                   "type": "Categorical",
                   "expression": {
                     "Column": {
@@ -1410,7 +1453,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "da15b040e3760c06b496",
+                  "name": "5cd0f47b171d77d4bc02",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -1464,7 +1507,7 @@
             "filters": {
               "byExpr": [
                 {
-                  "name": "890c2284883ba867b7cb",
+                  "name": "38c44f136298043a4be2",
                   "type": "Categorical",
                   "expression": {
                     "Column": {
@@ -1519,7 +1562,7 @@
             "filters": {
               "byExpr": [
                 {
-                  "name": "4e0a51a10090b1ed69e2",
+                  "name": "e52381a0c2d6b7070374",
                   "type": "Categorical",
                   "expression": {
                     "Column": {
@@ -1574,7 +1617,7 @@
             "filters": {
               "byExpr": [
                 {
-                  "name": "b02cfa5f3aaeacb8ce85",
+                  "name": "37b90468749d0171d524",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -1589,7 +1632,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "5b6729fc717779a505ab",
+                  "name": "9c5fda928c3148d80331",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -1604,7 +1647,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "e5d490c256e410c9806e",
+                  "name": "bac5898618ca5db733dc",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -1619,7 +1662,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "e71f50c3e0e752039c3b",
+                  "name": "3d07ec75a0ab917de447",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -1643,11 +1686,20 @@
               }
             }
           },
+          "db0ba9744a20999024e4": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {},
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
           "ddbb2fbb360e56291e47": {
             "filters": {
               "byExpr": [
                 {
-                  "name": "3aa94e40bd07975cbd09",
+                  "name": "0093abf6340b4319ded9",
                   "type": "Categorical",
                   "expression": {
                     "Column": {
@@ -1662,7 +1714,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "4089a20a0b364bae0ac7",
+                  "name": "21a0232bcedc1ba0d260",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -1677,7 +1729,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "76e5569b030db28a061d",
+                  "name": "dc2fa111029028b1000b",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -1769,7 +1821,7 @@
                   "howCreated": 1
                 },
                 {
-                  "name": "259c712035adb890036d",
+                  "name": "ebd94f483855e401ace3",
                   "type": "Categorical",
                   "expression": {
                     "Column": {
@@ -1784,7 +1836,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "eb1fbe7d910018be49a7",
+                  "name": "f74d5a1c03dc8c070861",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -1799,7 +1851,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "0251bd0e600a01017200",
+                  "name": "2be1900055410070bd1d",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -1841,7 +1893,7 @@
             "filters": {
               "byExpr": [
                 {
-                  "name": "77a03ff307a5897ec56e",
+                  "name": "36f7541b9d043c237830",
                   "type": "Categorical",
                   "expression": {
                     "Column": {
@@ -1943,7 +1995,7 @@
                   "howCreated": 1
                 },
                 {
-                  "name": "492d7bd1d6200a88c935",
+                  "name": "3bca56ef1e20437d10a8",
                   "type": "Categorical",
                   "expression": {
                     "Column": {
@@ -1958,7 +2010,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "1868b8eb460d2413e52a",
+                  "name": "1d8a2240b16e566d3357",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -1973,7 +2025,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "ab79c94e1ed7050cc391",
+                  "name": "f9951cbb78321ad656e0",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -2122,7 +2174,7 @@
             "filters": {
               "byExpr": [
                 {
-                  "name": "bb791a66466770dd31c2",
+                  "name": "66a7a64629a010121c19",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -2137,7 +2189,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "8d255ab270207801ac1a",
+                  "name": "1c22743150b80667b440",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -2152,7 +2204,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "26fc36575641b3e83913",
+                  "name": "c5f995cf7b181819858b",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -2180,7 +2232,7 @@
             "filters": {
               "byExpr": [
                 {
-                  "name": "480f7a4371e75224ea52",
+                  "name": "bab8d2ce9dbeb521921e",
                   "type": "Categorical",
                   "expression": {
                     "Column": {
@@ -2231,20 +2283,26 @@
               }
             }
           },
-          "db0ba9744a20999024e4": {
-            "singleVisual": {
-              "visualType": "textbox",
-              "objects": {},
-              "display": {
-                "mode": "hidden"
-              }
-            }
-          },
-          "026e0bf908a4207b4816": {
+          "ff2e9edf001a8c7cbc53": {
             "filters": {
               "byExpr": [
                 {
-                  "name": "67eada8ac24a39e5109a",
+                  "name": "c38f22e16460467245b6",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Chat + Agent Interactions (Audit Logs)"
+                        }
+                      },
+                      "Property": "Grounding Source"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "9024b1c36070b0b5a2c7",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -2257,27 +2315,26 @@
                     }
                   },
                   "howCreated": 0
-                },
-                {
-                  "name": "d17b76512c65e279e603",
-                  "type": "Categorical",
-                  "expression": {
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "donutChart",
+              "objects": {},
+              "activeProjections": {
+                "Category": [
+                  {
                     "Column": {
                       "Expression": {
                         "SourceRef": {
                           "Entity": "Chat + Agent Interactions (Audit Logs)"
                         }
                       },
-                      "Property": "AppHost"
+                      "Property": "Grounding Source"
                     }
-                  },
-                  "howCreated": 0
-                }
-              ]
-            },
-            "singleVisual": {
-              "visualType": "advancedSlicerVisual",
-              "objects": {},
+                  }
+                ]
+              },
               "display": {
                 "mode": "hidden"
               }

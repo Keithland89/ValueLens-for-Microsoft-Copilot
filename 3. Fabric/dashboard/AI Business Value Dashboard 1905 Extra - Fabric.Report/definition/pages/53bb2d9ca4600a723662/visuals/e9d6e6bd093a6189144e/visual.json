@@ -174,7 +174,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'WHAT CAN BE IMPROVED?'"
+                  "Value": "'FEEDBACK WORDCLOUD'"
                 }
               }
             },

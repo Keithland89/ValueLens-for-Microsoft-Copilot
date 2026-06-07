@@ -1,7 +1,7 @@
 /// Fabric Lakehouse/Warehouse SQL connection string (the SQL analytics endpoint).
 /// Find it in Fabric: open the Lakehouse → Settings → SQL analytics endpoint → Connection string,
 /// e.g. xxxxxxxxxxxx.datawarehouse.fabric.microsoft.com
-expression 'Fabric SQL Endpoint' = "REPLACE-WITH-YOUR-ENDPOINT.datawarehouse.fabric.microsoft.com" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+expression 'Fabric SQL Endpoint' = "ekozrqaqpe7uzfbn7zp2lqr3ke-zilaekog6zpejjsartknneu53y.datawarehouse.fabric.microsoft.com" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
 	lineageTag: 1a2b3c4d-fab1-4001-8001-000000000001
 
 	annotation PBI_NavigationStepName = Navigation
@@ -9,7 +9,7 @@ expression 'Fabric SQL Endpoint' = "REPLACE-WITH-YOUR-ENDPOINT.datawarehouse.fab
 	annotation PBI_ResultType = Text
 
 /// Name of the Lakehouse (or Warehouse) that holds the Delta tables written by the four Fabric notebooks.
-expression 'Lakehouse Name' = "REPLACE-WITH-YOUR-LAKEHOUSE-NAME" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+expression 'Lakehouse Name' = "CopilotAdoptionLake" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
 	lineageTag: 1a2b3c4d-fab1-4002-8002-000000000002
 
 	annotation PBI_NavigationStepName = Navigation
