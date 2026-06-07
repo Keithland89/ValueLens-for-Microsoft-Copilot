@@ -26,9 +26,9 @@
         "metadata": { "description": "Only emails whose subject contains this text are processed. Set this to whatever subject the feedback export is mailed under." }
       },
       "FilePrefix": {
-        "defaultValue": "",
+        "defaultValue": "feedback",
         "type": "String",
-        "metadata": { "description": "Optional. If set, only .csv attachments whose file name STARTS WITH this (case-insensitive) are landed. Leave blank to accept any .csv on a subject-matched email." }
+        "metadata": { "description": "Only .csv attachments whose file name STARTS WITH this (case-insensitive) are landed. Default 'feedback' matches the MAC export 'feedback.csv' / 'feedback*.csv'. Set blank to accept any .csv on a subject-matched email." }
       },
       "TenantId":     { "defaultValue": "<tenant-guid>", "type": "String" },
       "ClientId":     { "defaultValue": "<app-reg-client-id>", "type": "String" },
