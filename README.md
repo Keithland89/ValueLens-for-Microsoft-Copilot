@@ -30,11 +30,12 @@ data gets in and how it refreshes.
 
 | Path | Best when… | What it gives you |
 |---|---|---|
-| **[1. SharePoint](1.%20SharePoint/)** *(start here)* | Power BI Pro, **no Fabric**. You want scheduled refresh without a gateway. | A script drops one CSV per source into SharePoint; the template refreshes from those URLs. Covers most deployments. |
-| **[2. Fabric](2.%20Fabric/)** | You have **Fabric capacity**. High volume / multi‑year history. | Notebooks parse the data into a Lakehouse → best performance, sub‑second dashboard, optional billing & feedback sources. |
+| **[1. Fabric](1.%20Fabric/)** *(recommended)* | You have **Fabric capacity** (or Premium / PPU) — or any Spark + SQL stack. | Notebooks parse the data into a Lakehouse → best performance, sub‑second dashboard, and the optional billing & feedback pages. The same notebooks + template also run on Databricks, Synapse, or Azure SQL. |
+| **[2. SharePoint](2.%20SharePoint/)** | Power BI Pro, **no Fabric** / Premium. You want scheduled refresh without a gateway. | A script drops one CSV per source into SharePoint; the template refreshes from those URLs. The simplest core deployment. |
 
-**Not sure?** Start with **SharePoint** — it covers ~80% of cases without any Fabric setup. Move to
-**Fabric** when volume grows or you want the optional billing/feedback pages.
+**Not sure?** **Fabric** is the recommended path — it scales furthest and unlocks the optional
+billing/feedback pages. No Fabric or Premium capacity? **SharePoint** runs the core dashboard on just
+Power BI Pro.
 
 > Each path folder has its **own README** with the exact, step‑by‑step setup. This page is just the
 > map.
@@ -62,7 +63,7 @@ baseline** → summed to **Hours Saved** → × hourly rate = **Assisted Value**
 | Licensed users | ✅ Core | Microsoft 365 Admin Center |
 | Org data (department / function) | ✅ Core | Microsoft Entra |
 | Agents 365 | ⬜ Optional | Agent 365 export (Fabric path) |
-| Credit consumption (billing) | ⬜ Optional | Power Platform Admin Center export → see [`2. Fabric/CREDIT-CONSUMPTION-SETUP.md`](2.%20Fabric/CREDIT-CONSUMPTION-SETUP.md) |
+| Credit consumption (billing) | ⬜ Optional | Power Platform Admin Center export → see [`1. Fabric/CREDIT-CONSUMPTION-SETUP.md`](1.%20Fabric/CREDIT-CONSUMPTION-SETUP.md) |
 | Product feedback | ⬜ Optional | M365 Admin Center → Health → Product Feedback export |
 
 Optional sources are gated by `Enable_*` toggles — the dashboard works fine without them. The exact
