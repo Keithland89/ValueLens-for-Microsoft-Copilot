@@ -63,7 +63,7 @@ Open `AI Business Value Dashboard - Fabric.pbit` in Power BI Desktop and supply 
 | Parameter | Required? | Value |
 |---|---|---|
 | **Fabric SQL Endpoint** | Yes | `<workspace-guid>.datawarehouse.fabric.microsoft.com` |
-| **Lakehouse Database** | Yes | Your Lakehouse name (e.g. `CopilotAdoptionLake`) |
+| **Lakehouse Name** | Yes | Your Lakehouse name (e.g. `CopilotAdoptionLake`) |
 | `Enable_Dataverse` | Optional | `Include` to load agent tables, else `Exclude` |
 | `Enable_ProductFeedback` | Optional | `Include` to load `user_feedback`, else `Exclude` |
 | `Enable_Agent365` | Optional | `Include` to load `agents_365`, else `Exclude` |
@@ -103,7 +103,7 @@ The two core artifacts are deliberately portable:
   those tables - Fabric Lakehouse or Warehouse, Databricks SQL Warehouse, Synapse SQL pool, Azure SQL.
 
 To retarget, change just two things: point the notebooks' `OUTPUT_TABLE` at your database, and set the
-template's two parameters (**Fabric SQL Endpoint** = your host, **Lakehouse Database** = your database).
+template's two parameters (**Fabric SQL Endpoint** = your host, **Lakehouse Name** = your database).
 The template only needs the three tables - `copilot_interactions_parsed`, `copilot_licensed_users`,
 `copilot_org_data` - to exist in that one database with their expected schema. Already producing parsed
 CSVs upstream? The [`../2. SharePoint/`](../2.%20SharePoint/) path consumes them with no Spark step.
