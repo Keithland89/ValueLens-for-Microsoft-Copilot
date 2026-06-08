@@ -11,8 +11,8 @@ SharePoint library, and Power BI Service refreshes straight from there — **no 
 | Item | Purpose |
 |---|---|
 | `AI Business Value Dashboard - SharePoint.pbit` | **The one template.** Open in Power BI Desktop, point each parameter at your SharePoint CSV, publish. |
-| `scripts/` | The PowerShell extractors. `*-AppReg.ps1` = unattended (for scheduling); lower‑case names = interactive (admin runs by hand). See [`scripts/README.md`](scripts/README.md). |
-| `azure/` | Optional Bicep + Azure Automation runbooks to run the scripts on a schedule. See [`azure/README.md`](azure/README.md). |
+| `scripts/` | The PowerShell extractors + one‑time setup helpers. Run them however you like (manually, Task Scheduler, GitHub Actions). See [`scripts/README.md`](scripts/README.md). |
+| `azure-automation/` | *Optional.* Bicep + runbooks to host the scripts on a schedule in Azure Automation. See [`azure-automation/README.md`](azure-automation/README.md). |
 
 ## How it works
 
@@ -36,7 +36,7 @@ stray‑file errors that folder‑based refreshes are prone to.
 | Copilot interactions (audit logs) | ✅ Core | `CreateAuditLogQuery-AppReg.ps1` → `GetCopilotInteractions-SP-AppReg.ps1` | `copilot_interactions.csv` |
 | Licensed users | ✅ Core | `GetCopilotUsers-SP-AppReg.ps1` | `copilot_licensed_users.csv` |
 | Org data (department / manager) | ✅ Core | `Get-EntraOrgData-SP-AppReg.ps1` | `org_data.csv` |
-| Agents 365 | ⬜ Optional | `scripts/interactive/Get-Agents365Registry.ps1` | (your export) |
+| Agents 365 | ⬜ Optional | `scripts/Get-Agents365Registry.ps1` | (your export) |
 | Agent transcripts (Copilot Studio) | ⬜ Optional | parsed transcripts folder/CSV | (your export) |
 | Credit consumption (billing) | ⬜ Optional | Power Platform Admin Center export | the 3 `EntitlementConsumption…` CSVs |
 | Product feedback | ⬜ Optional | M365 Admin Center → Health → Product Feedback export | `feedback.csv` |
@@ -56,7 +56,7 @@ at it, same as the core files.)
 2. **Pick a SharePoint site** for the CSVs (note the host, e.g. `contoso.sharepoint.com`, and library path).
 3. **Grant the app write access to just that site** (`Sites.Selected`):
    ```powershell
-   cd scripts/provisioning
+   cd scripts
    .\ProvisionSiteAccess-SP-AppReg.ps1 -TenantId "<tenant-id>" -SiteHost "<tenant>.sharepoint.com" `
        -AppClientId "<client-id>" -AppDisplayName "<app-name>"
    ```
@@ -72,7 +72,7 @@ In order (≈30‑min gap after the create step while Purview builds the query):
 4. `GetCopilotUsers-SP-AppReg.ps1` → `copilot_licensed_users.csv`
 5. `Get-EntraOrgData-SP-AppReg.ps1` → `org_data.csv`
 
-To automate, see [`azure/README.md`](azure/README.md) (Bicep + Automation Account, managed identity).
+To automate, see [`azure-automation/README.md`](azure-automation/README.md) (Bicep + Automation Account, managed identity).
 
 ### 3. Connect the template
 
