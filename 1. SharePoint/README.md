@@ -37,14 +37,13 @@ stray‑file errors that folder‑based refreshes are prone to.
 | Licensed users | ✅ Core | `GetCopilotUsers-SP-AppReg.ps1` | `copilot_licensed_users.csv` |
 | Org data (department / manager) | ✅ Core | `Get-EntraOrgData-SP-AppReg.ps1` | `org_data.csv` |
 | Agents 365 | ⬜ Optional | `scripts/Get-Agents365Registry.ps1` | (your export) |
-| Agent transcripts (Copilot Studio) | ⬜ Optional | parsed transcripts folder/CSV | (your export) |
-| Credit consumption (billing) | ⬜ Optional | Power Platform Admin Center export | the 3 `EntitlementConsumption…` CSVs |
-| Product feedback | ⬜ Optional | M365 Admin Center → Health → Product Feedback export | `feedback.csv` |
 
-**Optional sources just add pages.** Leave their parameters blank and those pages stay empty — the
-core dashboard works without them. (Credit consumption and product feedback are **export‑only** in
-Microsoft’s portals — there is no API — so you upload the CSV to SharePoint and point the parameter
-at it, same as the core files.)
+This is the **original, core dashboard** — three required sources plus optional Agents 365. Leave the
+Agents 365 parameter blank and that page stays empty; the core dashboard works without it.
+
+> Want the **extra** pages — agent transcripts, credit/billing consumption, and product feedback?
+> Those live in the [`../2. Fabric/`](../2.%20Fabric/) path, which parses higher‑volume data into a
+> Lakehouse.
 
 ## Quick start
 
@@ -84,10 +83,7 @@ To automate, see [`azure-automation/README.md`](azure-automation/README.md) (Bic
    | Copilot Interactions File | `https://<tenant>.sharepoint.com/<site>/<library>/copilot_interactions.csv` |
    | Copilot Licensed Users | `.../copilot_licensed_users.csv` |
    | Org Data File | `.../org_data.csv` |
-   | Agent 365 *(optional)* | blank, or a SharePoint URL to your Agents export |
-   | Copilot Agent Transcripts Folder *(optional)* | blank, or the transcripts folder |
-   | Product Feedback *(optional)* | blank, or `.../feedback.csv` |
-   | Credit Consumption – Tenant/Agent/User *(optional)* | blank, or the matching `EntitlementConsumption…` CSV URL |
+   | Agent 365 *(optional)* | blank, or a SharePoint URL to your Agents 365 export |
 
 3. **Load** → **Publish** to a Power BI workspace.
 4. Service → dataset **Settings → Data source credentials** → sign in to SharePoint; set **Privacy: None**.
