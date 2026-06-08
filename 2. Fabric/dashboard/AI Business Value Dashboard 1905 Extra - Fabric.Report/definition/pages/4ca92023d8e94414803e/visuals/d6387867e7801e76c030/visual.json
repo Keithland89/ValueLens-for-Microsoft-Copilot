@@ -62,7 +62,7 @@
                     "Entity": "Chat + Agent Interactions (Audit Logs)"
                   }
                 },
-                "Property": "Agent AI Tasks Per User Per Week"
+                "Property": "Average Agent Sessions Per User Per Week (All Licenses)"
               }
             },
             "direction": "Descending"

@@ -1,0 +1,79 @@
+/// Tokenised, cleaned keywords from ProductFeedback[Comment] for the Feedback word cloud.
+/// One row per (FeedbackId, Word). Filler/stop words and tokens < 3 chars are removed so the
+/// cloud surfaces the pertinent insight words (e.g. "vague", "wrong", "policy") instead of
+/// fillers ("took", "very", "time"). Related back to ProductFeedback on FeedbackId, so every
+/// page filter (Licensed/Unlicensed, Agent, date, sentiment) flows through. Edit the StopWords
+/// list below to tune. Pure frequency by default; Sentiment is carried for optional weighting.
+table 'Feedback Words'
+	lineageTag: fbword01-0001-0001-0001-000000000001
+
+	/// Distinct keywords in the current filter context.
+	measure 'Distinct Keywords' = DISTINCTCOUNT('Feedback Words'[Word])
+		formatString: #,0
+		lineageTag: fbword01-meas-0001-000000000001
+
+	column FeedbackId
+		dataType: string
+		lineageTag: fbword01-col0-0001-000000000001
+		summarizeBy: none
+		sourceColumn: FeedbackId
+
+		annotation SummarizationSetBy = Automatic
+
+	column Word
+		dataType: string
+		lineageTag: fbword01-col0-0001-000000000002
+		summarizeBy: none
+		sourceColumn: Word
+
+		annotation SummarizationSetBy = Automatic
+
+	column Sentiment
+		dataType: string
+		lineageTag: fbword01-col0-0001-000000000003
+		summarizeBy: none
+		sourceColumn: Sentiment
+
+		annotation SummarizationSetBy = Automatic
+
+	column WordLength
+		dataType: int64
+		formatString: 0
+		lineageTag: fbword01-col0-0001-000000000004
+		summarizeBy: none
+		sourceColumn: WordLength
+
+		annotation SummarizationSetBy = Automatic
+
+	column FeedbackType
+		dataType: string
+		lineageTag: 8fcd5151-28d8-43fa-8972-240cc7c75cc7
+		summarizeBy: none
+		sourceColumn: FeedbackType
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Feedback Words' = m
+		mode: import
+		source =
+				let
+				    StopWords = { "a", "able", "about", "above", "actually", "after", "again", "against", "agent", "agents", "ai", "all", "also", "although", "am", "an", "and", "any", "are", "aren't", "as", "at", "basically", "be", "because", "been", "before", "being", "below", "between", "bit", "bot", "both", "but", "by", "came", "can", "can't", "cannot", "cant", "chat", "cheers", "come", "comes", "copilot", "could", "couldn't", "did", "didn't", "do", "does", "doesn't", "doesnt", "doing", "don't", "dont", "down", "during", "each", "etc", "even", "few", "fine", "for", "from", "further", "gave", "get", "give", "gives", "goes", "going", "good", "got", "great", "had", "hadn't", "has", "hasn't", "have", "haven't", "having", "he", "he'd", "he'll", "he's", "hello", "her", "here", "here's", "hers", "herself", "hey", "hi", "him", "himself", "his", "how", "how's", "however", "i", "i'd", "i'll", "i'm", "i've", "id", "if", "im", "in", "into", "is", "isn't", "it", "it's", "its", "itself", "ive", "just", "knew", "know", "knows", "let's", "like", "literally", "long", "lot", "lots", "made", "make", "makes", "many", "maybe", "me", "more", "most", "much", "mustn't", "my", "myself", "need", "needed", "needs", "nice", "no", "nope", "nor", "not", "of", "off", "ok", "okay", "on", "once", "one", "only", "or", "other", "ought", "our", "ours", "ourselves", "out", "over", "own", "perhaps", "please", "quick", "quite", "really", "same", "see", "seen", "shan't", "she", "she'd", "she'll", "she's", "short", "should", "shouldn't", "simply", "so", "some", "still", "stuff", "such", "sure", "take", "taken", "takes", "than", "thank", "thanks", "thanks!", "that", "that's", "thats", "the", "their", "theirs", "them", "themselves", "then", "there", "there's", "theres", "these", "they", "they'd", "they'll", "they're", "they've", "thing", "things", "this", "those", "though", "through", "time", "times", "to", "too", "took", "two", "under", "until", "up", "use", "used", "uses", "using", "very", "want", "wanted", "wants", "was", "wasn't", "way", "ways", "we", "we'd", "we'll", "we're", "we've", "well", "went", "were", "weren't", "what", "what's", "when", "when's", "where", "where's", "which", "while", "who", "who's", "whom", "why", "why's", "will", "with", "won't", "wont", "would", "wouldn't", "yeah", "yep", "yes", "you", "you'd", "you'll", "you're", "you've", "your", "youre", "yours", "yourself", "yourselves" },
+				    Src = ProductFeedback,
+				    Keep = Table.SelectColumns(Src, {"FeedbackId", "Comment", "FeedbackType"}),
+				    WithSent = Table.AddColumn(Keep, "Sentiment", each let ft = Text.Lower(Text.From([FeedbackType])) in if List.Contains({"thumbs up", "smile", "like", "positive"}, ft) then "Positive" else if List.Contains({"thumbs down", "frown", "dislike", "negative"}, ft) then "Negative" else null, type text),
+				    NonNull = Table.SelectRows(WithSent, each [Comment] <> null and Text.Trim(Text.From([Comment])) <> ""),
+				    Lower = Table.TransformColumns(NonNull, {{"Comment", each Text.Lower(Text.From(_)), type text}}),
+				    ToWords = Table.TransformColumns(Lower, {{"Comment", each Text.SplitAny(_, " " & Character.FromNumber(9) & Character.FromNumber(10) & Character.FromNumber(13) & ".,;:!?()[]{}""'/\|-_=+*&^%$#@~`<>"), type list}}),
+				    Expanded = Table.ExpandListColumn(ToWords, "Comment"),
+				    Renamed = Table.RenameColumns(Expanded, {{"Comment", "Word"}}),
+				    Trimmed = Table.TransformColumns(Renamed, {{"Word", each Text.Trim(Text.Select(Text.From(_), {"a".."z", "0".."9"})), type text}}),
+				    LenCol = Table.AddColumn(Trimmed, "WordLength", each Text.Length([Word]), Int64.Type),
+				    LongEnough = Table.SelectRows(LenCol, each [WordLength] >= 3),
+				    NoNumbers = Table.SelectRows(LongEnough, each not (Text.Select([Word], {"0".."9"}) = [Word])),
+				    NoStop = Table.SelectRows(NoNumbers, each not List.Contains(StopWords, [Word])),
+				    Typed = Table.TransformColumnTypes(NoStop, {{"FeedbackId", type text}, {"Word", type text}, {"Sentiment", type text}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

@@ -8,7 +8,7 @@ The recommended path for tenants with Fabric capacity (or Premium / PPU). All th
 
 | Item | Purpose |
 |---|---|
-| [`AI-Business-Value-Dashboard-Fabric.pbit`](AI-Business-Value-Dashboard-Fabric.pbit) | The Power BI template (thin client — sources all three input tables from a Lakehouse SQL endpoint) |
+| [`AI-Business-Value-Dashboard-Fabric.pbit`](AI-Business-Value-Dashboard-Fabric.pbit) | The Power BI template (thin client — sources its tables from a Lakehouse SQL endpoint) |
 | [`notebooks/Copilot_Audit_Log_Direct_Ingester.ipynb`](notebooks/Copilot_Audit_Log_Direct_Ingester.ipynb) | Calls the Graph audit-log API → `dbo.copilot_interactions_parsed` |
 | [`notebooks/Copilot_Licensed_Users_Direct_Ingester.ipynb`](notebooks/Copilot_Licensed_Users_Direct_Ingester.ipynb) | Calls the Graph M365 active-user report → `dbo.copilot_licensed_users` |
 | [`notebooks/Copilot_Org_Data_Direct_Ingester.ipynb`](notebooks/Copilot_Org_Data_Direct_Ingester.ipynb) | Calls Graph `/users` (with manager expand) → `dbo.copilot_org_data` |
@@ -64,10 +64,11 @@ interactions_parsed             licensed_users                 org_data
                                         ↓
                                 Power BI Report
                                         ↑
-                  Agents 365 CSV — manual upload (see below)
+                  + optional sources via their own ingester notebooks
+                  (transcripts · credit consumption · product feedback · Agents 365)
 ```
 
-The PBIT exposes only three parameters: **Fabric SQL Endpoint**, **Lakehouse Database**, and **Agent 365**. The first two are required. **Agent 365 is a manual file upload for now** — pending a Graph API loader.
+The PBIT's two **required** parameters are **Fabric SQL Endpoint** and **Lakehouse Database**. Everything else is optional: a set of **`Enable_*` toggles** (`Enable_Dataverse`, `Enable_ProductFeedback`, `Enable_Agent365`, `Enable_Consumption`) switches the optional sources on or off, and each toggled-on source is populated by its own ingester notebook (see the table above). Optional sources you don't supply simply load **empty** — the core dashboard always works.
 
 ## Prerequisites
 
@@ -91,9 +92,9 @@ Helper scripts for app-registration setup live in [`archive/scripts/appreg/`](ar
 - **+ New → Lakehouse**, name it (e.g. `CopilotAdoptionLake`)
 - Note the **SQL endpoint** under Lakehouse settings — looks like `<workspace-guid>.datawarehouse.fabric.microsoft.com`
 
-### 2. Import and configure the three Direct Ingester notebooks
+### 2. Import and configure the three core Direct Ingester notebooks
 
-For each of the three notebooks under [`notebooks/`](notebooks/):
+For each of the three **core** notebooks under [`notebooks/`](notebooks/) (audit logs, licensed users, org data):
 
 - In your Fabric workspace → **+ New → Import notebook** → upload the `.ipynb`
 - Attach the notebook to your Lakehouse and **pin it as default** (📌 icon next to the name in the Lakehouses panel)
@@ -117,6 +118,8 @@ For each of the three notebooks under [`notebooks/`](notebooks/):
 
 Use the **Schedule** button at the top of each notebook to set a cadence — or wire all three into a single **Fabric Pipeline**.
 
+> **Optional sources** — to switch on the agent (Dataverse), product-feedback, credit-consumption, or Agents 365 pages, also import and run the relevant optional notebook from the table above (and, for export-only sources, optionally the matching flow in [`flows/`](flows/)). The plain-language [`CREDIT-CONSUMPTION-SETUP.md`](CREDIT-CONSUMPTION-SETUP.md) walks through the billing one end to end. Skip any you don't need — they load empty.
+
 ### 4. Connect the PBIT
 
 - Open `AI-Business-Value-Dashboard-Fabric.pbit` in Power BI Desktop
@@ -126,9 +129,12 @@ Use the **Schedule** button at the top of each notebook to set a cadence — or 
 |---|---|---|
 | **Fabric SQL Endpoint** | ✅ | `<workspace-guid>.datawarehouse.fabric.microsoft.com` |
 | **Lakehouse Database** | ✅ | `CopilotAdoptionLake` (or your chosen Lakehouse name) |
-| Agent 365 | Optional | **Local file path** to your Agents 365 CSV export — see below |
+| **`Enable_Dataverse`** | Optional | `Include` to load the agent tables (transcript parser), else `Exclude` |
+| **`Enable_ProductFeedback`** | Optional | `Include` to load `user_feedback`, else `Exclude` |
+| **`Enable_Agent365`** | Optional | `Include` to load `agents_365`, else `Exclude` |
+| **`Enable_Consumption`** | Optional | `Include` to load the 3 billing tables, else `Exclude` |
 
-> **Agent 365 is a manual upload for now.** The Direct Ingester notebooks cover audit + users + org data, but Agents 365 doesn't yet have a Graph API loader. The current workflow: download the Agents 365 CSV from your tenant, point the PBIT parameter at the local file path when you open the template, refresh, and republish. If you need Service-side scheduled refresh to pick up new versions of the CSV automatically, upload it to a SharePoint document library and use the URL instead — but that requires the on-premises data gateway or SharePoint connector setup, which the simplest deployment deliberately avoids. A future iteration will replace this parameter with a fourth Direct Ingester notebook that pulls Agents 365 data from Graph; at that point the manual step goes away.
+> **Optional sources load empty when off.** Set each `Enable_*` to `Exclude` for sources you don't supply and those pages stay dormant — no errors. **Agents 365** has two options: the supported **export lander** (`Copilot_Agent365_Lander.ipynb`), or the optional **registry-API preview** (`Copilot_Agent365_Registry_Ingester_PREVIEW.ipynb` — Frontier-program tenants only, delegated auth, can't run unattended). See [`../shared/docs/OPTIONAL-SOURCES.md`](../shared/docs/OPTIONAL-SOURCES.md).
 
 - Click **Load**. Refresh should complete in seconds
 - Publish to a Power BI workspace ideally **on the same Fabric capacity** so Direct Lake works without cross-capacity overhead
@@ -140,7 +146,7 @@ Use the **Schedule** button at the top of each notebook to set a cadence — or 
 
 ## Alternative platforms
 
-The four artifacts in this folder (PBIT + three Direct Ingester notebooks) are deliberately portable:
+The core artifacts in this folder (PBIT + the three Direct Ingester notebooks) are deliberately portable:
 
 - **The notebooks** are plain Python + PySpark — they call Microsoft Graph via `requests` and write Delta with `df.write.saveAsTable(...)`. They run unchanged on any Spark engine (Fabric, Databricks, Synapse Spark) once two config lines are adjusted per environment.
 - **The PBIT** uses the `Sql.Database()` connector, which works against any SQL endpoint that exposes the Delta/SQL tables — Fabric Lakehouse, Databricks SQL Warehouse, Synapse SQL pool, Azure SQL DB, Fabric Warehouse, on-prem SQL Server.
@@ -193,7 +199,7 @@ If you have an existing pipeline that produces parsed CSVs (matching the three D
 | `Inactive Licensed Users` is 0 even with no filter | Every licensed user has audit activity (likely with synthetic / test data); or `UPN_Normalized` ↔ `PersonId_Normalized` casing mismatch | Run `SELECT COUNT(*) FROM dbo.copilot_licensed_users WHERE UPN_Normalized NOT IN (SELECT LOWER(LTRIM(RTRIM(Audit_UserId))) FROM dbo.copilot_interactions_parsed)` — if result is 0, your population is genuinely fully active |
 | `Formula.Firewall` error (only on non-Fabric variants) | Cross-source merge with privacy levels mismatched | Service → dataset Settings → Data source credentials → set **Privacy: None** for both sources |
 | Refresh slow (more than a minute) | Dataset is in Import mode | Switch the workspace to a Fabric capacity and convert to **Direct Lake** for sub-second response |
-| Agents 365 data missing from the report | Agent 365 parameter not filled in, or the local file path moved | Re-open the PBIT in Desktop, set the Agent 365 parameter, refresh, republish — see [Quick start step 4](#4-connect-the-pbit) |
+| Agents 365 data missing from the report | `Enable_Agent365` is `Exclude`, or the `agents_365` table hasn't been landed | Set `Enable_Agent365 = Include`; run `Copilot_Agent365_Lander.ipynb` (or the registry preview) to populate `agents_365`, then refresh |
 
 ## Schema reference
 

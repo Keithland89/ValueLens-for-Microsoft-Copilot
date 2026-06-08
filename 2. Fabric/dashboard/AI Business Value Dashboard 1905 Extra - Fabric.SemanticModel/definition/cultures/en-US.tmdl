@@ -3822,16 +3822,6 @@ cultureInfo en-US
 			            },
 			            "Weight": 0.736
 			          }
-			        },
-			        {
-			          "period": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.714
-			          }
 			        }
 			      ],
 			      "SemanticType": "Time"
@@ -13891,7 +13881,7 @@ cultureInfo en-US
 			          }
 			        },
 			        {
-			          "period": {
+			          "point": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
@@ -13901,7 +13891,7 @@ cultureInfo en-US
 			          }
 			        },
 			        {
-			          "point": {
+			          "leg": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
@@ -23951,7 +23941,7 @@ cultureInfo en-US
 			          }
 			        },
 			        {
-			          "period": {
+			          "point": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
@@ -23961,7 +23951,7 @@ cultureInfo en-US
 			          }
 			        },
 			        {
-			          "point": {
+			          "leg": {
 			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
@@ -58784,6 +58774,1754 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
+			    "agent_performance.top_abandoned_topic": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Agent Performance",
+			          "ConceptualProperty": "Top Abandoned Topic"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "top abandoned topic": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "best abandoned topic": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.591
+			          }
+			        },
+			        {
+			          "first abandoned topic": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.591
+			          }
+			        },
+			        {
+			          "leading abandoned topic": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.591
+			          }
+			        },
+			        {
+			          "maximum abandoned topic": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.591
+			          }
+			        },
+			        {
+			          "peak abandoned topic": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.591
+			          }
+			        },
+			        {
+			          "upper abandoned topic": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.591
+			          }
+			        },
+			        {
+			          "top abandoned theme": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.492
+			          }
+			        },
+			        {
+			          "top abandoned subject": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.492
+			          }
+			        },
+			        {
+			          "top abandoned matter": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.492
+			          }
+			        },
+			        {
+			          "top abandoned issue": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.492
+			          }
+			        }
+			      ]
+			    },
+			    "agent_performance.top_resolved_topic": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Agent Performance",
+			          "ConceptualProperty": "Top Resolved Topic"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "top resolved topic": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "best resolved topic": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.591
+			          }
+			        },
+			        {
+			          "first resolved topic": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.591
+			          }
+			        },
+			        {
+			          "leading resolved topic": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.591
+			          }
+			        },
+			        {
+			          "maximum resolved topic": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.591
+			          }
+			        },
+			        {
+			          "peak resolved topic": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.591
+			          }
+			        },
+			        {
+			          "upper resolved topic": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.591
+			          }
+			        },
+			        {
+			          "top resolved theme": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.492
+			          }
+			        },
+			        {
+			          "top resolved subject": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.492
+			          }
+			        },
+			        {
+			          "top resolved matter": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.492
+			          }
+			        },
+			        {
+			          "top resolved issue": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.492
+			          }
+			        }
+			      ]
+			    },
+			    "agent_performance.top_topic_per_agent": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Agent Performance",
+			          "ConceptualProperty": "Top Topic per Agent"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "top topic per agent": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "topic": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "top topic": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "best topic per agent": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.599
+			          }
+			        },
+			        {
+			          "first topic per agent": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.599
+			          }
+			        },
+			        {
+			          "leading topic per agent": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.599
+			          }
+			        },
+			        {
+			          "maximum topic per agent": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.599
+			          }
+			        },
+			        {
+			          "peak topic per agent": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.599
+			          }
+			        },
+			        {
+			          "upper topic per agent": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.599
+			          }
+			        },
+			        {
+			          "best topic": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.582
+			          }
+			        },
+			        {
+			          "first topic": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.582
+			          }
+			        },
+			        {
+			          "leading topic": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.582
+			          }
+			        },
+			        {
+			          "maximum topic": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.582
+			          }
+			        }
+			      ]
+			    },
+			    "credit_consumption_tenant.billing_period": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Credit Consumption (Tenant)",
+			          "ConceptualProperty": "Billing Period"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "billing period": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "period": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "billing era": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.475
+			          }
+			        },
+			        {
+			          "billing epoch": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.475
+			          }
+			        },
+			        {
+			          "era": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.466
+			          }
+			        },
+			        {
+			          "epoch": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.466
+			          }
+			        },
+			        {
+			          "billing age": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.461
+			          }
+			        },
+			        {
+			          "billing stage": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.461
+			          }
+			        },
+			        {
+			          "billing phase": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.461
+			          }
+			        },
+			        {
+			          "age": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.452
+			          }
+			        },
+			        {
+			          "phase": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.452
+			          }
+			        },
+			        {
+			          "billing episode": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.451
+			          }
+			        }
+			      ]
+			    },
+			    "agent_performance.top_escalated_topic": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Agent Performance",
+			          "ConceptualProperty": "Top Escalated Topic"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "top escalated topic": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "best escalated topic": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.591
+			          }
+			        },
+			        {
+			          "first escalated topic": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.591
+			          }
+			        },
+			        {
+			          "leading escalated topic": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.591
+			          }
+			        },
+			        {
+			          "maximum escalated topic": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.591
+			          }
+			        },
+			        {
+			          "peak escalated topic": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.591
+			          }
+			        },
+			        {
+			          "upper escalated topic": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.591
+			          }
+			        },
+			        {
+			          "top escalated theme": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.492
+			          }
+			        },
+			        {
+			          "top escalated subject": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.492
+			          }
+			        },
+			        {
+			          "top escalated matter": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.492
+			          }
+			        },
+			        {
+			          "top escalated issue": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.492
+			          }
+			        }
+			      ]
+			    },
+			    "credit_consumption_agent.source_file": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Credit Consumption (Agent)",
+			          "ConceptualProperty": "_source_file"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "source file": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "_source_file": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        },
+			        {
+			          "file": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "source folder": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.5
+			          }
+			        },
+			        {
+			          "source dossier": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.5
+			          }
+			        },
+			        {
+			          "source organizer": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.5
+			          }
+			        },
+			        {
+			          "source categorizer": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.5
+			          }
+			        },
+			        {
+			          "source wallet": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.5
+			          }
+			        },
+			        {
+			          "folder": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.491
+			          }
+			        },
+			        {
+			          "dossier": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.491
+			          }
+			        },
+			        {
+			          "organizer": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.491
+			          }
+			        },
+			        {
+			          "categorizer": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.491
+			          }
+			        },
+			        {
+			          "wallet": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.491
+			          }
+			        }
+			      ]
+			    },
+			    "credit_consumption_agent.ingested_at": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Credit Consumption (Agent)",
+			          "ConceptualProperty": "_ingested_at"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "ingested at": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "_ingested_at": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        },
+			        {
+			          "date": {
+			            "State": "Generated",
+			            "Weight": 0.7
+			          }
+			        }
+			      ],
+			      "SemanticType": "Time"
+			    },
+			    "credit_consumption_user.source_file": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Credit Consumption (User)",
+			          "ConceptualProperty": "_source_file"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "source file": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "_source_file": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        },
+			        {
+			          "file": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "source folder": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.5
+			          }
+			        },
+			        {
+			          "source dossier": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.5
+			          }
+			        },
+			        {
+			          "source organizer": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.5
+			          }
+			        },
+			        {
+			          "source categorizer": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.5
+			          }
+			        },
+			        {
+			          "source wallet": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.5
+			          }
+			        },
+			        {
+			          "folder": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.491
+			          }
+			        },
+			        {
+			          "dossier": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.491
+			          }
+			        },
+			        {
+			          "organizer": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.491
+			          }
+			        },
+			        {
+			          "categorizer": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.491
+			          }
+			        },
+			        {
+			          "wallet": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.491
+			          }
+			        }
+			      ]
+			    },
+			    "credit_consumption_user.ingested_at": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Credit Consumption (User)",
+			          "ConceptualProperty": "_ingested_at"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "ingested at": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "_ingested_at": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        },
+			        {
+			          "date": {
+			            "State": "Generated",
+			            "Weight": 0.7
+			          }
+			        }
+			      ],
+			      "SemanticType": "Time"
+			    },
+			    "credit_consumption_tenant.source_file": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Credit Consumption (Tenant)",
+			          "ConceptualProperty": "_source_file"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "source file": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "_source_file": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        },
+			        {
+			          "file": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "source folder": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.5
+			          }
+			        },
+			        {
+			          "source dossier": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.5
+			          }
+			        },
+			        {
+			          "source organizer": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.5
+			          }
+			        },
+			        {
+			          "source categorizer": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.5
+			          }
+			        },
+			        {
+			          "source wallet": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.5
+			          }
+			        },
+			        {
+			          "folder": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.491
+			          }
+			        },
+			        {
+			          "dossier": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.491
+			          }
+			        },
+			        {
+			          "organizer": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.491
+			          }
+			        },
+			        {
+			          "categorizer": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.491
+			          }
+			        },
+			        {
+			          "wallet": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.491
+			          }
+			        }
+			      ]
+			    },
+			    "credit_consumption_tenant.ingested_at": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Credit Consumption (Tenant)",
+			          "ConceptualProperty": "_ingested_at"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "ingested at": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "_ingested_at": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        },
+			        {
+			          "date": {
+			            "State": "Generated",
+			            "Weight": 0.7
+			          }
+			        }
+			      ],
+			      "SemanticType": "Time"
+			    },
+			    "feedback_word": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Feedback Words"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "feedback word": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "feedback expression": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.5
+			          }
+			        },
+			        {
+			          "feedback term": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.485
+			          }
+			        },
+			        {
+			          "feedback name": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.485
+			          }
+			        },
+			        {
+			          "feedback conversation": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.475
+			          }
+			        },
+			        {
+			          "feedback discussion": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.475
+			          }
+			        },
+			        {
+			          "feedback announcement": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.475
+			          }
+			        },
+			        {
+			          "feedback declaration": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.475
+			          }
+			        },
+			        {
+			          "feedback statement": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.475
+			          }
+			        },
+			        {
+			          "feedback chat": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.461
+			          }
+			        },
+			        {
+			          "feedback talk": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.461
+			          }
+			        }
+			      ]
+			    },
+			    "feedback_word.feedback_id": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Feedback Words",
+			          "ConceptualProperty": "FeedbackId"
+			        }
+			      },
+			      "State": "Generated",
+			      "Visibility": {
+			        "Value": "Hidden"
+			      },
+			      "Terms": [
+			        {
+			          "feedback id": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "FeedbackId": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        },
+			        {
+			          "feedback identification": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "feedback identity": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "feedback identifier": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "feedback credential": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.727
+			          }
+			        }
+			      ]
+			    },
+			    "feedback_word.word": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Feedback Words",
+			          "ConceptualProperty": "Word"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "word": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "expression": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.491
+			          }
+			        },
+			        {
+			          "term": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.476
+			          }
+			        },
+			        {
+			          "discussion": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.466
+			          }
+			        },
+			        {
+			          "announcement": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.466
+			          }
+			        },
+			        {
+			          "declaration": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.466
+			          }
+			        },
+			        {
+			          "statement": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.466
+			          }
+			        },
+			        {
+			          "chat": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.452
+			          }
+			        },
+			        {
+			          "talk": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.452
+			          }
+			        }
+			      ]
+			    },
+			    "feedback_word.sentiment": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Feedback Words",
+			          "ConceptualProperty": "Sentiment"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "sentiment": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "sentimentality": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.491
+			          }
+			        },
+			        {
+			          "mawkishness": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.491
+			          }
+			        },
+			        {
+			          "soppiness": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.491
+			          }
+			        },
+			        {
+			          "romanticism": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.491
+			          }
+			        },
+			        {
+			          "gush": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.476
+			          }
+			        },
+			        {
+			          "corn": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.476
+			          }
+			        },
+			        {
+			          "emotion": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.466
+			          }
+			        },
+			        {
+			          "reaction": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.466
+			          }
+			        },
+			        {
+			          "attitude": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.466
+			          }
+			        },
+			        {
+			          "opinion": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.466
+			          }
+			        }
+			      ]
+			    },
+			    "feedback_word.word_length": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Feedback Words",
+			          "ConceptualProperty": "WordLength"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "word length": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "WordLength": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        },
+			        {
+			          "length": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "word measurement": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.5
+			          }
+			        },
+			        {
+			          "word extent": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.5
+			          }
+			        },
+			        {
+			          "word interval": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.5
+			          }
+			        },
+			        {
+			          "measurement": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.491
+			          }
+			        },
+			        {
+			          "extent": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.491
+			          }
+			        },
+			        {
+			          "interval": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.491
+			          }
+			        },
+			        {
+			          "word distance": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.485
+			          }
+			        },
+			        {
+			          "word span": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.485
+			          }
+			        },
+			        {
+			          "word dimension": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.485
+			          }
+			        },
+			        {
+			          "word size": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.485
+			          }
+			        }
+			      ]
+			    },
+			    "feedback_word.feedback_type": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Feedback Words",
+			          "ConceptualProperty": "FeedbackType"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "feedback type": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "FeedbackType": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        },
+			        {
+			          "type": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "feedback genre": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "feedback manner": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "feedback variety": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "genre": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.736
+			          }
+			        },
+			        {
+			          "manner": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.736
+			          }
+			        },
+			        {
+			          "variety": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.736
+			          }
+			        },
+			        {
+			          "feedback brand": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.727
+			          }
+			        },
+			        {
+			          "feedback class": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.727
+			          }
+			        },
+			        {
+			          "feedback kind": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.727
+			          }
+			        },
+			        {
+			          "feedback style": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.727
+			          }
+			        }
+			      ]
+			    },
+			    "feedback_word.distinct_keywords": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Feedback Words",
+			          "ConceptualProperty": "Distinct Keywords"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "distinct keywords": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "keywords": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        }
+			      ]
+			    },
 			    "chat__agent_interactions_audit_logs.average_chat_sessions_per_active_user_unlicensed": {
 			      "Definition": {
 			        "Binding": {
@@ -58846,195 +60584,9 @@ cultureInfo en-US
 			          }
 			        }
 			      ]
-			    },
-			    "credit_consumption_tenant.billing_period": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "Credit Consumption (Tenant)",
-			          "ConceptualProperty": "Billing Period"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "Billing Period": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
-			        }
-			      ]
 			    }
 			  },
 			  "Relationships": {
-			    "credit_consumption_user_has_billing_org_credit_share_": {
-			      "Binding": {
-			        "ConceptualEntity": "Credit Consumption (User)"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "credit_consumption_user": {
-			          "Target": {
-			            "Entity": "credit_consumption_user"
-			          }
-			        },
-			        "credit_consumption_user.billing_org_credit_share_": {
-			          "Target": {
-			            "Entity": "credit_consumption_user.billing_org_credit_share_"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "credit_consumption_user"
-			            },
-			            "Object": {
-			              "Role": "credit_consumption_user.billing_org_credit_share_"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "credit_consumption_user_have_billing_org_credit_share_"
-			        }
-			      ]
-			    },
-			    "credit_consumption_agent_has_billing_agents_with_credits": {
-			      "Binding": {
-			        "ConceptualEntity": "Credit Consumption (Agent)"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "credit_consumption_agent": {
-			          "Target": {
-			            "Entity": "credit_consumption_agent"
-			          }
-			        },
-			        "credit_consumption_agent.billing_agents_with_credits": {
-			          "Target": {
-			            "Entity": "credit_consumption_agent.billing_agents_with_credits"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "credit_consumption_agent"
-			            },
-			            "Object": {
-			              "Role": "credit_consumption_agent.billing_agents_with_credits"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "credit_consumption_agent_have_billing_agents_with_credits"
-			        }
-			      ]
-			    },
-			    "credit_consumption_agent_has_avg_credits_per_agent_billing": {
-			      "Binding": {
-			        "ConceptualEntity": "Credit Consumption (Agent)"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "credit_consumption_agent": {
-			          "Target": {
-			            "Entity": "credit_consumption_agent"
-			          }
-			        },
-			        "credit_consumption_agent.avg_credits_per_agent_billing": {
-			          "Target": {
-			            "Entity": "credit_consumption_agent.avg_credits_per_agent_billing"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "credit_consumption_agent"
-			            },
-			            "Object": {
-			              "Role": "credit_consumption_agent.avg_credits_per_agent_billing"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "credit_consumption_agent_have_avg_credits_per_agent_billing"
-			        }
-			      ]
-			    },
-			    "credit_consumption_tenant_has_prepaid_utilisation_": {
-			      "Binding": {
-			        "ConceptualEntity": "Credit Consumption (Tenant)"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "credit_consumption_tenant": {
-			          "Target": {
-			            "Entity": "credit_consumption_tenant"
-			          }
-			        },
-			        "credit_consumption_tenant.prepaid_utilisation_": {
-			          "Target": {
-			            "Entity": "credit_consumption_tenant.prepaid_utilisation_"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "credit_consumption_tenant"
-			            },
-			            "Object": {
-			              "Role": "credit_consumption_tenant.prepaid_utilisation_"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "credit_consumption_tenant_have_prepaid_utilisation_"
-			        }
-			      ]
-			    },
-			    "credit_consumption_tenant_has_entitled_capacity": {
-			      "Binding": {
-			        "ConceptualEntity": "Credit Consumption (Tenant)"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "credit_consumption_tenant": {
-			          "Target": {
-			            "Entity": "credit_consumption_tenant"
-			          }
-			        },
-			        "credit_consumption_tenant.entitled_capacity": {
-			          "Target": {
-			            "Entity": "credit_consumption_tenant.entitled_capacity"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "credit_consumption_tenant"
-			            },
-			            "Object": {
-			              "Role": "credit_consumption_tenant.entitled_capacity"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "credit_consumption_tenant_have_entitled_capacity"
-			        }
-			      ]
-			    },
 			    "credit_consumption_tenant_has_PAYG_consumed": {
 			      "Binding": {
 			        "ConceptualEntity": "Credit Consumption (Tenant)"
@@ -59560,6 +61112,19 @@ cultureInfo en-US
 			          "State": "Generated",
 			          "Weight": 0.99,
 			          "ID": "credit_consumption_user_have_M365_copilot_licensed"
+			        },
+			        {
+			          "DynamicAdjective": {
+			            "Subject": {
+			              "Role": "credit_consumption_user"
+			            },
+			            "Adjective": {
+			              "Role": "credit_consumption_user.M365_copilot_licensed"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "M365_copilot_licensed_describe_credit_consumption_user"
 			        }
 			      ]
 			    },
@@ -78660,6 +80225,132 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
+			    "credit_consumption_tenant_is_ingested_on_ingested_at": {
+			      "Binding": {
+			        "ConceptualEntity": "Credit Consumption (Tenant)"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "credit_consumption_tenant": {
+			          "Target": {
+			            "Entity": "credit_consumption_tenant"
+			          }
+			        },
+			        "credit_consumption_tenant.ingested_at": {
+			          "Target": {
+			            "Entity": "credit_consumption_tenant.ingested_at"
+			          }
+			        }
+			      },
+			      "SemanticSlots": {
+			        "When": {
+			          "Role": "credit_consumption_tenant.ingested_at"
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Verb": {
+			            "Verbs": [
+			              {
+			                "ingest": {
+			                  "State": "Generated"
+			                }
+			              }
+			            ],
+			            "Object": {
+			              "Role": "credit_consumption_tenant"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.9,
+			          "ID": "credit_consumption_tenant_are_ingested_on_ingested_at"
+			        }
+			      ]
+			    },
+			    "credit_consumption_user_is_ingested_on_ingested_at": {
+			      "Binding": {
+			        "ConceptualEntity": "Credit Consumption (User)"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "credit_consumption_user": {
+			          "Target": {
+			            "Entity": "credit_consumption_user"
+			          }
+			        },
+			        "credit_consumption_user.ingested_at": {
+			          "Target": {
+			            "Entity": "credit_consumption_user.ingested_at"
+			          }
+			        }
+			      },
+			      "SemanticSlots": {
+			        "When": {
+			          "Role": "credit_consumption_user.ingested_at"
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Verb": {
+			            "Verbs": [
+			              {
+			                "ingest": {
+			                  "State": "Generated"
+			                }
+			              }
+			            ],
+			            "Object": {
+			              "Role": "credit_consumption_user"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.9,
+			          "ID": "credit_consumption_user_are_ingested_on_ingested_at"
+			        }
+			      ]
+			    },
+			    "credit_consumption_agent_is_ingested_on_ingested_at": {
+			      "Binding": {
+			        "ConceptualEntity": "Credit Consumption (Agent)"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "credit_consumption_agent": {
+			          "Target": {
+			            "Entity": "credit_consumption_agent"
+			          }
+			        },
+			        "credit_consumption_agent.ingested_at": {
+			          "Target": {
+			            "Entity": "credit_consumption_agent.ingested_at"
+			          }
+			        }
+			      },
+			      "SemanticSlots": {
+			        "When": {
+			          "Role": "credit_consumption_agent.ingested_at"
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Verb": {
+			            "Verbs": [
+			              {
+			                "ingest": {
+			                  "State": "Generated"
+			                }
+			              }
+			            ],
+			            "Object": {
+			              "Role": "credit_consumption_agent"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.9,
+			          "ID": "credit_consumption_agent_are_ingested_on_ingested_at"
+			        }
+			      ]
+			    },
 			    "product_feedback_is_submitted_on_date_submitted_date": {
 			      "Binding": {
 			        "ConceptualEntity": "ProductFeedback"
@@ -78871,6 +80562,66 @@ cultureInfo en-US
 			          "State": "Generated",
 			          "Weight": 0.99,
 			          "ID": "chat__agent_interactions_audit_logs_have_grounding_sources"
+			        }
+			      ]
+			    },
+			    "feedback_word_is_long": {
+			      "Binding": {
+			        "ConceptualEntity": "Feedback Words"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "feedback_word": {
+			          "Target": {
+			            "Entity": "feedback_word"
+			          }
+			        },
+			        "feedback_word.word_length": {
+			          "Target": {
+			            "Entity": "feedback_word.word_length"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Adjective": {
+			            "Subject": {
+			              "Role": "feedback_word"
+			            },
+			            "Adjectives": [
+			              {
+			                "long": {
+			                  "State": "Generated"
+			                }
+			              }
+			            ],
+			            "Antonyms": [
+			              {
+			                "short": {
+			                  "State": "Generated"
+			                }
+			              }
+			            ],
+			            "Measurement": {
+			              "Role": "feedback_word.word_length"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "word_length_indicates_how_long_feedback_words_are"
+			        },
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "feedback_word"
+			            },
+			            "Object": {
+			              "Role": "feedback_word.word_length"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "feedback_words_have_word_lengths"
 			        }
 			      ]
 			    },
@@ -79659,6 +81410,171 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
+			    "credit_consumption_tenant_has_entitled_capacity": {
+			      "Binding": {
+			        "ConceptualEntity": "Credit Consumption (Tenant)"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "credit_consumption_tenant": {
+			          "Target": {
+			            "Entity": "credit_consumption_tenant"
+			          }
+			        },
+			        "credit_consumption_tenant.entitled_capacity": {
+			          "Target": {
+			            "Entity": "credit_consumption_tenant.entitled_capacity"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "credit_consumption_tenant"
+			            },
+			            "Object": {
+			              "Role": "credit_consumption_tenant.entitled_capacity"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "credit_consumption_tenant_have_entitled_capacity"
+			        }
+			      ]
+			    },
+			    "credit_consumption_tenant_has_prepaid_utilisation_": {
+			      "Binding": {
+			        "ConceptualEntity": "Credit Consumption (Tenant)"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "credit_consumption_tenant": {
+			          "Target": {
+			            "Entity": "credit_consumption_tenant"
+			          }
+			        },
+			        "credit_consumption_tenant.prepaid_utilisation_": {
+			          "Target": {
+			            "Entity": "credit_consumption_tenant.prepaid_utilisation_"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "credit_consumption_tenant"
+			            },
+			            "Object": {
+			              "Role": "credit_consumption_tenant.prepaid_utilisation_"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "credit_consumption_tenant_have_prepaid_utilisation_"
+			        }
+			      ]
+			    },
+			    "credit_consumption_agent_has_avg_credits_per_agent_billing": {
+			      "Binding": {
+			        "ConceptualEntity": "Credit Consumption (Agent)"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "credit_consumption_agent": {
+			          "Target": {
+			            "Entity": "credit_consumption_agent"
+			          }
+			        },
+			        "credit_consumption_agent.avg_credits_per_agent_billing": {
+			          "Target": {
+			            "Entity": "credit_consumption_agent.avg_credits_per_agent_billing"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "credit_consumption_agent"
+			            },
+			            "Object": {
+			              "Role": "credit_consumption_agent.avg_credits_per_agent_billing"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "credit_consumption_agent_have_avg_credits_per_agent_billing"
+			        }
+			      ]
+			    },
+			    "credit_consumption_agent_has_billing_agents_with_credits": {
+			      "Binding": {
+			        "ConceptualEntity": "Credit Consumption (Agent)"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "credit_consumption_agent": {
+			          "Target": {
+			            "Entity": "credit_consumption_agent"
+			          }
+			        },
+			        "credit_consumption_agent.billing_agents_with_credits": {
+			          "Target": {
+			            "Entity": "credit_consumption_agent.billing_agents_with_credits"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "credit_consumption_agent"
+			            },
+			            "Object": {
+			              "Role": "credit_consumption_agent.billing_agents_with_credits"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "credit_consumption_agent_have_billing_agents_with_credits"
+			        }
+			      ]
+			    },
+			    "credit_consumption_user_has_billing_org_credit_share_": {
+			      "Binding": {
+			        "ConceptualEntity": "Credit Consumption (User)"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "credit_consumption_user": {
+			          "Target": {
+			            "Entity": "credit_consumption_user"
+			          }
+			        },
+			        "credit_consumption_user.billing_org_credit_share_": {
+			          "Target": {
+			            "Entity": "credit_consumption_user.billing_org_credit_share_"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "credit_consumption_user"
+			            },
+			            "Object": {
+			              "Role": "credit_consumption_user.billing_org_credit_share_"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "credit_consumption_user_have_billing_org_credit_share_"
+			        }
+			      ]
+			    },
 			    "agent_performance_has_escalated_conversations": {
 			      "Binding": {
 			        "ConceptualEntity": "Agent Performance"
@@ -79953,6 +81869,501 @@ cultureInfo en-US
 			          "State": "Generated",
 			          "Weight": 0.99,
 			          "ID": "agent_performances_have__conversation_summary"
+			        }
+			      ]
+			    },
+			    "agent_performance_has_top_abandoned_topic": {
+			      "Binding": {
+			        "ConceptualEntity": "Agent Performance"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "agent_performance": {
+			          "Target": {
+			            "Entity": "agent_performance"
+			          }
+			        },
+			        "agent_performance.top_abandoned_topic": {
+			          "Target": {
+			            "Entity": "agent_performance.top_abandoned_topic"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "agent_performance"
+			            },
+			            "Object": {
+			              "Role": "agent_performance.top_abandoned_topic"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "agent_performances_have_top_abandoned_topic"
+			        }
+			      ]
+			    },
+			    "agent_performance_has_top_resolved_topic": {
+			      "Binding": {
+			        "ConceptualEntity": "Agent Performance"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "agent_performance": {
+			          "Target": {
+			            "Entity": "agent_performance"
+			          }
+			        },
+			        "agent_performance.top_resolved_topic": {
+			          "Target": {
+			            "Entity": "agent_performance.top_resolved_topic"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "agent_performance"
+			            },
+			            "Object": {
+			              "Role": "agent_performance.top_resolved_topic"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "agent_performances_have_top_resolved_topic"
+			        }
+			      ]
+			    },
+			    "agent_performance_has_top_topic_per_agent": {
+			      "Binding": {
+			        "ConceptualEntity": "Agent Performance"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "agent_performance": {
+			          "Target": {
+			            "Entity": "agent_performance"
+			          }
+			        },
+			        "agent_performance.top_topic_per_agent": {
+			          "Target": {
+			            "Entity": "agent_performance.top_topic_per_agent"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "agent_performance"
+			            },
+			            "Object": {
+			              "Role": "agent_performance.top_topic_per_agent"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "agent_performances_have_top_topic_per_agent"
+			        }
+			      ]
+			    },
+			    "credit_consumption_tenant_has_billing_period": {
+			      "Binding": {
+			        "ConceptualEntity": "Credit Consumption (Tenant)"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "credit_consumption_tenant": {
+			          "Target": {
+			            "Entity": "credit_consumption_tenant"
+			          }
+			        },
+			        "credit_consumption_tenant.billing_period": {
+			          "Target": {
+			            "Entity": "credit_consumption_tenant.billing_period"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "credit_consumption_tenant"
+			            },
+			            "Object": {
+			              "Role": "credit_consumption_tenant.billing_period"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "credit_consumption_tenant_have_billing_period"
+			        }
+			      ]
+			    },
+			    "agent_performance_has_top_escalated_topic": {
+			      "Binding": {
+			        "ConceptualEntity": "Agent Performance"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "agent_performance": {
+			          "Target": {
+			            "Entity": "agent_performance"
+			          }
+			        },
+			        "agent_performance.top_escalated_topic": {
+			          "Target": {
+			            "Entity": "agent_performance.top_escalated_topic"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "agent_performance"
+			            },
+			            "Object": {
+			              "Role": "agent_performance.top_escalated_topic"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "agent_performances_have_top_escalated_topic"
+			        }
+			      ]
+			    },
+			    "credit_consumption_agent_has_source_file": {
+			      "Binding": {
+			        "ConceptualEntity": "Credit Consumption (Agent)"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "credit_consumption_agent": {
+			          "Target": {
+			            "Entity": "credit_consumption_agent"
+			          }
+			        },
+			        "credit_consumption_agent.source_file": {
+			          "Target": {
+			            "Entity": "credit_consumption_agent.source_file"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "credit_consumption_agent"
+			            },
+			            "Object": {
+			              "Role": "credit_consumption_agent.source_file"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "credit_consumption_agent_have_source_files"
+			        }
+			      ]
+			    },
+			    "credit_consumption_agent_has_ingested_at": {
+			      "Binding": {
+			        "ConceptualEntity": "Credit Consumption (Agent)"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "credit_consumption_agent": {
+			          "Target": {
+			            "Entity": "credit_consumption_agent"
+			          }
+			        },
+			        "credit_consumption_agent.ingested_at": {
+			          "Target": {
+			            "Entity": "credit_consumption_agent.ingested_at"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "credit_consumption_agent"
+			            },
+			            "Object": {
+			              "Role": "credit_consumption_agent.ingested_at"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "credit_consumption_agent_have_ingested_at"
+			        }
+			      ]
+			    },
+			    "credit_consumption_user_has_source_file": {
+			      "Binding": {
+			        "ConceptualEntity": "Credit Consumption (User)"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "credit_consumption_user": {
+			          "Target": {
+			            "Entity": "credit_consumption_user"
+			          }
+			        },
+			        "credit_consumption_user.source_file": {
+			          "Target": {
+			            "Entity": "credit_consumption_user.source_file"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "credit_consumption_user"
+			            },
+			            "Object": {
+			              "Role": "credit_consumption_user.source_file"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "credit_consumption_user_have_source_files"
+			        }
+			      ]
+			    },
+			    "credit_consumption_user_has_ingested_at": {
+			      "Binding": {
+			        "ConceptualEntity": "Credit Consumption (User)"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "credit_consumption_user": {
+			          "Target": {
+			            "Entity": "credit_consumption_user"
+			          }
+			        },
+			        "credit_consumption_user.ingested_at": {
+			          "Target": {
+			            "Entity": "credit_consumption_user.ingested_at"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "credit_consumption_user"
+			            },
+			            "Object": {
+			              "Role": "credit_consumption_user.ingested_at"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "credit_consumption_user_have_ingested_at"
+			        }
+			      ]
+			    },
+			    "credit_consumption_tenant_has_source_file": {
+			      "Binding": {
+			        "ConceptualEntity": "Credit Consumption (Tenant)"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "credit_consumption_tenant": {
+			          "Target": {
+			            "Entity": "credit_consumption_tenant"
+			          }
+			        },
+			        "credit_consumption_tenant.source_file": {
+			          "Target": {
+			            "Entity": "credit_consumption_tenant.source_file"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "credit_consumption_tenant"
+			            },
+			            "Object": {
+			              "Role": "credit_consumption_tenant.source_file"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "credit_consumption_tenant_have_source_files"
+			        }
+			      ]
+			    },
+			    "credit_consumption_tenant_has_ingested_at": {
+			      "Binding": {
+			        "ConceptualEntity": "Credit Consumption (Tenant)"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "credit_consumption_tenant": {
+			          "Target": {
+			            "Entity": "credit_consumption_tenant"
+			          }
+			        },
+			        "credit_consumption_tenant.ingested_at": {
+			          "Target": {
+			            "Entity": "credit_consumption_tenant.ingested_at"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "credit_consumption_tenant"
+			            },
+			            "Object": {
+			              "Role": "credit_consumption_tenant.ingested_at"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "credit_consumption_tenant_have_ingested_at"
+			        }
+			      ]
+			    },
+			    "feedback_word_has_word": {
+			      "Binding": {
+			        "ConceptualEntity": "Feedback Words"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "feedback_word": {
+			          "Target": {
+			            "Entity": "feedback_word"
+			          }
+			        },
+			        "feedback_word.word": {
+			          "Target": {
+			            "Entity": "feedback_word.word"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "feedback_word"
+			            },
+			            "Object": {
+			              "Role": "feedback_word.word"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "feedback_words_have_words"
+			        }
+			      ]
+			    },
+			    "feedback_word_has_sentiment": {
+			      "Binding": {
+			        "ConceptualEntity": "Feedback Words"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "feedback_word": {
+			          "Target": {
+			            "Entity": "feedback_word"
+			          }
+			        },
+			        "feedback_word.sentiment": {
+			          "Target": {
+			            "Entity": "feedback_word.sentiment"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "feedback_word"
+			            },
+			            "Object": {
+			              "Role": "feedback_word.sentiment"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "feedback_words_have_sentiments"
+			        }
+			      ]
+			    },
+			    "feedback_word_has_feedback_type": {
+			      "Binding": {
+			        "ConceptualEntity": "Feedback Words"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "feedback_word": {
+			          "Target": {
+			            "Entity": "feedback_word"
+			          }
+			        },
+			        "feedback_word.feedback_type": {
+			          "Target": {
+			            "Entity": "feedback_word.feedback_type"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "feedback_word"
+			            },
+			            "Object": {
+			              "Role": "feedback_word.feedback_type"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "feedback_words_have_feedback_types"
+			        }
+			      ]
+			    },
+			    "feedback_word_has_distinct_keywords": {
+			      "Binding": {
+			        "ConceptualEntity": "Feedback Words"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "feedback_word": {
+			          "Target": {
+			            "Entity": "feedback_word"
+			          }
+			        },
+			        "feedback_word.distinct_keywords": {
+			          "Target": {
+			            "Entity": "feedback_word.distinct_keywords"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "feedback_word"
+			            },
+			            "Object": {
+			              "Role": "feedback_word.distinct_keywords"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "feedback_words_have_distinct_keywords"
 			        }
 			      ]
 			    },
@@ -80801,6 +83212,52 @@ cultureInfo en-US
 			          "State": "Generated",
 			          "Weight": 0.99,
 			          "ID": "chat__agent_org_data_have_credit_consumption_user"
+			        }
+			      ]
+			    },
+			    "feedback_word_has_product_feedback": {
+			      "Binding": {
+			        "ConceptualEntity": "Feedback Words"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "feedback_word": {
+			          "Target": {
+			            "Entity": "feedback_word"
+			          }
+			        },
+			        "product_feedback": {
+			          "Target": {
+			            "Entity": "product_feedback"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "feedback_word"
+			            },
+			            "Object": {
+			              "Role": "product_feedback"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "feedback_words_have_product_feedbacks"
+			        },
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "product_feedback"
+			            },
+			            "Object": {
+			              "Role": "feedback_word"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "product_feedbacks_have_feedback_words"
 			        }
 			      ]
 			    },

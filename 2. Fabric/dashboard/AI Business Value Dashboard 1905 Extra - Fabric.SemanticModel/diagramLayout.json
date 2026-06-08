@@ -5,13 +5,13 @@
       "ordinal": 0,
       "scrollPosition": {
         "x": 13488.562268832675,
-        "y": 695.04150004220162
+        "y": 1186.5918371764922
       },
       "nodes": [
         {
           "location": {
             "x": 1682.4327917350863,
-            "y": 2630.9510001395956
+            "y": 3168.4211996250597
           },
           "nodeIndex": "Copilot Licensed",
           "nodeLineageTag": "d2642023-4b65-422e-b87e-2db288a27359",
@@ -24,7 +24,7 @@
         {
           "location": {
             "x": 4544,
-            "y": 2700.6376187720216
+            "y": 3238.1078182574856
           },
           "nodeIndex": "ActiveDaysSummary",
           "size": {
@@ -36,7 +36,7 @@
         {
           "location": {
             "x": 4828,
-            "y": 2700.6376187720216
+            "y": 3238.1078182574856
           },
           "nodeIndex": "Calendar",
           "size": {
@@ -48,7 +48,7 @@
         {
           "location": {
             "x": 0,
-            "y": 2340.13838487014
+            "y": 2877.6085843556039
           },
           "nodeIndex": "Chat + Agent Interactions (Audit Logs)",
           "size": {
@@ -60,7 +60,7 @@
         {
           "location": {
             "x": 1777.9474869495155,
-            "y": 3061.1368526739034
+            "y": 3598.6070521593674
           },
           "nodeIndex": "Chat + Agent Org Data",
           "size": {
@@ -72,7 +72,7 @@
         {
           "location": {
             "x": 5680,
-            "y": 2700.6376187720216
+            "y": 3238.1078182574856
           },
           "nodeIndex": "Unlicensed Chat User Rankings",
           "size": {
@@ -84,7 +84,7 @@
         {
           "location": {
             "x": 6532,
-            "y": 2700.6376187720216
+            "y": 3238.1078182574856
           },
           "nodeIndex": "Licensed Chat User Summary",
           "size": {
@@ -96,7 +96,7 @@
         {
           "location": {
             "x": 7100,
-            "y": 2700.6376187720216
+            "y": 3238.1078182574856
           },
           "nodeIndex": "Licensed Chat User Rankings",
           "size": {
@@ -108,7 +108,7 @@
         {
           "location": {
             "x": 7384,
-            "y": 2650.6376187720216
+            "y": 3188.1078182574856
           },
           "nodeIndex": "Agents 365",
           "size": {
@@ -120,7 +120,7 @@
         {
           "location": {
             "x": 8804,
-            "y": 2676.1376187720216
+            "y": 3213.6078182574856
           },
           "nodeIndex": "📖 Metric Glossary",
           "nodeLineageTag": "8b71f88c-7524-4ba0-a81d-f7ca7ef45b64",
@@ -133,7 +133,7 @@
         {
           "location": {
             "x": 9088,
-            "y": 2681.8876187720216
+            "y": 3219.3578182574856
           },
           "nodeIndex": "Behavior Value Map",
           "nodeLineageTag": "ff050001-0001-0001-0001-000000000001",
@@ -146,7 +146,7 @@
         {
           "location": {
             "x": 9372,
-            "y": 2696.5126187720216
+            "y": 3233.9828182574856
           },
           "nodeIndex": "Heatmap Toggle",
           "nodeLineageTag": "ce4f0437-8490-4e73-97e0-47a1a27b8c22",
@@ -159,7 +159,7 @@
         {
           "location": {
             "x": 10224,
-            "y": 2637.3563687720216
+            "y": 3174.8265682574856
           },
           "nodeIndex": "Augmented Skills Map",
           "nodeLineageTag": "ff080001-0001-0001-0001-000000000001",
@@ -172,7 +172,7 @@
         {
           "location": {
             "x": 10508,
-            "y": 2637.3563687720216
+            "y": 3174.8265682574856
           },
           "nodeIndex": "Human Time Estimates",
           "nodeLineageTag": "ff060001-0001-0001-0001-000000000001",
@@ -185,7 +185,7 @@
         {
           "location": {
             "x": 10792,
-            "y": 2637.3563687720216
+            "y": 3174.8265682574856
           },
           "nodeIndex": "UserMonthMetrics",
           "nodeLineageTag": "ff090001-0001-0001-0001-000000000010",
@@ -198,7 +198,7 @@
         {
           "location": {
             "x": 11360,
-            "y": 2555.7157437720216
+            "y": 3093.1859432574856
           },
           "nodeIndex": "Headlines",
           "nodeLineageTag": "ff0a0001-0001-0001-0001-000000000001",
@@ -211,7 +211,7 @@
         {
           "location": {
             "x": 11928,
-            "y": 2593.7157437720216
+            "y": 3131.1859432574856
           },
           "nodeIndex": "Penalty Factor",
           "nodeLineageTag": "ff0b0001-0001-0001-0001-000000000030",
@@ -224,7 +224,7 @@
         {
           "location": {
             "x": 12212,
-            "y": 2546.2548062720216
+            "y": 3083.7250057574856
           },
           "nodeIndex": "AI PPUPM",
           "nodeLineageTag": "ad544143-3002-42e4-888b-6eda41b83c04",
@@ -237,7 +237,7 @@
         {
           "location": {
             "x": 12496,
-            "y": 2475.0634000220216
+            "y": 3012.5335995074856
           },
           "nodeIndex": "Hourly Value",
           "size": {
@@ -249,7 +249,7 @@
         {
           "location": {
             "x": 12780,
-            "y": 2380.2762906470216
+            "y": 2917.7464901324856
           },
           "nodeIndex": "Task Value Mapping",
           "nodeLineageTag": "ff0c0001-0001-0001-0001-000000000030",
@@ -262,7 +262,7 @@
         {
           "location": {
             "x": 13064,
-            "y": 2256.0956265845216
+            "y": 2793.5658260699856
           },
           "nodeIndex": "License Status (Legend)",
           "size": {
@@ -274,7 +274,7 @@
         {
           "location": {
             "x": 13348,
-            "y": 1703.4608946357646
+            "y": 2240.9310941212284
           },
           "nodeIndex": "Activity (Legend)",
           "size": {
@@ -286,7 +286,7 @@
         {
           "location": {
             "x": 14253.292956493331,
-            "y": 1341.3660958976891
+            "y": 1878.8362953831529
           },
           "nodeIndex": "Agent Catalogue",
           "nodeLineageTag": "ac0001ag-0001-0001-0001-000000000001",
@@ -299,7 +299,7 @@
         {
           "location": {
             "x": 14143.3204750815,
-            "y": 1781.4607772559109
+            "y": 2318.9309767413747
           },
           "nodeIndex": "Agent Errors",
           "nodeLineageTag": "ag0003er-0001-0001-0001-000000000001",
@@ -312,7 +312,7 @@
         {
           "location": {
             "x": 14487.292956493331,
-            "y": 1452.2005881134194
+            "y": 1989.6707875988832
           },
           "nodeIndex": "Agent Performance",
           "nodeLineageTag": "448eb627-6701-4335-8f1e-cb626f4e7c9b",
@@ -325,7 +325,7 @@
         {
           "location": {
             "x": 13967.097713428746,
-            "y": 1428.0046190764845
+            "y": 1965.4748185619483
           },
           "nodeIndex": "Agent Sessions",
           "nodeLineageTag": "ag0001se-0001-0001-0001-000000000001",
@@ -338,7 +338,7 @@
         {
           "location": {
             "x": 13682,
-            "y": 1541.7190883249016
+            "y": 2079.1892878103654
           },
           "nodeIndex": "Agent Sub-Agent Calls",
           "nodeLineageTag": "ag0004sa-0001-0001-0001-000000000001",
@@ -351,7 +351,7 @@
         {
           "location": {
             "x": 13892.615634138594,
-            "y": 1074.9403989709276
+            "y": 1612.4105984563914
           },
           "nodeIndex": "Agent Turns",
           "nodeLineageTag": "ag0002tu-0001-0001-0001-000000000001",
@@ -364,7 +364,7 @@
         {
           "location": {
             "x": 14771.292956493331,
-            "y": 1452.2005881134194
+            "y": 1989.6707875988832
           },
           "nodeIndex": "ProductFeedback",
           "nodeLineageTag": "ae4ffe2b-b5f0-4f3f-a016-54252c132081",
@@ -377,7 +377,7 @@
         {
           "location": {
             "x": 15055.292956493331,
-            "y": 1301.4116931751305
+            "y": 1838.8818926605943
           },
           "nodeIndex": "Credit Consumption (Agent)",
           "nodeLineageTag": "cc0001ag-0001-0001-0001-000000000001",
@@ -390,7 +390,7 @@
         {
           "location": {
             "x": 15339.292956493331,
-            "y": 1301.4116931751305
+            "y": 1838.8818926605943
           },
           "nodeIndex": "Credit Consumption (Tenant)",
           "nodeLineageTag": "cc0003tn-0001-0001-0001-000000000001",
@@ -403,12 +403,25 @@
         {
           "location": {
             "x": 15623.292956493331,
-            "y": 1301.4116931751305
+            "y": 1838.8818926605943
           },
           "nodeIndex": "Credit Consumption (User)",
           "nodeLineageTag": "cc0002us-0001-0001-0001-000000000001",
           "size": {
             "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 15907.292956493331,
+            "y": 1530.5684263369517
+          },
+          "nodeIndex": "Feedback Words",
+          "nodeLineageTag": "fbword01-0001-0001-0001-000000000001",
+          "size": {
+            "height": 200,
             "width": 234
           },
           "zIndex": 0
