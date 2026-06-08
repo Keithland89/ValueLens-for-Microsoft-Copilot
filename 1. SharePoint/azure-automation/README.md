@@ -8,7 +8,7 @@ Deploys a complete scheduled-pull stack into your Azure subscription so the Shar
 - **Schedules** wired up so the runbooks fire weekly without manual intervention
 - **Optional storage queue** (auditsearchidqueue) for handing the QueryId from `CreateAuditLogQuery` to `GetCopilotInteractions`
 
-If you don't need turnkey deployment and just want to plug the AppReg scripts into your own scheduler (Task Scheduler, GitHub Actions, etc.), use [`../scripts/appreg/`](../scripts/appreg/) directly instead.
+If you don't need turnkey deployment and just want to plug the scripts into your own scheduler (Task Scheduler, GitHub Actions, etc.), use [`../scripts/`](../scripts/) directly instead.
 
 ## What gets deployed
 

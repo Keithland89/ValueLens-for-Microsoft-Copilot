@@ -92,5 +92,5 @@ So feedback is landed exactly like credit consumption:
 `Files/product_feedback/*.csv` and writes the `user_feedback` Delta table (the 23-column contract
 the `ProductFeedback` model table expects). Clone `../notebooks/Copilot_Credit_Consumption_Ingester.ipynb`,
 point `SOURCE_DIR` at `Files/product_feedback`, and map the export's columns to the
-`user_feedback` schema in [`../../shared/docs/DATA-DICTIONARY.md`](../../shared/docs/DATA-DICTIONARY.md).
+`user_feedback` schema in [`../docs/DATA-DICTIONARY.md`](../docs/DATA-DICTIONARY.md).
 The same case-preserving column sanitiser (`[^0-9A-Za-z]+ → _`) keeps the names matching the model.
