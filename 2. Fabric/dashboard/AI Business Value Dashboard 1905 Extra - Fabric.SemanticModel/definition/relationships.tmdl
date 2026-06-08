@@ -103,3 +103,7 @@ relationship cc00-user-org-emailnorm-0001
 	fromColumn: 'Credit Consumption (User)'.User_Email_Normalized
 	toColumn: 'Chat + Agent Org Data'.PersonId_Normalized
 
+relationship fbword-pf-feedbackid-0001
+	fromColumn: 'Feedback Words'.FeedbackId
+	toColumn: ProductFeedback.FeedbackId
+

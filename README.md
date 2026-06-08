@@ -30,7 +30,7 @@ data gets in and how it refreshes.
 
 | Path | Best when… | What it gives you |
 |---|---|---|
-| **[1. SharePoint](1.%20SharePoint/)** *(start here)* | Power BI Pro, **no Fabric**. You want scheduled refresh from a SharePoint/OneDrive folder. | A script drops CSVs into SharePoint; the template refreshes from there. Covers most deployments. |
+| **[1. SharePoint](1.%20SharePoint/)** *(start here)* | Power BI Pro, **no Fabric**. You want scheduled refresh without a gateway. | A script drops one CSV per source into SharePoint; the template refreshes from those URLs. Covers most deployments. |
 | **[2. Fabric](2.%20Fabric/)** | You have **Fabric capacity**. High volume / multi‑year history. | Notebooks parse the data into a Lakehouse → best performance, sub‑second dashboard, optional billing & feedback sources. |
 
 **Not sure?** Start with **SharePoint** — it covers ~80% of cases without any Fabric setup. Move to

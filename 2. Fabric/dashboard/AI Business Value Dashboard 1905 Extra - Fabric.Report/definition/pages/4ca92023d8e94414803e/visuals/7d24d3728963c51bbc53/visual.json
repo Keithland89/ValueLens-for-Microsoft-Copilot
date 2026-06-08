@@ -51,6 +51,23 @@
             }
           ]
         }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Chat + Agent Interactions (Audit Logs)"
+                  }
+                },
+                "Property": "Copilot AI Tasks Per User Per Week"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
       }
     },
     "objects": {

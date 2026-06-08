@@ -87,21 +87,6 @@
       "source": "8116a18d036d6d460a3d",
       "target": "b399f7e42e07aa30b063",
       "type": "DataFilter"
-    },
-    {
-      "source": "8116a18d036d6d460a3d",
-      "target": "ff677fec1e6376386771",
-      "type": "DataFilter"
-    },
-    {
-      "source": "ff677fec1e6376386771",
-      "target": "8116a18d036d6d460a3d",
-      "type": "DataFilter"
-    },
-    {
-      "source": "ff677fec1e6376386771",
-      "target": "b399f7e42e07aa30b063",
-      "type": "DataFilter"
     }
   ]
 }

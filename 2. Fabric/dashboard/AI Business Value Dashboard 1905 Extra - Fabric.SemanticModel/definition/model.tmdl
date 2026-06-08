@@ -6,7 +6,7 @@ model Model
 		legacyRedirects
 		returnErrorValuesAsNull
 
-annotation PBI_QueryOrder = ["Fabric SQL Endpoint","Lakehouse Name","FabricTable","Chat + Agent Interactions (Audit Logs)","Copilot Licensed","Chat + Agent Org Data","Agents 365","Behavior Value Map","Human Time Estimates","Augmented Skills Map","Task Value Mapping","Agent Catalogue","Agent Sessions","Agent Turns","Agent Errors","Agent Sub-Agent Calls","ProductFeedback","Agent Performance","Credit Consumption (Agent)","Credit Consumption (User)","Credit Consumption (Tenant)","EmptyTable","Enable_Dataverse","Enable_ProductFeedback","Enable_Agent365","Enable_Consumption"]
+annotation PBI_QueryOrder = ["Fabric SQL Endpoint","Lakehouse Name","FabricTable","Chat + Agent Interactions (Audit Logs)","Copilot Licensed","Chat + Agent Org Data","Agents 365","Behavior Value Map","Human Time Estimates","Augmented Skills Map","Task Value Mapping","Agent Catalogue","Agent Sessions","Agent Turns","Agent Errors","Agent Sub-Agent Calls","ProductFeedback","Agent Performance","Credit Consumption (Agent)","Credit Consumption (User)","Credit Consumption (Tenant)","EmptyTable","Enable_Dataverse","Enable_ProductFeedback","Enable_Agent365","Enable_Consumption","Feedback Words"]
 
 annotation __PBI_TimeIntelligenceEnabled = 0
 
@@ -44,6 +44,7 @@ ref table 'Agent Performance'
 ref table 'Credit Consumption (Agent)'
 ref table 'Credit Consumption (User)'
 ref table 'Credit Consumption (Tenant)'
+ref table 'Feedback Words'
 
 ref cultureInfo en-US
 

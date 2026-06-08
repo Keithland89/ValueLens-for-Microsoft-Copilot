@@ -235,7 +235,7 @@ table 'Agent Performance'
 			        FILTER(
 			            VALUES('Agent Performance'[Topic (resolved)]),
 			            CALCULATE([Total Conversations]) >= 5
-			                && NOT (LEFT('Agent Performance'[Topic (resolved)], 1) = "🚫")
+			                && ( NOT (CONTAINSSTRING('Agent Performance'[Topic (resolved)], UNICHAR(128683))) && 'Agent Performance'[Topic (resolved)] <> "Other" )
 			        ),
 			        "Res", DIVIDE([Resolved Conversations], CALCULATE([Total Conversations], 'Agent Performance'[SessionType] = "Engaged")),
 			        "Esc", [Escalation Rate]
@@ -299,7 +299,7 @@ table 'Agent Performance'
 			    ADDCOLUMNS(
 			        FILTER(
 			            VALUES('Agent Performance'[Topic (resolved)]),
-			            NOT (LEFT('Agent Performance'[Topic (resolved)], 1) = "🚫")
+			            ( NOT (CONTAINSSTRING('Agent Performance'[Topic (resolved)], UNICHAR(128683))) && 'Agent Performance'[Topic (resolved)] <> "Other" )
 			        ),
 			        "V", [Total Conversations],
 			        "A", [Abandonment Rate]
@@ -317,6 +317,97 @@ table 'Agent Performance'
 			)
 		displayFolder: 🗂 Topics
 		lineageTag: ap0topic-meas-0001-000000000010
+
+	measure 'Top Topic per Agent' = ```
+			
+			VAR T =
+			    ADDCOLUMNS (
+			        FILTER (
+			            VALUES ( 'Agent Performance'[Topic (resolved)] ),
+			            ( NOT ( CONTAINSSTRING ( 'Agent Performance'[Topic (resolved)], UNICHAR ( 128683 ) ) ) && 'Agent Performance'[Topic (resolved)] <> "Other" )
+			        ),
+			        "@Convs", CALCULATE ( [Total Conversations] )
+			    )
+			VAR Best = TOPN ( 1, T, [@Convs], DESC )
+			RETURN
+			    IF (
+			        ISBLANK ( MAXX ( Best, [@Convs] ) ), "—",
+			        MAXX ( Best, 'Agent Performance'[Topic (resolved)] )
+			            & " (" & FORMAT ( MAXX ( Best, [@Convs] ), "#,0" ) & ")"
+			    )
+			
+			```
+		displayFolder: Agent KPIs
+		lineageTag: c851f690-a816-4de3-8825-39de1f33a702
+
+	/// The topic this agent RESOLVES most (by resolved-conversation count), excluding noise buckets.
+	measure 'Top Resolved Topic' = ```
+			
+			VAR T =
+			    ADDCOLUMNS (
+			        FILTER (
+			            VALUES ( 'Agent Performance'[Topic (resolved)] ),
+			            ( NOT ( CONTAINSSTRING ( 'Agent Performance'[Topic (resolved)], UNICHAR ( 128683 ) ) ) && 'Agent Performance'[Topic (resolved)] <> "Other" )
+			        ),
+			        "@N", CALCULATE ( [Resolved Conversations] )
+			    )
+			VAR Best = TOPN ( 1, T, [@N], DESC )
+			RETURN
+			    IF (
+			        ISBLANK ( MAXX ( Best, [@N] ) ) || MAXX ( Best, [@N] ) = 0, "—",
+			        MAXX ( Best, 'Agent Performance'[Topic (resolved)] )
+			            & " (" & FORMAT ( MAXX ( Best, [@N] ), "#,0" ) & ")"
+			    )
+			
+			```
+		displayFolder: Agent KPIs
+		lineageTag: ap0topic-meas-topres-000000000001
+
+	/// The topic this agent sees ABANDONED most (user dropped, no resolution), excluding noise buckets.
+	measure 'Top Abandoned Topic' = ```
+			
+			VAR T =
+			    ADDCOLUMNS (
+			        FILTER (
+			            VALUES ( 'Agent Performance'[Topic (resolved)] ),
+			            ( NOT ( CONTAINSSTRING ( 'Agent Performance'[Topic (resolved)], UNICHAR ( 128683 ) ) ) && 'Agent Performance'[Topic (resolved)] <> "Other" )
+			        ),
+			        "@N", CALCULATE ( [Abandoned Conversations] )
+			    )
+			VAR Best = TOPN ( 1, T, [@N], DESC )
+			RETURN
+			    IF (
+			        ISBLANK ( MAXX ( Best, [@N] ) ) || MAXX ( Best, [@N] ) = 0, "—",
+			        MAXX ( Best, 'Agent Performance'[Topic (resolved)] )
+			            & " (" & FORMAT ( MAXX ( Best, [@N] ), "#,0" ) & ")"
+			    )
+			
+			```
+		displayFolder: Agent KPIs
+		lineageTag: ap0topic-meas-topabn-000000000002
+
+	/// The topic this agent ESCALATES to a human most, excluding noise buckets.
+	measure 'Top Escalated Topic' = ```
+			
+			VAR T =
+			    ADDCOLUMNS (
+			        FILTER (
+			            VALUES ( 'Agent Performance'[Topic (resolved)] ),
+			            ( NOT ( CONTAINSSTRING ( 'Agent Performance'[Topic (resolved)], UNICHAR ( 128683 ) ) ) && 'Agent Performance'[Topic (resolved)] <> "Other" )
+			        ),
+			        "@N", CALCULATE ( [Escalated Conversations] )
+			    )
+			VAR Best = TOPN ( 1, T, [@N], DESC )
+			RETURN
+			    IF (
+			        ISBLANK ( MAXX ( Best, [@N] ) ) || MAXX ( Best, [@N] ) = 0, "—",
+			        MAXX ( Best, 'Agent Performance'[Topic (resolved)] )
+			            & " (" & FORMAT ( MAXX ( Best, [@N] ), "#,0" ) & ")"
+			    )
+			
+			```
+		displayFolder: Agent KPIs
+		lineageTag: ap0topic-meas-topesc-000000000003
 
 	column ConversationTranscriptId
 		dataType: string
@@ -828,7 +919,7 @@ table 'Agent Performance'
 	column 'Topic (resolved)' =
 			VAR classic = 'Agent Performance'[PrimaryTopic]
 			VAR lc = LOWER(classic)
-			VAR isSystemClassic = CONTAINSSTRING(lc, "[system]") || lc = "logging" || lc = "greeting"
+			VAR isSystemClassic = CONTAINSSTRING(lc, "[system]") || lc = "logging" || lc = "greeting" || CONTAINSSTRING(lc, "conversation start")
 			VAR m = LOWER(TRIM('Agent Performance'[FirstUserMessage]))
 			VAR derived =
 			    SWITCH(
