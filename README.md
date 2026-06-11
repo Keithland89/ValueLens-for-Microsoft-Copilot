@@ -31,7 +31,7 @@ data gets in and how it refreshes.
 | Path | Best when… | What it gives you |
 |---|---|---|
 | **[1. Fabric](1.%20Fabric/)** *(recommended)* | You have **Fabric capacity** (or Premium / PPU) — or any Spark + SQL stack. | Notebooks parse the data into a Lakehouse → best performance, sub‑second dashboard, and the optional billing & feedback pages. The same notebooks + template also run on Databricks, Synapse, or Azure SQL. |
-| **[2. SharePoint](2.%20SharePoint/)** | Power BI Pro, **no Fabric** / Premium. You want scheduled refresh without a gateway. | A script drops one CSV per source into SharePoint; the template refreshes from those URLs. The simplest core deployment. |
+| **[2. SharePoint](2.%20SharePoint/)** | Power BI Pro, **no Fabric** / Premium. You want scheduled refresh without a gateway. | [Microsoft PAX](https://github.com/microsoft/PAX) extracts in parallel partitions, a Python processor produces two rollup CSVs, the template refreshes from those SharePoint URLs. The simplest core deployment. |
 
 **Not sure?** **Fabric** is the recommended path — it scales furthest and unlocks the optional
 billing/feedback pages. No Fabric or Premium capacity? **SharePoint** runs the core dashboard on just
