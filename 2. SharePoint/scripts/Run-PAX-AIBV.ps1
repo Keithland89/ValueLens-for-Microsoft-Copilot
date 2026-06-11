@@ -180,10 +180,10 @@ if ($SkipProcessor) {
 
 # ---- 3. Find newest raw Purview + Entra files ----
 $rawPurview = Get-ChildItem $RawDir -Filter 'Purview_Audit_UsageActivity_CopilotInteraction_*.csv' |
-              Where-Object { $_.Name -notmatch '_Interactions_|_Users_|_Rollup' } |
+              Where-Object { $_.Name -notmatch '_Interactions(\.|_)|_Users(\.|_)|_Rollup' } |
               Sort-Object LastWriteTime -Descending | Select-Object -First 1
 $rawEntra   = Get-ChildItem $RawDir -Filter 'EntraUsers_MAClicensing_*.csv' |
-              Where-Object { $_.Name -notmatch '_Interactions_|_Users_|_Rollup' } |
+              Where-Object { $_.Name -notmatch '_Interactions(\.|_)|_Users(\.|_)|_Rollup' } |
               Sort-Object LastWriteTime -Descending | Select-Object -First 1
 if (-not $rawPurview) { throw "No raw Purview CSV found in $RawDir." }
 if (-not $rawEntra)   { throw "No raw Entra CSV found in $RawDir." }
