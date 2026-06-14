@@ -75,17 +75,21 @@ export + connect steps live in the path README you choose above.
 
 | Page | Purpose |
 |---|---|
-| **Overview** | Executive summary — hours saved, assisted value, weekly rhythm |
-| **User Maturity** | Progression: Asking → Finding → Consuming → Producing → Automating |
-| **Copilot Value** | Copilot usage, tasks, and value breakdown |
-| **Agent Value** | Agent tasks, shared agents, autonomous activity |
-| **Agent Governance** | Deployment patterns, creator insights, sensitivity exposure |
-| **Functional Value** | Value per business function + work‑archetype analysis |
+| **User Activation** | Activation across teams — licensed vs unlicensed, active vs inactive |
 | **Adoption & Reach** | User counts, coverage %, licensed vs unlicensed |
+| **Activity & Value** | Copilot and agent usage, tasks, hours saved and assisted value |
+| **Usage Maturity** | Progression: Asking → Finding → Consuming → Producing → Automating |
 | **Leaderboards** | Top users, agents, and functions |
-| **Trends** | Time‑series across all value metrics |
-| **Signal → Behavior → Value** | Trace raw signals through to dollar value (audit trail) |
-| **Glossary & Guide** | Metric definitions, methodology, research sources |
+| **Agent Governance** | Deployment patterns, creator insights, sensitivity exposure |
+| **User Feedback** | Thumbs up/down sentiment and verbatim feedback themes |
+| **License Readiness** | Ranks unlicensed users by upgrade‑priority score |
+| **Heatmap Trend** | Activity heatmap across the reporting period |
+| **Copilot Studio: Credits Consumed** | Agent credit consumption and billing breakdown |
+| **Copilot Studio: Agent Evaluation** | Agent resolution, abandonment, escalation and response time |
+| **Copilot Studio: Topic Analysis** | Most‑asked topics, resolution and abandonment by agent |
+| **Appendix: Key Concepts** | Methodology and key‑concept explainers |
+| **Appendix: Glossary** | Metric definitions and research sources |
+| **Appendix: Signal Table** | Trace raw signals through to value (audit trail) |
 
 ---
 
