@@ -36,6 +36,32 @@ app registration before you start.
 
 ---
 
+## Authentication
+
+This deployment authenticates to Microsoft Graph and SharePoint with an
+**Entra app registration** (client secret or certificate). That is the
+**supported path today** — and currently the only working one for the scheduled
+SharePoint refresh. The scheduling helper below
+([`Register-TaskScheduler.ps1`](./scripts/Register-TaskScheduler.ps1)) runs the
+extract and upload scripts under that app registration.
+
+> **⏳ Managed identity (secretless) is planned, not yet available.**
+> [Microsoft PAX](https://github.com/microsoft/PAX) itself supports
+> `-Auth ManagedIdentity` for unattended, Azure-hosted runs with no secret to
+> rotate. In **this** repo, though, that route depends on the Azure Container
+> Apps Job in [`azure-container/`](./azure-container/), which is **still WIP**.
+> It's blocked on shipping a thin container layer that pairs PAX with this repo's
+> v4.0.0 rollup processor — a stock PAX container emits the older 33-column
+> schema the AIBV template can't consume. **Until the ACA Job lands, use the app
+> registration.**
+>
+> Managed identity is an **alternative** to the app registration, not an
+> addition — you won't run both. When the ACA Job ships, the managed identity
+> simply replaces the client secret while reusing the **same** Graph permissions
+> and the **same** `Sites.Selected` grant provisioned in Setup below.
+
+---
+
 ## Setup (one time)
 
 ### 1. Grant the app write access to your SharePoint site
@@ -105,6 +131,10 @@ To make the above two commands run daily, use the Task Scheduler helper:
 
 Pass `-RunAsUser DOMAIN\svc_aibv` to run under a service account.
 
+> This runs under the **app registration** (see [Authentication](#authentication)).
+> A secretless, managed-identity schedule via Azure Container Apps is **planned but
+> still WIP** — see [`azure-container/`](./azure-container/).
+
 ---
 
 ## Connect the template
@@ -137,7 +167,7 @@ Pass `-RunAsUser DOMAIN\svc_aibv` to run under a service account.
 | `scripts/ProvisionSiteAccess-SP-AppReg.ps1` | One-time `Sites.Selected` grant. |
 | `scripts/Get-Agents365Registry.ps1` | Optional Agents 365 export. |
 | `scripts/Purview_CopilotInteraction_Processor_v4.0.0.py` | Called by `Run-PAX-AIBV.ps1` — you don't run this directly. |
-| `azure-container/` | Planned ACA Job deployment (WIP). |
+| `azure-container/` | Planned ACA Job for secretless **managed-identity** scheduling (WIP — see [Authentication](#authentication)). |
 
 ---
 

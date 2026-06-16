@@ -1,5 +1,14 @@
 # Azure Container Apps Job (WIP)
 
+> [!IMPORTANT]
+> **This is the home of the secretless, managed-identity scheduling route — and
+> it has not shipped yet.** Until the files below land, the *only* supported way
+> to schedule the SharePoint refresh is the **app registration** path documented
+> in the [folder README](../README.md#authentication) (via
+> [`Register-TaskScheduler.ps1`](../scripts/Register-TaskScheduler.ps1)).
+> Managed identity will be an **alternative** to that app registration, not an
+> addition.
+
 > [!NOTE]
 > **Status: planned.** PAX's prebuilt container image
 > ([`microsoft/PAX/fabric_resources/Dockerfile/`](https://github.com/microsoft/PAX/tree/release/fabric_resources/Dockerfile))
