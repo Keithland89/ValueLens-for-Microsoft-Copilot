@@ -39,30 +39,64 @@ to be baked into an image:
    [`Dockerfile/PAX.Dockerfile`](https://github.com/microsoft/PAX/blob/release/fabric_resources/Dockerfile/PAX.Dockerfile)
    to your ACR (or pull a published tag).
 2. **Job command** — invoke PAX with the AIBV dashboard, managed-identity auth,
-   and a SharePoint document-library `-OutputPath`:
+   and a SharePoint document-library `-OutputPath`. These go in the deploy
+   script's `-ScriptArgs`:
 
    ```text
    -Auth        ManagedIdentity
    -TenantId    <tenant-guid>
    -Dashboard   AIBV                 # embedded v4.0.0 rollup; auto-enables -Rollup
    -IncludeUserInfo                  # Entra users + MAC licensing (AIBV needs both)
-   -Days        30                   # or -StartDate / -EndDate
+   -StartDate   <yyyy-MM-dd>         # PAX has no -Days; omit both for a 30-day window
+   -EndDate     <yyyy-MM-dd>
    -OutputPath  "https://<tenant>.sharepoint.com/sites/<site>/<library>/AIBV"
    ```
 3. **Deploy** — use PAX's own
    [`Deploy/Deploy-PAXAcaJob.ps1`](https://github.com/microsoft/PAX/blob/release/fabric_resources/Deploy/Deploy-PAXAcaJob.ps1)
-   (ACR build/push + ACA Job + managed identity + cron trigger).
-4. **Permissions** — grant the managed identity the same Microsoft Graph
-   application permissions the app-registration path uses, plus SharePoint write.
-   PAX's [`Prereqs/Grant-PAXPermissions.ps1`](https://github.com/microsoft/PAX/blob/release/fabric_resources/Prereqs/Grant-PAXPermissions.ps1)
-   covers the Graph + Azure roles; the SharePoint `Sites.Selected` grant is
-   already handled by
-   [`../scripts/ProvisionSiteAccess-SP-AppReg.ps1`](../scripts/ProvisionSiteAccess-SP-AppReg.ps1)
-   (point it at the managed identity's client ID instead of the app registration).
+   **directly** — it already supports a SharePoint destination (its own synopsis:
+   *"writes outputs to either SharePoint Online or Microsoft Fabric/OneLake"*),
+   so no AIBV-specific deploy script is needed. The storage tier is inferred from
+   the `-OutputPath` URL form (a `sharepoint.com` path routes to SharePoint
+   automatically). Worked example:
+
+   ```powershell
+   ./Deploy-PAXAcaJob.ps1 `
+       -SubscriptionId 'xxx' -ResourceGroup 'rg-pax' -EnvironmentName 'cae-pax' `
+       -JobName 'aibv-sharepoint-daily' -AcrName 'paxacr' -ImageTag '1.11.6' `
+       -ManagedIdentityResourceId '/subscriptions/.../userAssignedIdentities/uai-aibv' `
+       -ManagedIdentityClientId '<uami-client-id>' `
+       -BootstrapLogStorageAccount 'aibvbootstraplogs' `
+       -ScriptArgs @('-Dashboard','AIBV','-IncludeUserInfo','-Auth','ManagedIdentity',
+                     '-OutputPath','https://<tenant>.sharepoint.com/sites/<site>/<library>/AIBV') `
+       -CronExpression '0 2 * * *'   # 02:00 UTC daily
+   ```
+
+   > `Deploy-PAXAcaJob.ps1` also **requires** a `-BootstrapLogStorageAccount`
+   > (an Azure Files share it provisions for pre-flight logs) — one extra Azure
+   > resource to budget for.
+4. **Permissions** — grant the managed identity its roles with PAX's
+   [`Prereqs/Grant-PAXPermissions.ps1`](https://github.com/microsoft/PAX/blob/release/fabric_resources/Prereqs/Grant-PAXPermissions.ps1).
+   See the permissions caveat below — PAX's SharePoint mode needs broader Graph
+   scopes than this repo's existing `Sites.Selected` flow.
 
 Because PAX emits AIBV directly, the in-container flow is a **single step**
 (PAX → SharePoint) rather than the old two-step (PAX → v4.0.0 processor →
 SharePoint).
+
+> [!WARNING]
+> **Permissions differ from the app-registration path — decide this before
+> deploying.** PAX's container/SharePoint mode requires the managed identity to
+> hold the **tenant-wide** Graph application permissions
+> **`Sites.ReadWrite.All` + `Files.ReadWrite.All`** (per
+> `Deploy-PAXAcaJob.ps1`'s own prerequisites). This repo's
+> [`../scripts/ProvisionSiteAccess-SP-AppReg.ps1`](../scripts/ProvisionSiteAccess-SP-AppReg.ps1)
+> uses the far more locked-down, **per-library `Sites.Selected`** grant, which
+> PAX's output path does **not** currently use. So you cannot simply reuse the
+> existing `Sites.Selected` grant for the managed identity. For least-privilege-
+> sensitive tenants (e.g. regulated/financial), this tenant-wide scope is a real
+> decision point — either accept `Sites.ReadWrite.All`/`Files.ReadWrite.All`, or
+> stay on the app-registration + `Sites.Selected` Task Scheduler path until a
+> `Sites.Selected`-compatible container path is available.
 
 ## Remaining work to ship this
 
@@ -74,24 +108,30 @@ SharePoint).
       PAX names, (b) a small post-upload rename, or (c) a PAX fixed-name option —
       the Task Scheduler path currently handles this in
       [`../scripts/Upload-Rollups-SharePoint.ps1`](../scripts/Upload-Rollups-SharePoint.ps1).
-- [ ] **Permissions for the managed identity** — Graph app roles
-      (`AuditLogsQuery.Read.All`, `Reports.Read.All`, `User.Read.All`,
-      `Organization.Read.All`) **+** SharePoint write (`Sites.Selected` on the
-      target library, or `Sites.ReadWrite.All` / `Files.ReadWrite.All` + Edit /
-      Contribute on the folder).
-- [ ] **Commit + test** the ACA Job end-to-end (a 1-day run validates audit read,
+- [ ] **Permissions decision** — accept PAX's tenant-wide
+      `Sites.ReadWrite.All` / `Files.ReadWrite.All` for the managed identity (see
+      the warning above), or hold for a `Sites.Selected`-compatible path. The
+      always-required Graph roles (`AuditLogsQuery.Read.All`, `User.Read.All`,
+      `Organization.Read.All`) are granted by `Grant-PAXPermissions.ps1`.
+- [ ] **Provision** the mandatory `-BootstrapLogStorageAccount` (Azure Files
+      share for pre-flight logs).
+- [ ] **Test** the ACA Job end-to-end (a 1-day run validates audit read,
       SharePoint write, and managed-identity sign-in in minutes).
 
 ## What this folder will contain when shipped
 
+PAX's `Deploy-PAXAcaJob.ps1` can deploy the AIBV job **directly**, so this folder
+needs only thin convenience wrappers (optional) and config — not a bespoke
+deploy script:
+
 | File | Purpose |
 |---|---|
-| `Deploy-AcaJob.ps1` | One-shot deploy: ACR build/push of PAX's image + ACA Job + managed identity + cron. A thin wrapper over PAX's [`Deploy-PAXAcaJob.ps1`](https://github.com/microsoft/PAX/blob/release/fabric_resources/Deploy/Deploy-PAXAcaJob.ps1), pre-set with `-Dashboard AIBV` and a SharePoint `-OutputPath`. |
-| `Grant-Permissions.ps1` | One-time per-tenant: Graph app roles + admin consent + `Sites.Selected` grant for the managed identity. |
-| `job.env.example` | Example job parameters (tenant, site/library path, schedule). |
+| `Deploy-AcaJob.ps1` _(optional)_ | Thin convenience wrapper that calls PAX's [`Deploy-PAXAcaJob.ps1`](https://github.com/microsoft/PAX/blob/release/fabric_resources/Deploy/Deploy-PAXAcaJob.ps1) pre-set with the AIBV `-ScriptArgs` (`-Dashboard AIBV -IncludeUserInfo`) and a SharePoint `-OutputPath`. |
+| `Grant-Permissions.ps1` _(optional)_ | Thin wrapper over PAX's [`Grant-PAXPermissions.ps1`](https://github.com/microsoft/PAX/blob/release/fabric_resources/Prereqs/Grant-PAXPermissions.ps1), defaulting to the SharePoint scopes. |
+| `job.env.example` | Example job parameters (subscription, RG, ACA env, ACR, UAMI, site/library path, schedule). |
 
-> No `Dockerfile` or `entrypoint.ps1` is listed any more — with `-Dashboard AIBV`
-> the stock PAX image is used as-is.
+> No `Dockerfile` or `entrypoint.ps1` is needed — with `-Dashboard AIBV` the
+> stock PAX image is used as-is.
 
 ## Until this lands
 
