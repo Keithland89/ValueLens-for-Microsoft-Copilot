@@ -14,7 +14,7 @@ no gateway. Three steps: extract, upload, connect.
 
 **On the machine that runs the extract:**
 
-- PowerShell 7+ (`pwsh`)
+- PowerShell 7+ (`pwsh`). [Install guide](https://learn.microsoft.com/en-us/powershell/scripting/install/install-powershell-on-windows). Run the scripts with `pwsh`, not Windows PowerShell (`powershell`).
 - Python 3.10+
 - `git`
 
