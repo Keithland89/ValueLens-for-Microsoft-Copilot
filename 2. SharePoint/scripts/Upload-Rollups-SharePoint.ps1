@@ -55,9 +55,9 @@
       -FolderPath '/AIBV'
 
 .NOTES
-  Files >4 MB use a Graph upload session (chunked). The two rollup CSVs in a
-  typical 30-day tenant run are well under 4 MB, so the simple PUT path is the
-  default; the chunked path kicks in automatically when needed.
+  Files are uploaded with Graph's simple PUT (supports up to 250 MB), so the two
+  rollup CSVs always take the single-request path. A resumable upload session is
+  used only if a file ever exceeds 250 MB.
 #>
 [CmdletBinding(DefaultParameterSetName='Manifest')]
 param(
@@ -127,7 +127,12 @@ function Invoke-GraphPutCsv {
 
   $headers = @{ Authorization = "Bearer $Token" }
 
-  if ($size -le 4MB) {
+  # Graph's simple upload (PUT .../content) supports files up to 250 MB. The rollup
+  # CSVs are far smaller than this even for large tenants, so the simple path is the
+  # default. Only files >250 MB fall through to the resumable upload session below.
+  # (The old 4 MB threshold was the legacy OneDrive limit and forced large-tenant
+  #  rollups onto createUploadSession, which some hardened tenants reject with 400.)
+  if ($size -le 250MB) {
     Write-Host ("  PUT  {0} ({1:N0} bytes)" -f $RemoteName, $size)
     $uri = "https://graph.microsoft.com/v1.0/drives/$DriveId/root:/$itemPathEnc`:/content"
     Invoke-RestMethod -Method PUT -Uri $uri -Headers $headers `
@@ -135,13 +140,15 @@ function Invoke-GraphPutCsv {
     return
   }
 
-  # Chunked upload session for >4 MB
+  # Resumable upload session for >250 MB
   Write-Host ("  Upload session {0} ({1:N0} bytes, chunked)" -f $RemoteName, $size)
   $sessionUri = "https://graph.microsoft.com/v1.0/drives/$DriveId/root:/$itemPathEnc`:/createUploadSession"
-  $body = @{ item = @{ '@microsoft.graph.conflictBehavior' = 'replace'; name = $RemoteName } } | ConvertTo-Json -Depth 4
+  # The target name/path is already in the URL; only the conflict behaviour is needed.
+  $body = @{ item = @{ '@microsoft.graph.conflictBehavior' = 'replace' } } | ConvertTo-Json -Depth 4
   $session = Invoke-RestMethod -Method POST -Uri $sessionUri -Headers $headers -ContentType 'application/json' -Body $body
   $upUrl = $session.uploadUrl
 
+  # Chunk size MUST be a multiple of 320 KiB (327,680 bytes) per Graph; 5 MB qualifies.
   $chunk = 5MB
   $fs = [System.IO.File]::OpenRead($LocalPath)
   try {
@@ -153,8 +160,11 @@ function Invoke-GraphPutCsv {
       $endByte = $offset + $read - 1
       $range = "bytes $offset-$endByte/$size"
       $slice = if ($read -eq $buf.Length) { $buf } else { $buf[0..($read-1)] }
+      # The upload-session chunk PUT is UNAUTHENTICATED (the uploadUrl is pre-signed),
+      # so do NOT resend the bearer token. Only Content-Range is required; Content-Length
+      # is set automatically from the body — setting it manually breaks PS7's HttpClient.
       Invoke-RestMethod -Method PUT -Uri $upUrl `
-        -Headers @{ 'Content-Range' = $range; 'Content-Length' = $read } `
+        -Headers @{ 'Content-Range' = $range } `
         -ContentType 'application/octet-stream' -Body $slice | Out-Null
       $offset += $read
     }
