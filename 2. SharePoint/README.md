@@ -15,8 +15,8 @@ no gateway. Three steps: extract, upload, connect.
 **On the machine that runs the extract:**
 
 - PowerShell 7+ (`pwsh`). [Install guide](https://learn.microsoft.com/en-us/powershell/scripting/install/install-powershell-on-windows). Run the scripts with `pwsh`, not Windows PowerShell (`powershell`).
-- Python 3.10+
-- `git`
+- Internet access to GitHub Releases so the wrapper can download the current PAX release.
+- Python 3.10+ (PAX bootstraps and uses it internally for the rollup step).
 
 **In your tenant:**
 
@@ -103,6 +103,7 @@ cd scripts
 
 Produces `.\processed\*_Interactions_*.csv`, `.\processed\*_Users_*.csv`,
 and `rollup-manifest.json`. A 30-day extract typically takes 5–15 minutes.
+Pass `-IncludeAgent365Info` if you want the optional Agents 365 output.
 
 ### Upload
 
@@ -165,12 +166,12 @@ Pass `-RunAsUser DOMAIN\svc_aibv` to run under a service account.
 | Item | Purpose |
 |---|---|
 | `AI Business Value Dashboard - SharePoint.pbit` | The dashboard template. |
-| `scripts/Run-PAX-AIBV.ps1` | Extract + classify. Produces the two rollup CSVs. |
+| `scripts/Run-PAX-AIBV.ps1` | Downloads the current PAX release and produces the rollup CSVs. |
 | `scripts/Upload-Rollups-SharePoint.ps1` | Push the two CSVs to SharePoint. |
 | `scripts/Register-TaskScheduler.ps1` | Run the above two daily as a Windows Scheduled Task. |
 | `scripts/ProvisionSiteAccess-SP-AppReg.ps1` | One-time `Sites.Selected` grant. |
 | `scripts/Get-Agents365Registry.ps1` | Optional Agents 365 export. |
-| `scripts/Purview_CopilotInteraction_Processor_v4.0.0.py` | Called by `Run-PAX-AIBV.ps1` — you don't run this directly. |
+| `scripts/Purview_CopilotInteraction_Processor_v4.0.0.py` | Legacy fallback processor. The main flow now uses the PAX release script directly. |
 | `azure-container/` | Planned ACA Job for secretless **managed-identity** scheduling (WIP — see [Authentication](#authentication)). |
 
 ---
@@ -179,7 +180,7 @@ Pass `-RunAsUser DOMAIN\svc_aibv` to run under a service account.
 
 | Symptom | Fix |
 |---|---|
-| `git: command not found` / `python: command not found` | Install git / Python 3.10+ and retry. |
+| `python: command not found` | Install Python 3.10+ and retry. |
 | `0 records returned` | `AuditLogsQuery.Read.All` consent missing — re-grant in Entra. |
 | Masked UPNs (32-char hex) | M365 Admin → Org settings → Reports → untick "Display concealed names". |
 | `403 Forbidden` on upload | App lacks per-site write permission — re-run `ProvisionSiteAccess-SP-AppReg.ps1`. |

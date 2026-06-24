@@ -7,11 +7,11 @@ reference.
 | Script | What it does | When you run it |
 |---|---|---|
 | `ProvisionSiteAccess-SP-AppReg.ps1` | Grants your Entra app `Sites.Selected` write access to one SharePoint site. Prints the `SiteId` and `DriveId` the upload script needs. | **Once per site.** |
-| `Run-PAX-AIBV.ps1` | Auto-clones [microsoft/PAX](https://github.com/microsoft/PAX), extracts Copilot audit data, runs the v4.0.0 processor, drops two rollup CSVs into `.\processed\`. | **Every refresh.** |
+| `Run-PAX-AIBV.ps1` | Downloads the latest PAX release script, runs the built-in AIBV rollup, and drops two rollup CSVs into `.\processed\`. | **Every refresh.** |
 | `Upload-Rollups-SharePoint.ps1` | Uploads the two rollup CSVs to fixed file names in your SharePoint library (overwrites the previous run). | **Every refresh, after the extract.** |
 | `Register-TaskScheduler.ps1` | Registers the above two as a single daily Windows Scheduled Task. | **Once, when you want to schedule.** |
 | `Get-Agents365Registry.ps1` | Optional. Exports the Agents 365 registry for the dashboard's Agents 365 page. | Ad-hoc. |
-| `Purview_CopilotInteraction_Processor_v4.0.0.py` | The classifier. Invoked by `Run-PAX-AIBV.ps1`. | Not run directly. |
+| `Purview_CopilotInteraction_Processor_v4.0.0.py` | Legacy fallback processor. The main wrapper now uses the PAX release script directly. | Edge cases only. |
 
 ---
 
@@ -35,7 +35,9 @@ reference.
     -ClientId   <client-id> `
     [-ClientSecret <secret>] `
     [-Days 7] `
-    [-WorkRoot .]
+    [-WorkRoot .] `
+    [-PaxReleaseTag latest] `
+    [-IncludeAgent365Info]
 ```
 
 Secret resolution (first match wins):
@@ -49,6 +51,7 @@ Outputs to `<WorkRoot>\processed\`:
 - `<purview-stem>_Interactions_<ts>.csv`
 - `<entra-stem>_Users_<ts>.csv`
 - `rollup-manifest.json` (paths + timings for the upload step)
+The wrapper downloads the selected PAX release script into `<WorkRoot>\pax\releases\`.
 
 ---
 
