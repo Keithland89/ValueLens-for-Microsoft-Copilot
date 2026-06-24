@@ -30,6 +30,24 @@
   Passes the PAX -IncludeAgent365Info switch so the optional Agent 365 output
   is produced.
 
+.PARAMETER Auth
+  PAX auth mode. Default: AppRegistration.
+
+.PARAMETER RollupPlusRaw
+  Use PAX -RollupPlusRaw instead of the default -Rollup mode.
+
+.PARAMETER IncludeUserInfo
+  Include the Users output by default. Pass -IncludeUserInfo:$false to disable.
+
+.PARAMETER Deidentify
+  Passes the PAX -Deidentify switch.
+
+.PARAMETER FillerLabel
+  Optional hierarchy filler mode (Blank, RepeatSelf, RepeatManager, Fixed).
+
+.PARAMETER FillerLabelText
+  Label text used when -FillerLabel Fixed is selected.
+
 .PARAMETER ForcePaxDownload
   Re-download the selected PAX release script even if it is already cached.
 
@@ -47,6 +65,14 @@ param(
   [int]$Days = 7,
   [string]$WorkRoot = (Get-Location).Path,
   [string]$PaxReleaseTag = 'latest',
+  [ValidateSet('WebLogin', 'DeviceCode', 'Credential', 'Silent', 'AppRegistration', 'ManagedIdentity')]
+  [string]$Auth = 'AppRegistration',
+  [switch]$RollupPlusRaw,
+  [bool]$IncludeUserInfo = $true,
+  [switch]$Deidentify,
+  [ValidateSet('Blank', 'RepeatSelf', 'RepeatManager', 'Fixed')]
+  [string]$FillerLabel,
+  [string]$FillerLabelText,
   [switch]$IncludeAgent365Info,
   [switch]$ForcePaxDownload
 )
@@ -56,6 +82,10 @@ $PSNativeCommandUseErrorActionPreference = $false
 
 if ($PSVersionTable.PSVersion.Major -lt 7) {
   throw "PowerShell 7+ required. Run with 'pwsh', not 'powershell'."
+}
+
+if ($FillerLabel -eq 'Fixed' -and -not $FillerLabelText) {
+  throw "-FillerLabelText is required when -FillerLabel Fixed is selected."
 }
 
 function Resolve-Secret {
@@ -156,12 +186,20 @@ function Get-PaxReleaseScript {
   }
 }
 
+if (-not (Test-Path -LiteralPath $WorkRoot)) {
+  New-Item -ItemType Directory -Force -Path $WorkRoot | Out-Null
+}
 $WorkRoot = (Resolve-Path -LiteralPath $WorkRoot).Path
 $PaxCacheRoot = Join-Path $WorkRoot 'pax'
 $OutDir = Join-Path $WorkRoot 'processed'
 New-Item -ItemType Directory -Force -Path $PaxCacheRoot, $OutDir | Out-Null
 
-$secret = Resolve-Secret -Provided $ClientSecret -TenantId $TenantId
+$secret = $null
+if ($Auth -eq 'AppRegistration') {
+  $secret = Resolve-Secret -Provided $ClientSecret -TenantId $TenantId
+} elseif ($ClientSecret) {
+  $secret = $ClientSecret
+}
 $StartDate = (Get-Date).AddDays(-$Days).ToString('yyyy-MM-dd')
 $EndDate = (Get-Date).ToString('yyyy-MM-dd')
 
@@ -177,24 +215,48 @@ Write-Host ("Out dir  : {0}" -f $OutDir)
 Write-Host ""
 
 $paxStart = Get-Date
-$paxArgs = @(
-  '-TenantId', $TenantId,
-  '-ClientId', $ClientId,
-  '-ClientSecret', $secret,
-  '-Auth', 'AppRegistration',
-  '-Dashboard', 'AIBV',
-  '-Rollup',
-  '-StartDate', $StartDate,
-  '-EndDate', $EndDate,
-  '-OutputPath', $OutDir,
-  '-OutputPathUserInfo', $OutDir
-)
-
-if ($IncludeAgent365Info) {
-  $paxArgs += '-IncludeAgent365Info'
+$paxParams = @{
+  TenantId = $TenantId
+  ClientId = $ClientId
+  Auth = $Auth
+  Dashboard = 'AIBV'
+  StartDate = $StartDate
+  EndDate = $EndDate
+  OutputPath = $OutDir
 }
 
-& $pax.Path @paxArgs
+if ($secret) {
+  $paxParams.ClientSecret = $secret
+}
+
+if ($RollupPlusRaw) {
+  $paxParams.RollupPlusRaw = $true
+} else {
+  $paxParams.Rollup = $true
+}
+
+if ($IncludeUserInfo) {
+  $paxParams.IncludeUserInfo = $true
+  $paxParams.OutputPathUserInfo = $OutDir
+}
+
+if ($Deidentify) {
+  $paxParams.Deidentify = $true
+}
+
+if ($FillerLabel) {
+  $paxParams.FillerLabel = $FillerLabel
+}
+
+if ($FillerLabelText) {
+  $paxParams.FillerLabelText = $FillerLabelText
+}
+
+if ($IncludeAgent365Info) {
+  $paxParams.IncludeAgent365Info = $true
+}
+
+& $pax.Path @paxParams
 if (-not $?) {
   throw "PAX failed."
 }
@@ -202,18 +264,23 @@ if (-not $?) {
 $paxElapsed = (Get-Date) - $paxStart
 Write-Host ("==> PAX finished in {0:N1} min" -f $paxElapsed.TotalMinutes) -ForegroundColor Green
 
-$interactions = Get-ChildItem $OutDir -Filter '*_Interactions_*.csv' |
+$interactions = Get-ChildItem $OutDir -Filter '*_Interactions*.csv' |
   Sort-Object LastWriteTime -Descending | Select-Object -First 1
-$users = Get-ChildItem $OutDir -Filter '*_Users_*.csv' |
-  Sort-Object LastWriteTime -Descending | Select-Object -First 1
+$users = $null
+if ($IncludeUserInfo) {
+  $users = Get-ChildItem $OutDir -Filter '*_Users*.csv' |
+    Sort-Object LastWriteTime -Descending | Select-Object -First 1
+}
 
 if (-not $interactions) { throw "No rollup interactions CSV found in $OutDir." }
-if (-not $users) { throw "No rollup users CSV found in $OutDir." }
+if ($IncludeUserInfo -and -not $users) { throw "No rollup users CSV found in $OutDir." }
 
 Write-Host ""
 Write-Host "==== Rollup outputs ====" -ForegroundColor Cyan
 Write-Host ("  Interactions : {0} ({1:N0} bytes)" -f $interactions.FullName, $interactions.Length)
-Write-Host ("  Users        : {0} ({1:N0} bytes)" -f $users.FullName, $users.Length)
+if ($users) {
+  Write-Host ("  Users        : {0} ({1:N0} bytes)" -f $users.FullName, $users.Length)
+}
 
 $manifest = [pscustomobject]@{
   generated_utc      = (Get-Date).ToUniversalTime().ToString('o')
@@ -224,9 +291,15 @@ $manifest = [pscustomobject]@{
   pax_release_tag    = $pax.Tag
   pax_release_asset  = $pax.Asset
   pax_elapsed_min    = [math]::Round($paxElapsed.TotalMinutes, 2)
+  pax_auth_mode      = $Auth
+  rollup_mode        = if ($RollupPlusRaw) { 'RollupPlusRaw' } else { 'Rollup' }
+  include_userinfo   = [bool]$IncludeUserInfo
+  deidentify         = [bool]$Deidentify
+  filler_label       = $FillerLabel
+  filler_label_text  = $FillerLabelText
   include_agent365   = [bool]$IncludeAgent365Info
   interactions_csv   = $interactions.FullName
-  users_csv          = $users.FullName
+  users_csv          = if ($users) { $users.FullName } else { $null }
 }
 
 $manifestPath = Join-Path $OutDir 'rollup-manifest.json'

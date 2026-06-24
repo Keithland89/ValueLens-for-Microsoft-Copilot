@@ -104,6 +104,8 @@ cd scripts
 Produces `.\processed\*_Interactions_*.csv`, `.\processed\*_Users_*.csv`,
 and `rollup-manifest.json`. A 30-day extract typically takes 5–15 minutes.
 Pass `-IncludeAgent365Info` if you want the optional Agents 365 output.
+Other surfaced PAX controls include `-Auth`, `-RollupPlusRaw`, `-Deidentify`,
+and `-FillerLabel` / `-FillerLabelText` (see [`scripts/README.md`](./scripts/README.md)).
 
 ### Upload
 

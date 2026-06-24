@@ -37,6 +37,12 @@ reference.
     [-Days 7] `
     [-WorkRoot .] `
     [-PaxReleaseTag latest] `
+    [-Auth AppRegistration|ManagedIdentity|DeviceCode|WebLogin|Credential|Silent] `
+    [-RollupPlusRaw] `
+    [-IncludeUserInfo:$false] `
+    [-Deidentify] `
+    [-FillerLabel Blank|RepeatSelf|RepeatManager|Fixed] `
+    [-FillerLabelText "<text>"] `
     [-IncludeAgent365Info]
 ```
 
@@ -52,6 +58,7 @@ Outputs to `<WorkRoot>\processed\`:
 - `<entra-stem>_Users_<ts>.csv`
 - `rollup-manifest.json` (paths + timings for the upload step)
 The wrapper downloads the selected PAX release script into `<WorkRoot>\pax\releases\`.
+Defaults are `-Auth AppRegistration`, `-Rollup`, and `-IncludeUserInfo`.
 
 ---
 
