@@ -27,7 +27,7 @@ footprint**: one connector, a folder of CSVs, and the report's own refresh — n
 **In your tenant**
 - The **Dataverse environment URL** that holds the Copilot Studio transcripts
   (Power Platform Admin Center → Environments → *your env* → **Environment URL**,
-  e.g. `https://org82b8fa18.crm4.dynamics.com`).
+  e.g. `https://yourorg.crm.dynamics.com`).
 - A sign-in (the person who refreshes the report) with **Read** on the **Conversation
   Transcript** table in that environment — e.g. *System Administrator*, *System Customizer*,
   *Environment Maker*, or a custom least-privilege role. **No app registration / client secret**
@@ -63,7 +63,7 @@ Open the `.pbit` in Power BI Desktop and set the parameters:
 | Parameter | Value |
 |---|---|
 | **Source Mode** | `Dataverse` (live pull) **or** `TranscriptCSV` (parse a local `conversationtranscripts.csv`) |
-| **Dataverse Url** | your environment URL, e.g. `https://org82b8fa18.crm4.dynamics.com` |
+| **Dataverse Url** | your environment URL, e.g. `https://yourorg.crm.dynamics.com` |
 | **CSV Folder Path** | the folder holding the CSV exports above |
 | **Transcript CSV Path** | (only for `TranscriptCSV` mode) full path to a `conversationtranscripts.csv` |
 | `Enable_Consumption` / `Enable_Agent365` | `Include` to show those optional pages |

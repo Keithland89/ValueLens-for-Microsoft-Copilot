@@ -77,7 +77,7 @@ expression 'Source Mode' = "Fabric" meta [IsParameterQuery=true, List={"Fabric",
 
 /// Path to a conversationtranscripts.csv (columns: conversationtranscriptid, content, conversationstarttime,
 /// name). Used when Source Mode = "TranscriptCSV". The `content` column holds the per-conversation JSON.
-expression 'Transcript CSV Path' = "C:\PBIP\_transcript_test\conversationtranscripts_clean.csv" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+expression 'Transcript CSV Path' = "" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
 	lineageTag: 1a2b3c4d-dv01-4104-8104-000000000104
 
 	annotation PBI_NavigationStepName = Navigation
@@ -88,7 +88,7 @@ expression 'Transcript CSV Path' = "C:\PBIP\_transcript_test\conversationtranscr
 /// Agents 365, and the org/people file. Files are read by their canonical names (see CsvTable). Populate
 /// it however you like: the manual portal exports, or the Power Automate / Entra-Graph-to-SharePoint
 /// landing flows. Used when Source Mode = "Dataverse" or "TranscriptCSV".
-expression 'CSV Folder Path' = "C:\PBIP\_transcript_test" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+expression 'CSV Folder Path' = "" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
 	lineageTag: 1a2b3c4d-dv01-4110-8110-000000000110
 
 	annotation PBI_NavigationStepName = Navigation
@@ -132,9 +132,9 @@ expression CsvTableNorm =
 
 	annotation PBI_ResultType = Function
 
-/// Dataverse environment URL (e.g. https://org82b8fa18.crm4.dynamics.com). Used when Source Mode = "Dataverse".
+/// Dataverse environment URL (e.g. https://yourorg.crm.dynamics.com). Used when Source Mode = "Dataverse".
 /// Find it in Power Platform Admin Center → Environments → <your env> → Environment URL.
-expression 'Dataverse Url' = "https://org82b8fa18.crm4.dynamics.com" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+expression 'Dataverse Url' = "" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
 	lineageTag: 1a2b3c4d-dv01-4102-8102-000000000102
 
 	annotation PBI_NavigationStepName = Navigation
@@ -504,7 +504,7 @@ expression Parse_SubAgents =
 	annotation PBI_ResultType = Function
 
 /// M port of build_agent_performance(): one row per conversation with the per-conversation KPI fact
-/// (outcome, implied success, topics, durations, ESS UPN). Matches the agent_performance Delta contract
+/// (outcome, implied success, topics, durations, user UPN). Matches the agent_performance Delta contract
 /// (39 source columns). Drives the Quality & Performance / Agent Evaluation pages.
 expression Parse_Performance =
 		() as table =>
