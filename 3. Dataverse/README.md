@@ -58,18 +58,18 @@ needed for the org filter.
 
 ## Connect the template
 
-Open the `.pbit` in Power BI Desktop and set the parameters:
+Open the `.pbit` in Power BI Desktop. It is **pre-set to Dataverse** (Source Mode is fixed),
+so you only set these parameters:
 
-| Parameter | Value |
-|---|---|
-| **Source Mode** | `Dataverse` (live pull) **or** `TranscriptCSV` (parse a local `conversationtranscripts.csv`) |
-| **Dataverse Url** | your environment URL, e.g. `https://yourorg.crm.dynamics.com` |
-| **CSV Folder Path** | the folder holding the CSV exports above |
-| **Transcript CSV Path** | (only for `TranscriptCSV` mode) full path to a `conversationtranscripts.csv` |
-| `Enable_Consumption` / `Enable_Agent365` | `Include` to show those optional pages |
+| Parameter | Required? | Value |
+|---|---|---|
+| **Dataverse Url** | **Yes** | your environment URL, e.g. `https://yourorg.crm.dynamics.com` |
+| **CSV Folder Path** | **Yes** | the folder holding the CSV exports above (the **org/people** file lives here) |
+| **Enable_Consumption** | optional | `Include` to load the credit-consumption CSVs / page (else `Exclude`) |
+| **Enable_Agent365** | optional | `Include` to load the Agents 365 CSV / page (else `Exclude`) |
 
-Leave **Source Mode = `Fabric`** to use the original Lakehouse path unchanged — the three modes
-live side by side, so flipping the parameter is the only switch.
+> The template carries **no** Fabric / Lakehouse / Source-Mode parameters — it's the Dataverse
+> path only. (The multi-path master `.pbit` in `1. Fabric` keeps those if you need them.)
 
 Click **Load**. On first refresh you'll get a one-time **Dataverse** sign-in: choose
 **Organizational account**, sign in, and (if prompted) set the source privacy level to

@@ -1,7 +1,7 @@
 /// Fabric Lakehouse/Warehouse SQL connection string (the SQL analytics endpoint).
 /// Find it in Fabric: open the Lakehouse → Settings → SQL analytics endpoint → Connection string,
 /// e.g. xxxxxxxxxxxx.datawarehouse.fabric.microsoft.com
-expression 'Fabric SQL Endpoint' = "ekozrqaqpe7uzfbn7zp2lqr3ke-zilaekog6zpejjsartknneu53y.datawarehouse.fabric.microsoft.com" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+expression 'Fabric SQL Endpoint' = ""
 	lineageTag: 1a2b3c4d-fab1-4001-8001-000000000001
 
 	annotation PBI_NavigationStepName = Navigation
@@ -9,7 +9,7 @@ expression 'Fabric SQL Endpoint' = "ekozrqaqpe7uzfbn7zp2lqr3ke-zilaekog6zpejjsar
 	annotation PBI_ResultType = Text
 
 /// Name of the Lakehouse (or Warehouse) that holds the Delta tables written by the four Fabric notebooks.
-expression 'Lakehouse Name' = "CopilotAdoptionLakeTEST" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+expression 'Lakehouse Name' = ""
 	lineageTag: 1a2b3c4d-fab1-4002-8002-000000000002
 
 	annotation PBI_NavigationStepName = Navigation
@@ -37,13 +37,13 @@ expression EmptyTable = (columns as list) as table => #table(columns, {})
 	annotation PBI_ResultType = Function
 
 /// Toggle (optional): load the Dataverse agent tables. False => they load empty.
-expression Enable_Dataverse = "Include" meta [IsParameterQuery=true, List={"Include", "Exclude"}, DefaultValue="Include", Type="Text", IsParameterQueryRequired=true]
+expression Enable_Dataverse = "Include"
 	lineageTag: 1a2b3c4d-fab1-4005-8005-000000000005
 
 	annotation PBI_ResultType = Text
 
 /// Toggle (optional): load the Product Feedback (OCV) table user_feedback.
-expression Enable_ProductFeedback = "Include" meta [IsParameterQuery=true, List={"Include", "Exclude"}, DefaultValue="Include", Type="Text", IsParameterQueryRequired=true]
+expression Enable_ProductFeedback = "Exclude"
 	lineageTag: 1a2b3c4d-fab1-4006-8006-000000000006
 
 	annotation PBI_ResultType = Text
@@ -68,7 +68,7 @@ expression Enable_Consumption = "Include" meta [IsParameterQuery=true, List={"In
 /// "Dataverse"     => pull conversationtranscripts straight from Dataverse and parse in Power Query.
 /// "TranscriptCSV" => parse a local conversationtranscripts.csv (same JSON content schema as Dataverse) —
 ///                    used to validate the parser offline / on exported data. Credit + Agents 365 stay CSV.
-expression 'Source Mode' = "Fabric" meta [IsParameterQuery=true, List={"Fabric", "Dataverse", "TranscriptCSV"}, DefaultValue="Fabric", Type="Text", IsParameterQueryRequired=true]
+expression 'Source Mode' = "Dataverse"
 	lineageTag: 1a2b3c4d-dv01-4101-8101-000000000101
 
 	annotation PBI_NavigationStepName = Navigation
@@ -77,7 +77,7 @@ expression 'Source Mode' = "Fabric" meta [IsParameterQuery=true, List={"Fabric",
 
 /// Path to a conversationtranscripts.csv (columns: conversationtranscriptid, content, conversationstarttime,
 /// name). Used when Source Mode = "TranscriptCSV". The `content` column holds the per-conversation JSON.
-expression 'Transcript CSV Path' = "" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+expression 'Transcript CSV Path' = ""
 	lineageTag: 1a2b3c4d-dv01-4104-8104-000000000104
 
 	annotation PBI_NavigationStepName = Navigation
@@ -504,7 +504,7 @@ expression Parse_SubAgents =
 	annotation PBI_ResultType = Function
 
 /// M port of build_agent_performance(): one row per conversation with the per-conversation KPI fact
-/// (outcome, implied success, topics, durations, user UPN). Matches the agent_performance Delta contract
+/// (outcome, implied success, topics, durations, ESS UPN). Matches the agent_performance Delta contract
 /// (39 source columns). Drives the Quality & Performance / Agent Evaluation pages.
 expression Parse_Performance =
 		() as table =>
