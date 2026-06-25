@@ -49,6 +49,20 @@ headers for you, so just drop the files in and rename them to the canonical name
 that's absent simply loads empty (its page degrades gracefully); only `copilot_org_data.csv` is
 needed for the org filter.
 
+### Where the CSV folder can live
+
+**CSV Folder Path** auto-detects what you give it:
+
+| You enter | Connector used | Refresh in the Service |
+|---|---|---|
+| A **SharePoint site URL** (`https://contoso.sharepoint.com/sites/AICopilot`) | `SharePoint.Files` — finds the canonical file names anywhere in the site | ✅ cloud-to-cloud, **no gateway** (set the source to *Organizational account* / OAuth2) |
+| A **local or synced folder** (`C:\AIBV\exports`, or a synced `…\OneDrive - Contoso\exports`) | `File.Contents` | needs an **on-premises data gateway** |
+| A **UNC share** (`\\server\share\exports`) | `File.Contents` | needs a gateway |
+
+> Tip: a **SharePoint site URL is the easiest to schedule-refresh** — no gateway. Drop the five
+> canonical CSVs into any document library on that site. (The path is taken from the parameter
+> directly, so the Service doesn't flag a dynamic data source.)
+
 > **Org data — keep your existing options.** Org/people data is **not** read from Dataverse; it
 > stays a CSV so you keep both acquisition methods: the **manual Entra export**, or the existing
 > **Entra-Graph-API → SharePoint** landing flow (see [`1. Fabric/flows`](../1.%20Fabric/flows)).
@@ -64,7 +78,7 @@ so you only set these parameters:
 | Parameter | Required? | Value |
 |---|---|---|
 | **Dataverse Url** | **Yes** | your environment URL, e.g. `https://yourorg.crm.dynamics.com` |
-| **CSV Folder Path** | **Yes** | the folder holding the CSV exports above (the **org/people** file lives here) |
+| **CSV Folder Path** | **Yes** | a **SharePoint site URL** (`https://contoso.sharepoint.com/sites/AICopilot`) **or** a local/synced/UNC folder holding the CSV exports above (the **org/people** file lives here) |
 | **Enable_Consumption** | optional | `Include` to load the credit-consumption CSVs / page (else `Exclude`) |
 | **Enable_Agent365** | optional | `Include` to load the Agents 365 CSV / page (else `Exclude`) |
 
