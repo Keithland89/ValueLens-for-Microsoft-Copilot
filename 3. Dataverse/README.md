@@ -1,6 +1,6 @@
 # AI Business Value Dashboard — Dataverse template
 
-**A self-contained Power BI template that runs straight off Dataverse + a folder of CSV exports.
+**A self-contained Power BI template that runs straight off Dataverse + a couple of CSV file paths.
 No Fabric capacity, no Lakehouse, no notebooks, no Spark.**
 
 Point it at your Dataverse environment, give it a folder of supporting CSVs, and refresh. The
@@ -15,12 +15,12 @@ Dataverse  conversationtranscripts ─(native connector, Web API)─┐
    Agent Sessions · Agent Turns · Agent Errors · Sub-Agent Calls
    Agent Performance · Agent Catalogue · Knowledge Citations
                                                                  ▼
-   + org / credit / Agents 365  ─(CSV exports in a folder)─────────► dashboard
+   + org / Agents 365  ─(direct CSV file paths)──────────────────────► dashboard
 ```
 
 > **Just want the file?** Open
 > **[`AI Business Value Dashboard - Dataverse.pbit`](./AI%20Business%20Value%20Dashboard%20-%20Dataverse.pbit)**
-> in Power BI Desktop and fill in the two required parameters below.
+> in Power BI Desktop and fill in the parameters below.
 
 ---
 
@@ -35,39 +35,40 @@ Dataverse  conversationtranscripts ─(native connector, Web API)─┐
   *Environment Maker*, or a custom least-privilege role. **No app registration / client secret**
   is needed — the report uses the native Dataverse connector with the refresher's own org login.
 
-**A folder of CSV exports** (a SharePoint site, or a local / synced folder), holding the
-supporting sources by these **canonical file names**:
+**Supporting CSV files**, each pointed to by its own **full file path** parameter (a SharePoint
+file URL or a local / synced / UNC path):
 
-| File name | Source export | Used by |
-|---|---|---|
-| `copilot_org_data.csv` | Entra → Users (manual export) **or** the Graph `/users` → SharePoint landing flow | Org filter on every page |
-| `credit_consumption_agent.csv` | Power Platform Admin → Billing → `EntitlementConsumption…PerAgentDetailsReport…` | Credit Consumption |
-| `credit_consumption_user.csv` | `EntitlementConsumption…PerUserDetailsReport…` | Credit Consumption |
-| `credit_consumption_tenant.csv` | `EntitlementConsumption…TenantDetailsReport…` | Credit Consumption |
-| `agents_365.csv` | M365 Admin → Agents → **Export** (optional) | Agents 365 page |
+| File | Source export | Parameter | Required? |
+|---|---|---|---|
+| `copilot_org_data.csv` | Entra → Users (manual export) **or** the Graph `/users` → SharePoint landing flow | **Org Data CSV** | **Yes** (org filter on every page) |
+| `agents_365.csv` | M365 Admin → Agents → **Export** | **Agent 365 CSV** | optional — leave blank to skip |
 
-Org data and credit are read straight from the **raw portal exports** — the model normalises the
-headers and US-format dates for you, so just drop the files in and rename them to the canonical
-names above. Any file that's absent simply loads empty (its page degrades gracefully); only
-`copilot_org_data.csv` is needed for the org filter.
+Org data is read straight from the **raw portal export** — the model normalises the headers and
+US-format dates for you, so just point the parameter at the file. The Agents 365 file is optional;
+leave its parameter blank and that table simply loads empty (its visuals degrade gracefully).
 
-### Where the CSV folder can live
+> **Credit Consumption is not part of this template.** This Dataverse build is deliberately scoped
+> to **Copilot Studio** analytics (transcripts + org + optional Agents 365). If you need the Power
+> Platform credit-consumption / billing page, use the **Fabric** or **SharePoint** template.
 
-**CSV Folder Path** auto-detects what you give it:
+### How the file paths work
+
+Each CSV parameter takes a **full file path**, auto-detected:
 
 | You enter | Connector used | Refresh in the Service |
 |---|---|---|
-| A **SharePoint site URL** (`https://contoso.sharepoint.com/sites/AICopilot`) | `SharePoint.Files` — finds the canonical file names anywhere in the site | ✅ cloud-to-cloud, **no gateway** (set the source to *Organizational account* / OAuth2) |
-| A **local or synced folder** (`C:\AIBV\exports`, or a synced `…\OneDrive - Contoso\exports`) | `File.Contents` | needs an **on-premises data gateway** |
-| A **UNC share** (`\\server\share\exports`) | `File.Contents` | needs a gateway |
+| A **SharePoint file URL** (`https://contoso.sharepoint.com/sites/AICopilot/Shared Documents/copilot_org_data.csv`) | `Web.Contents` | ✅ cloud-to-cloud, **no gateway** (set the source to *Organizational account* / OAuth2) |
+| A **local or synced file** (`C:\AIBV\copilot_org_data.csv`, or a synced `…\OneDrive - Contoso\copilot_org_data.csv`) | `File.Contents` | needs an **on-premises data gateway** |
+| A **UNC path** (`\\server\share\copilot_org_data.csv`) | `File.Contents` | needs a gateway |
 
-> Tip: a **SharePoint site URL is the easiest to schedule-refresh** — no gateway. Drop the five
-> canonical CSVs into any document library on that site.
+> Tip: a **SharePoint file URL is the easiest to schedule-refresh** — no gateway. Pointing at the
+> exact file (rather than a folder) means the report doesn't depend on file-naming conventions and
+> won't silently miss a renamed export.
 
 > **Org data — keep your existing options.** Org/people data is **not** read from Dataverse; it
 > stays a CSV so you keep both acquisition methods: the **manual Entra export**, or an
 > **Entra-Graph-API → SharePoint** landing flow. The dashboard just reads the resulting
-> `copilot_org_data.csv`.
+> `copilot_org_data.csv` at the path you give it.
 
 ---
 
@@ -79,13 +80,12 @@ parameters (no Fabric, Lakehouse, or mode switches to worry about):
 | Parameter | Required? | Value |
 |---|---|---|
 | **Dataverse Url** | **Yes** | your environment URL, e.g. `https://yourorg.crm.dynamics.com` |
-| **CSV Folder Path** | **Yes** | a **SharePoint site URL** or a local/synced/UNC folder holding the CSV exports above (the **org/people** file lives here) |
-| **Enable_Consumption** | optional | `Include` to load the credit-consumption CSVs / page (else `Exclude`) |
-| **Enable_Agent365** | optional | `Include` to load the Agents 365 CSV / page (else `Exclude`) |
+| **Org Data CSV** | **Yes** | full file path (SharePoint URL or local/synced/UNC) to `copilot_org_data.csv` |
+| **Agent 365 CSV** | optional | full file path to `agents_365.csv` — **leave blank to skip** the Agents 365 table |
 
 Click **Load**. On first refresh you'll get a one-time **Dataverse** sign-in: choose
 **Organizational account**, sign in with the org login that can read the Conversation Transcript
-table, and (if prompted) set the source privacy level to **Organizational**. The CSV folder, if
+table, and (if prompted) set the source privacy level to **Organizational**. Each CSV path, if
 local, uses your current Windows credentials; if it's a SharePoint URL, sign in with
 **Organizational account** there too. Then enable **Scheduled refresh** in the Service as usual.
 
