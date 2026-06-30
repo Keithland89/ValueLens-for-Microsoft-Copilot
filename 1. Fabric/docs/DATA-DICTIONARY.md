@@ -37,6 +37,7 @@ template never breaks. See `OPTIONAL-SOURCES.md` for the `EmptyTable` + `try…o
 | 12 | Credit Consumption (Tenant) | `credit_consumption_tenant` | *Optional* (billing) | `Copilot_Credit_Consumption_Ingester` | n/a |
 | 13 | Credit Consumption (Agent) | `credit_consumption_agent` | *Optional* (billing) | `Copilot_Credit_Consumption_Ingester` | n/a |
 | 14 | Credit Consumption (User) | `credit_consumption_user` | *Optional* (billing) | `Copilot_Credit_Consumption_Ingester` | n/a |
+| 15 | Copilot Cost Consumption | `copilot_cost_consumption` | *Optional* (billing) | `Copilot_Cost_Consumption_Ingester` | SharePoint CSV (`Cost Consumption File`) |
 
 All other model tables (Calendar, legends, ranking/summary, glossary, value maps, etc.) are
 **calculated/DAX or static** — they have no external source and are version-independent.
@@ -218,6 +219,28 @@ StatusCode, StateCode
 ```
 *When `TAG_ENVIRONMENT=True`, the five fact tables also carry `source_environment` (and
 `agent_catalogue` carries `source_environments`).*
+
+### 15. `copilot_cost_consumption` — Cowork / WorkIQ / Other credits (MAC Cost management export)
+Produced by `Copilot_Cost_Consumption_Ingester` from the **Microsoft 365 Admin Center → Copilot →
+Cost management → Consumption** per-user CSV export (export-only; no API). This is the **only**
+customer-pullable place **Cowork** and **WorkIQ** credits appear — the Power Platform
+`credit_consumption_*` (MCSMessages) exports do not carry them. **Additive**, not a replacement: the
+two answer different questions (per-agent Studio *message* credits vs per-user *surface* credits).
+Gated by `Enable_CostConsumption`; both Fabric and SharePoint paths produce the identical contract.
+
+Source header → sanitised name (sanitiser = `[ ,;{}()\n\t=/-]` → `_`, BOM stripped, casing preserved):
+
+```
+User_Principal_Name  (text; join key → org PersonId / UPN)
+Cowork_Credits       (double; blank → null)
+WorkIQ_Credits       (double; blank → null)
+Other_Credits        (double; blank → null)
+Last_Activity_Date   (date; parses en-US M/d/yyyy + ISO)
+```
+**Derived by the ingester:** `Total_Credits` (= Cowork + WorkIQ + Other, nulls→0), plus
+`SourceFile`, `LoadDate` lineage. Grain is a **per-user snapshot** (`Last_Activity_Date` is "last
+activity", not a daily credit series). UPN match isn't 100% — unmatched users surface under an
+**"(Unattributed)"** organization bucket. See `../flows/COST-CONSUMPTION.md`.
 
 ---
 
