@@ -13,9 +13,14 @@ M365 Admin Center ─────┤                          ├─▶ OneLake 
 
 ## Where to get the export
 
-**Microsoft 365 Admin Center → Copilot → Cost management → Consumption tab → Export CSV.**
-It is **export-only — there is no API**. The per-user rows carry `User Principal Name`,
-`Cowork Credits`, `WorkIQ Credits`, `Other Credits`, and `Last Activity Date`.
+**Microsoft 365 Admin Center → Copilot → Cost management.** It is **export-only — there is no API**.
+The ingester **auto-detects two export shapes** (case-insensitive headers) and maps both to one contract:
+
+- **Surface split** — `User Principal Name`, `Cowork Credits`, `WorkIQ Credits`, `Other Credits`,
+  `Last Activity Date` (the Cowork/WorkIQ/Other view).
+- **Per-user usage** — `Display Name`, `User Principal Name`, `Monthly credit limit`,
+  `Monthly credits used`, `% Used`, `Session Count`, `Microsoft 365 Copilot license`,
+  `Last activity date` (budget / utilization view).
 
 ## The two landing flows
 
@@ -31,21 +36,26 @@ The MAC export filename is not fixed, so the `FileNamePrefix` guard defaults to 
 `.csv`); set it once you know the real prefix to be stricter. Import & OneLake-permission steps are
 identical to the credit-consumption flows — see [`README.md`](./README.md).
 
-## Column contract (the CSV)
+## Unified column contract (both shapes → one table)
 
-One row per user. Source header → sanitised Delta/column name (sanitiser = any run of
-`[ ,;{}()\n\t=/-]` → `_`, BOM stripped, **case preserved**):
+Source header → canonical name (case-insensitive match):
 
-| Source header | Sanitised name | Type | Notes |
+| Canonical name | Type | From surface export | From usage export |
 |---|---|---|---|
-| `User Principal Name` | `User_Principal_Name` | text | **Join key** (→ org `PersonId` / UPN) |
-| `Cowork Credits` | `Cowork_Credits` | double | blank → null |
-| `WorkIQ Credits` | `WorkIQ_Credits` | double | blank → null |
-| `Other Credits` | `Other_Credits` | double | blank → null |
-| `Last Activity Date` | `Last_Activity_Date` | date | parses en-US `M/d/yyyy` + ISO |
+| `User_Principal_Name` | text | `User Principal Name` | `User Principal Name` (**join key**) |
+| `Display_Name` | text | — | `Display Name` |
+| `Cowork_Credits` | double | `Cowork Credits` | — |
+| `WorkIQ_Credits` | double | `WorkIQ Credits` | — |
+| `Other_Credits` | double | `Other Credits` | — |
+| `Total_Credits` | double | sum of the three | `Monthly credits used` |
+| `Monthly_Credit_Limit` | double | — | `Monthly credit limit` |
+| `Pct_Used` | double (0–1) | — | `% Used` (÷100) |
+| `Session_Count` | int | — | `Session Count` |
+| `M365_Copilot_Licensed` | text | — | `Microsoft 365 Copilot license` |
+| `Last_Activity_Date` | date | `Last Activity Date` | `Last activity date` |
 
-**Added by the ingester:** `Total_Credits` (= Cowork + WorkIQ + Other, nulls→0), plus `SourceFile`
-and `LoadDate` lineage. The model binds **by name** — these names must match exactly.
+Columns absent from a given export load as **null** (so every measure stays valid). `SourceFile` and
+`LoadDate` lineage are added. The model binds **by name** — these names must match exactly.
 
 ## Model wiring
 

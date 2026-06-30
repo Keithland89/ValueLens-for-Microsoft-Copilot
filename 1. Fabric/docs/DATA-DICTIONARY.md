@@ -220,27 +220,32 @@ StatusCode, StateCode
 *When `TAG_ENVIRONMENT=True`, the five fact tables also carry `source_environment` (and
 `agent_catalogue` carries `source_environments`).*
 
-### 15. `copilot_cost_consumption` — Cowork / WorkIQ / Other credits (MAC Cost management export)
+### 15. `copilot_cost_consumption` — Copilot credit usage (MAC Cost management export)
 Produced by `Copilot_Cost_Consumption_Ingester` from the **Microsoft 365 Admin Center → Copilot →
-Cost management → Consumption** per-user CSV export (export-only; no API). This is the **only**
-customer-pullable place **Cowork** and **WorkIQ** credits appear — the Power Platform
-`credit_consumption_*` (MCSMessages) exports do not carry them. **Additive**, not a replacement: the
-two answer different questions (per-agent Studio *message* credits vs per-user *surface* credits).
-Gated by `Enable_CostConsumption`; both Fabric and SharePoint paths produce the identical contract.
-
-Source header → sanitised name (sanitiser = `[ ,;{}()\n\t=/-]` → `_`, BOM stripped, casing preserved):
+Cost management** per-user CSV export (export-only; no API). **Auto-detects two export shapes** and maps
+both to one unified contract: the **surface split** (`Cowork`/`WorkIQ`/`Other` credits) and the
+**per-user usage** export (monthly limit / used / % used / sessions). This is the **only**
+customer-pullable place Cowork/WorkIQ credits appear. **Additive**, not a replacement, to the PPAC
+`credit_consumption_*` (MCSMessages) tables. Gated by `Enable_CostConsumption`; both Fabric and
+SharePoint paths produce the identical contract. Header matching is **case-insensitive**.
 
 ```
-User_Principal_Name  (text; join key → org PersonId / UPN)
-Cowork_Credits       (double; blank → null)
-WorkIQ_Credits       (double; blank → null)
-Other_Credits        (double; blank → null)
-Last_Activity_Date   (date; parses en-US M/d/yyyy + ISO)
+User_Principal_Name   (text; join key → org PersonId_Normalized / UPN)
+Display_Name          (text; usage export)
+Cowork_Credits        (double; surface export; blank for usage)
+WorkIQ_Credits        (double; surface export; blank for usage)
+Other_Credits         (double; surface export; blank for usage)
+Total_Credits         (double; = Cowork+WorkIQ+Other, or Monthly credits used)
+Monthly_Credit_Limit  (double; usage export — per-user budget)
+Pct_Used              (double 0–1 fraction; usage export)
+Session_Count         (int64; usage export)
+M365_Copilot_Licensed (text; usage export)
+Last_Activity_Date    (date; parses ISO timestamp + en-US M/d/yyyy)
+SourceFile, LoadDate  (lineage)
 ```
-**Derived by the ingester:** `Total_Credits` (= Cowork + WorkIQ + Other, nulls→0), plus
-`SourceFile`, `LoadDate` lineage. Grain is a **per-user snapshot** (`Last_Activity_Date` is "last
-activity", not a daily credit series). UPN match isn't 100% — unmatched users surface under an
-**"(Unattributed)"** organization bucket. See `../flows/COST-CONSUMPTION.md`.
+Columns absent from a given export load as null. Grain is a **per-user snapshot**. UPN match isn't 100% —
+unmatched users surface under an **"(Unattributed)"** organization bucket. See
+`../flows/COST-CONSUMPTION.md`.
 
 ---
 
