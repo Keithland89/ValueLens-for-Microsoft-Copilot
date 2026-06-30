@@ -198,6 +198,9 @@ _NONGRAIN_ATTRS_AIBV: tuple[str, ...] = _NONGRAIN_ATTRS_AIO + (
     # Remaining row-level calc cols (offloaded).
     "Behavior_Plausible",
     "Delegation_Event_Key",
+    # Microsoft Entra Agent ID (Agent 365) crosswalk key. AIBV-only — the AIO
+    # contract above stays frozen at the v3.1.0 set.
+    "Agent_EntraId",
 )
 
 # Final fact CSV schemas. One row per (grain x Message_Id). Message_Id is
@@ -426,6 +429,25 @@ def derive_agent_title_id(agent_id: Any) -> str:
     if not agent_id_text:
         return ""
     return agent_id_text.rsplit(".", 1)[-1]
+
+
+_ENTRA_AGENT_ID_RE = re.compile(
+    r"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"
+)
+
+
+def derive_agent_entra_id(agent_id: Any, agent_title_id: str) -> str:
+    # Microsoft Entra Agent ID (Agent 365): the audit AgentId now carries an Entra
+    # Agent ID GUID instead of the CopilotStudio.Declarative.{title} string. The
+    # legacy derive_agent_title_id() (rsplit on '.') returns the whole GUID for these
+    # rows, which won't match the Title-ID-keyed Agents dimension. Surface the GUID in
+    # a dedicated column so new agents resolve via the Entra Agent ID crosswalk. Only
+    # extract when the parsed Title ID is itself a bare GUID (i.e. not a legacy
+    # T_/P_/declarative title), so a GUID inside a declarative title isn't misread.
+    if not agent_title_id:
+        return ""
+    match = _ENTRA_AGENT_ID_RE.fullmatch(agent_title_id.strip())
+    return match.group(0) if match else ""
 
 
 def first_dict_item(items: list[Any]) -> dict[str, Any]:
@@ -1595,6 +1617,7 @@ def explode_record(
     user_key_text = to_text(user_key)
     thread_key_text = to_text(thread_key)
     agent_title_id = derive_agent_title_id(agent_id)
+    agent_entra_id = derive_agent_entra_id(agent_id, agent_title_id)
     aisystem_plugin_name_str = to_text(first_plugin.get("Name")) if first_plugin else ""
     in_entra = (audit_user_id_norm in user_lookup) if audit_user_id_norm else True
     # AIBV-only per-record constants.
@@ -1624,6 +1647,7 @@ def explode_record(
         "AISystemPlugin_Id": plugin_id_str,
         "ModelTransparencyDetails_ModelName": model_name_str,
         "Agent_TitleID": agent_title_id,
+        "Agent_EntraId": agent_entra_id,
         "Message_isPrompt": "TRUE",
         # Behavior_Source / Value_Outcome injected per-resource below.
         "Behavior_Source": "",
