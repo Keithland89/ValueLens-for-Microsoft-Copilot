@@ -161,6 +161,11 @@ Pass `-RunAsUser DOMAIN\svc_aibv` to run under a service account.
 5. **Scheduled refresh** → enable, set to run after your extract (e.g. extract
    at 02:00, refresh at 04:00).
 
+> Working from CSVs on disk instead of SharePoint? The
+> `AI Business Value Dashboard - SharePoint (Local CSV).pbit` variant is the same
+> dashboard with the three parameters pointed at **local file paths** — open it,
+> set the paths, **Load**. No upload or scheduled refresh; re-open/refresh to update.
+
 ---
 
 ## What's in this folder
@@ -168,6 +173,7 @@ Pass `-RunAsUser DOMAIN\svc_aibv` to run under a service account.
 | Item | Purpose |
 |---|---|
 | `AI Business Value Dashboard - SharePoint.pbit` | The dashboard template. |
+| `AI Business Value Dashboard - SharePoint (Local CSV).pbit` | Same dashboard, parameters take local CSV file paths instead of SharePoint URLs (manual refresh). |
 | `scripts/Run-PAX-AIBV.ps1` | Downloads the current PAX release and produces the rollup CSVs. |
 | `scripts/Upload-Rollups-SharePoint.ps1` | Push the two CSVs to SharePoint. |
 | `scripts/Register-TaskScheduler.ps1` | Run the above two daily as a Windows Scheduled Task. |
