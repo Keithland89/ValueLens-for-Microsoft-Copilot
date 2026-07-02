@@ -104,6 +104,29 @@ Scheduled refresh from a SharePoint library. **Two ways to run PAX** — pick on
 > Prefer the command line? [Mini-Kitchen](https://microsoft.github.io/PAX-Cookbook/mini-kitchen) builds the exact `pwsh` command from the same AIBV recipe for you to run yourself.
 </details>
 
+<details>
+<summary><strong>Can't install the Cookbook app?</strong> — locked-down / no-install fallbacks</summary>
+
+If your environment can't install the Windows app (MDM restrictions, no admin rights, server-core, etc.), you can still run the exact same PAX engine — no Cookbook install required:
+
+1. **Build the command in the browser, run it yourself** — open [Mini-Kitchen](https://microsoft.github.io/PAX-Cookbook/mini-kitchen) (browser-only, **no install**, never touches your tenant). Pick the **AI Business Value Dashboard** preset, set `UserInfoFile` / `AppendFile` / `Deidentify` / `IncludeAgent365Info` as needed, and it renders a copy-ready `pwsh` command. Then run that command against the PAX script you download from the [PAX repo](https://github.com/microsoft/PAX/releases).
+
+2. **Run raw PAX directly** — download the Purview Audit Log Processor from the [PAX release](https://github.com/microsoft/PAX/releases) and call it yourself. The AIBV-relevant flags:
+   ```powershell
+   .\PAX_Purview_Audit_Log_Processor.ps1 `
+       -Dashboard AIBV -Rollup -IncludeUserInfo `
+       -Auth AppRegistration -TenantId <id> -ClientId <id> `
+       -UserInfoFile <your-org.csv> `                 # BYOD: your org file instead of Entra
+       -AppendFile Purview_CopilotInteraction_Rollup.csv `   # omit on the first (seed) run
+       -OutputPath <SharePoint-library-URL>           # writes fixed-named CSVs straight to SharePoint
+   ```
+   Seed once **without** `-AppendFile`, then add it on every scheduled run. Add `-Deidentify` for anonymised output, `-IncludeAgent365Info` for the agent catalogue.
+
+3. **Use the wrapper scripts in this repo** — the **B2** scripts below need only **PowerShell 7** (no app install) and add secret handling, release caching, and Task Scheduler registration on top of PAX.
+
+All three produce the identical rollup CSVs the template reads — the Cookbook app is a convenience, never a requirement.
+</details>
+
 ### B2 — PAX scripts (optional / advanced)
 
 Provision once, then extract + upload on a cadence.
