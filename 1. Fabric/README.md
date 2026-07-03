@@ -96,6 +96,11 @@ The two **Copilot Studio-specific** sources. Turn both on to light up the **Copi
 / Power Platform** (Dataverse read + Power Platform Admin Center billing) — a customer without Copilot
 Studio can leave the whole add-on off.
 
+> **Doing the full Copilot Studio build?** Follow the self-contained
+> **[Fabric + Copilot Studio setup guide](COPILOT-STUDIO-SETUP.md)** — it walks every step end to end
+> (the 3 core notebooks *plus* these two, the template, and the schedule) in one place, so you don't
+> hop between docs.
+
 | Page(s) | Toggle | Notebook |
 |---|---|---|
 | Agent transcripts / sessions / performance (Copilot Studio) | `Enable_Dataverse` | `Copilot_Agent_Transcript_Parser.ipynb` |
@@ -203,6 +208,7 @@ CSVs upstream? The [`../2. SharePoint/`](../2.%20SharePoint/) path consumes them
 
 ## Reference
 
+- **Full Copilot Studio build (self-contained):** [`COPILOT-STUDIO-SETUP.md`](COPILOT-STUDIO-SETUP.md)
 - **Roles & permissions (all sources):** [`docs/PERMISSIONS.md`](docs/PERMISSIONS.md)
 - **Table schemas:** [`docs/DATA-DICTIONARY.md`](docs/DATA-DICTIONARY.md)
 - **Optional sources in depth:** [`docs/OPTIONAL-SOURCES.md`](docs/OPTIONAL-SOURCES.md)
