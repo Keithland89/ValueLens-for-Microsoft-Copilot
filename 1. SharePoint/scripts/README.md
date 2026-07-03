@@ -181,7 +181,7 @@ Point the **`… - SharePoint (Local CSV).pbit`** template at those two files, o
 SharePoint with `Upload-Rollups-SharePoint.ps1` to use the standard template. Run with `--help` for
 all options (`--out-dir`, `--with-aggregates`, `--profile aio`). Requires **Python 3.9+**
 (`pip install orjson` optional, for faster parsing). Column contract:
-[`../../1. Fabric/docs/DATA-DICTIONARY.md`](../../1.%20Fabric/docs/DATA-DICTIONARY.md).
+[`../../2. Fabric/docs/DATA-DICTIONARY.md`](../../2.%20Fabric/docs/DATA-DICTIONARY.md).
 
 ---
 

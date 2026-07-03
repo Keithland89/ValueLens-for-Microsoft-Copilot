@@ -84,7 +84,7 @@ python "scripts/Purview_CopilotInteraction_Processor_v4.0.0.py" \
 
 It writes the two rollup CSVs next to your inputs (`*_Interactions_*.csv`, `*_Users_*.csv`).
 Run with `--help` for all options (`--out-dir`, `--with-aggregates`, …). Full column expectations
-are in [`../1. Fabric/docs/DATA-DICTIONARY.md`](../1.%20Fabric/docs/DATA-DICTIONARY.md).
+are in [`../2. Fabric/docs/DATA-DICTIONARY.md`](../2.%20Fabric/docs/DATA-DICTIONARY.md).
 
 **3. Connect the template**
 
@@ -283,5 +283,5 @@ is **not** stored in the task. (Secretless managed-identity scheduling is WIP �
 | Masked UPNs (32-char hex) | M365 Admin → Org settings → Reports → untick "Display concealed names". |
 | `403 Forbidden` on upload | App lacks per-site write — re-run [`ProvisionSiteAccess-SP-AppReg.ps1`](./scripts/ProvisionSiteAccess-SP-AppReg.ps1). |
 | `404 Not Found` on upload | `-FolderPath` doesn't exist in SharePoint — create it, or use `/` for the library root. |
-| Refresh hits 1 GB / 2-hour cap | Move to [`../1. Fabric/`](../1.%20Fabric/) for high-volume tenants. |
+| Refresh hits 1 GB / 2-hour cap | Move to [`../2. Fabric/`](../2.%20Fabric/) for high-volume tenants. |
 </details>
