@@ -17,13 +17,24 @@ and the measures simply return `0`/blank.
 
 ## 2. `Enable_*` toggle parameters
 
+The optional sources fall into two groups: a **+ Copilot Studio** add-on (the two Studio-specific
+sources, enabled together) and other independent optional sources.
+
+**+ Copilot Studio (add-on)** — requires Copilot Studio / Power Platform; enable both to light up the
+Copilot Studio pages, or leave both off:
+
 | Parameter | Default | Controls |
 | --- | --- | --- |
-| `Enable_Dataverse` | `"Include"` | the 6 agent tables (`agent_sessions`, `agent_turns`, `agent_errors`, `agent_subagents`, `agent_catalogue`, `agent_performance`) |
+| `Enable_Dataverse` | `"Include"` | the 6 agent tables (`agent_sessions`, `agent_turns`, `agent_errors`, `agent_subagents`, `agent_catalogue`, `agent_performance`) — Copilot Studio transcripts |
+| `Enable_AgentConsumption` | `"Include"` | the 3 billing tables (`credit_consumption_tenant/agent/user`) — Copilot Studio message credits from the Power Platform Admin Center |
+
+**Other optional sources** — independent of Copilot Studio:
+
+| Parameter | Default | Controls |
+| --- | --- | --- |
 | `Enable_ProductFeedback` | `"Include"` | `user_feedback` (ProductFeedback) |
 | `Enable_Agent365` | `"Include"` | `agents_365` (Agents 365) |
-| `Enable_Consumption` | `"Include"` | the 3 billing tables (`credit_consumption_tenant/agent/user`) |
-| `Enable_CostConsumption` | `"Include"` | `copilot_cost_consumption` (Cowork / WorkIQ / Other credits — MAC Cost management export) |
+| `Enable_CoworkConsumption` | `"Include"` | `copilot_cost_consumption` (Cowork / WorkIQ / Other credits — M365 Copilot, MAC Cost management export) |
 
 Set a toggle to `"Exclude"` to skip that source entirely (no fetch attempt) — useful when a customer
 hasn't licensed/exported it, or to speed up refresh.

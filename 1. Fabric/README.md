@@ -66,10 +66,14 @@ Open `AI Business Value Dashboard - Fabric.pbit` in Power BI Desktop and supply 
 |---|---|---|
 | **Fabric SQL Endpoint** | Yes | `<workspace-guid>.datawarehouse.fabric.microsoft.com` |
 | **Lakehouse Name** | Yes | Your Lakehouse name (e.g. `<your-lakehouse>`) |
-| `Enable_Dataverse` | Optional | `Include` to load agent tables, else `Exclude` |
+| `Enable_Dataverse` | + Copilot Studio | `Include` to load agent tables, else `Exclude` |
+| `Enable_AgentConsumption` | + Copilot Studio | `Include` to load the 3 Studio-credit billing tables, else `Exclude` |
 | `Enable_ProductFeedback` | Optional | `Include` to load `user_feedback`, else `Exclude` |
 | `Enable_Agent365` | Optional | `Include` to load `agents_365`, else `Exclude` |
-| `Enable_Consumption` | Optional | `Include` to load the 3 billing tables, else `Exclude` |
+| `Enable_CoworkConsumption` | Optional | `Include` to load `copilot_cost_consumption` (Cowork / WorkIQ), else `Exclude` |
+
+> The **+ Copilot Studio** pair (`Enable_Dataverse` + `Enable_AgentConsumption`) is a single add-on:
+> turn both on for the Copilot Studio pages, or leave both off if the customer has no Copilot Studio.
 
 Click **Load**, then **Publish** - ideally to a workspace on the **same Fabric capacity** so Direct
 Lake works without cross-capacity overhead.
@@ -82,16 +86,32 @@ enable **Scheduled refresh** on a cadence that matches your notebook schedule.
 ## Optional sources
 
 Leave every `Enable_*` toggle on `Exclude` and the core dashboard still works - optional tables simply
-load empty. To switch one on, set its toggle to `Include` and run the matching notebook:
+load empty. To switch one on, set its toggle to `Include` and run the matching notebook. The optional
+sources fall into two groups:
+
+### + Copilot Studio (add-on)
+
+The two **Copilot Studio-specific** sources. Turn both on to light up the **Copilot Studio pages**
+(agent transcripts, sessions, performance, and Studio message credits). Both require **Copilot Studio
+/ Power Platform** (Dataverse read + Power Platform Admin Center billing) — a customer without Copilot
+Studio can leave the whole add-on off.
 
 | Page(s) | Toggle | Notebook |
 |---|---|---|
-| Agent transcripts (Copilot Studio) | `Enable_Dataverse` | `Copilot_Agent_Transcript_Parser.ipynb` |
-| Credit / billing consumption | `Enable_Consumption` | `Copilot_Credit_Consumption_Ingester.ipynb` ([setup guide](CREDIT-CONSUMPTION-SETUP.md)) |
+| Agent transcripts / sessions / performance (Copilot Studio) | `Enable_Dataverse` | `Copilot_Agent_Transcript_Parser.ipynb` |
+| Copilot Studio message credits (Power Platform Admin Center) | `Enable_AgentConsumption` | `Copilot_Credit_Consumption_Ingester.ipynb` ([setup guide](CREDIT-CONSUMPTION-SETUP.md)) |
+
+### Other optional sources
+
+Independent of Copilot Studio — enable any subset.
+
+| Page(s) | Toggle | Notebook |
+|---|---|---|
 | Product feedback | `Enable_ProductFeedback` | `Copilot_ProductFeedback_Ingester.ipynb` |
 | Agents 365 | `Enable_Agent365` | `Copilot_Agent365_Lander.ipynb` (supported export lander) |
+| Cowork / WorkIQ / Other credits (M365 Copilot, MAC Cost management) | `Enable_CoworkConsumption` | `Copilot_Cost_Consumption_Ingester.ipynb` ([flow](flows/COST-CONSUMPTION.md)) |
 
-Credit consumption and product feedback are **export-only** in Microsoft's portals (no API) - the
+Credit/cost consumption and product feedback are **export-only** in Microsoft's portals (no API) - the
 `flows/` folder has Power Automate flows that auto-land those exports for you. Full detail in
 [`docs/OPTIONAL-SOURCES.md`](docs/OPTIONAL-SOURCES.md).
 

@@ -226,7 +226,7 @@ Cost management** per-user CSV export (export-only; no API). **Auto-detects two 
 both to one unified contract: the **surface split** (`Cowork`/`WorkIQ`/`Other` credits) and the
 **per-user usage** export (monthly limit / used / % used / sessions). This is the **only**
 customer-pullable place Cowork/WorkIQ credits appear. **Additive**, not a replacement, to the PPAC
-`credit_consumption_*` (MCSMessages) tables. Gated by `Enable_CostConsumption`; both Fabric and
+`credit_consumption_*` (MCSMessages) tables. Gated by `Enable_CoworkConsumption`; both Fabric and
 SharePoint paths produce the identical contract. Header matching is **case-insensitive**.
 
 ```

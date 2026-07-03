@@ -58,11 +58,11 @@ re-landing is safe: the ingester runs with `WRITE_MODE='overwrite'` (full snapsh
 ## Not all customers will send consumption data
 
 That's expected. If `Files/credit_consumption/` is empty, the ingester writes **empty, correctly-named**
-tables and the PBIP's **`Enable_Consumption = "Exclude"`** toggle keeps the billing visuals dormant —
+tables and the PBIP's **`Enable_AgentConsumption = "Exclude"`** toggle keeps the billing visuals dormant —
 the transcript-native `Total Cost Units` (displayedCost) view keeps working regardless.
 
 > The optional-source toggles are **list parameters** with the values `"Include"` / `"Exclude"`
-> (not `true`/`false`). Set `Enable_Consumption` to `"Include"` once the data is landing.
+> (not `true`/`false`). Set `Enable_AgentConsumption` to `"Include"` once the data is landing.
 
 ## Generalising to other export-only sources
 
@@ -86,7 +86,7 @@ So feedback is landed exactly like credit consumption:
 | Flow | `Copilot_Consumption_Email_to_OneLake.json` | `Copilot_ProductFeedback_Email_to_OneLake.json` |
 | Lands in | `Files/credit_consumption/` | `Files/product_feedback/` |
 | Model table | `Credit Consumption (Agent/User/Tenant)` | `ProductFeedback` (`user_feedback` Delta) |
-| Toggle | `Enable_Consumption` | `Enable_ProductFeedback` |
+| Toggle | `Enable_AgentConsumption` | `Enable_ProductFeedback` |
 
 **To finish the feedback path** you also need an **ingester notebook** that reads
 `Files/product_feedback/*.csv` and writes the `user_feedback` Delta table (the 23-column contract

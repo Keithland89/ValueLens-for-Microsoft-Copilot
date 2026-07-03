@@ -59,7 +59,7 @@ Columns absent from a given export load as **null** (so every measure stays vali
 
 ## Model wiring
 
-- **Toggle:** `Enable_CostConsumption` (list parameter `"Include"` / `"Exclude"`, default `"Include"`).
+- **Toggle:** `Enable_CoworkConsumption` (list parameter `"Include"` / `"Exclude"`, default `"Include"`).
 - **Table:** `copilot_cost_consumption`, wrapped in the standard `EmptyTable` + `try…otherwise` pattern
   (Fabric reads the Delta table via `FabricTable`; SharePoint reads the `Cost Consumption File` CSV and
   does the light typing + `Total_Credits` in M).
@@ -75,7 +75,7 @@ writes an **empty, correctly-named** table and the Cost Consumption visuals stay
 the dashboard is unaffected.
 
 > The optional-source toggles are **list parameters** with the values `"Include"` / `"Exclude"`
-> (not `true`/`false`). Set `Enable_CostConsumption` to `"Include"` once the data is landing.
+> (not `true`/`false`). Set `Enable_CoworkConsumption` to `"Include"` once the data is landing.
 
 ## UPN attribution caveat
 

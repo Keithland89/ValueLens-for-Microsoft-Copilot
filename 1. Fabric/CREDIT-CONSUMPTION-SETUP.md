@@ -7,6 +7,11 @@ billing pages on the Fabric version of the dashboard. **No coding required for t
 > stay empty and everything else works. Only do this if you want the **Credits Consumed**,
 > **Agent Evaluation** billing cards, etc.
 
+> **Part of the "+ Copilot Studio" add-on.** This source (`Enable_AgentConsumption`) pairs with the
+> Dataverse agent tables (`Enable_Dataverse`) to make up the optional **Copilot Studio** add-on — both
+> require Copilot Studio / Power Platform. Enable them together for the Copilot Studio pages, or leave
+> both off if the customer has no Copilot Studio. See [`README.md` → Optional sources](README.md#optional-sources).
+
 > **Credit vs Cost — don't confuse the two.** *This* guide covers **Copilot Studio credit
 > consumption** — the Power Platform Admin Center `MCSMessages` exports (per-agent / per-user /
 > per-environment **message** credits). A separate, newer source — the **Microsoft 365 Admin Center →
@@ -95,7 +100,7 @@ When it's done you'll have three new tables in the lakehouse:
 ## Step 4 — Switch the billing pages on in Power BI
 
 1. Open the dashboard (`…1905 Extra - Fabric.pbip` / the published `.pbit`) in **Power BI Desktop**.
-2. **Home → Transform data → Edit parameters** and set **`Enable_Consumption`** to **`Include`**.
+2. **Home → Transform data → Edit parameters** and set **`Enable_AgentConsumption`** to **`Include`**.
 3. Make sure the **Fabric SQL Endpoint** and **Lakehouse** parameters point at your
    `<your-lakehouse>` lakehouse.
 4. **Home → Refresh.**
@@ -125,7 +130,7 @@ export covers (read straight from the data).
 
 | Symptom | Likely cause | Fix |
 |---|---|---|
-| Billing pages are empty after refresh | `Enable_Consumption` still `Exclude`, or files not in the folder | Set it to `Include`; confirm the 3 CSVs are in `Files/credit_consumption/` and the notebook has run |
+| Billing pages are empty after refresh | `Enable_AgentConsumption` still `Exclude`, or files not in the folder | Set it to `Include`; confirm the 3 CSVs are in `Files/credit_consumption/` and the notebook has run |
 | Empty *immediately* after running the notebook | SQL endpoint hasn't synced yet | Wait ~1 minute, refresh again |
 | Refresh error: *"The column '…' of the table wasn't found"* | The CSVs were ingested by a different/older script with different column names | Re‑run **this** repo's `Copilot_Credit_Consumption_Ingester.ipynb` — it produces the exact column names the model expects (`Agent_Name`, `Billed_credit`, `Usage_Date`, etc.) |
 | Numbers look like only billed credits | Treemap/cards using the wrong measure | The treemap should use **Total Consumed Credits** (billed + non‑billed) from the Agent table |
