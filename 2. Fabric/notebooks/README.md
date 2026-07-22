@@ -1,4 +1,4 @@
-# Fabric Notebooks — the *No Studio* template
+# Fabric Notebooks - template
 
 Each notebook writes one Delta table the semantic model reads via the `FabricTable(...)`
 helper. They sit **flat** in this folder — import the ones for the sources you have.
